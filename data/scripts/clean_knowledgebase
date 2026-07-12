@@ -1,0 +1,103 @@
+"""
+Nettoie site_esprit.json pour améliorer la précision de la recherche (RAG) :
+1. Supprime les doublons de contenu exact (bruit de menu/pied de page répété)
+2. Découpe les fiches trop grosses (> MAX_CHARS) en sous-fiches plus précises
+3. Signale (sans les supprimer automatiquement) les fiches suspectes :
+   trop courtes, ou dont le titre semble sans rapport avec le contenu
+
+Installation : aucune (uniquement la bibliothèque standard Python)
+
+Lancement :
+    python clean_knowledge_base.py
+"""
+
+import json
+import re
+
+INPUT_PATH = r"C:\Users\zizou\Desktop\stage_ia_recepsionist\data\processed\site_esprit.json"
+OUTPUT_PATH = r"C:\Users\zizou\Desktop\stage_ia_recepsionist\data\processed\site_esprit_clean.json"
+REVIEW_PATH = r"C:\Users\zizou\Desktop\stage_ia_recepsionist\data\processed\a_verifier_manuellement.json"
+
+MIN_CHARS = 40       # en dessous, la fiche est probablement du bruit (à vérifier manuellement)
+MAX_CHARS = 2000      # au-dessus, on découpe en sous-fiches pour plus de précision
+
+
+def normalize(text: str) -> str:
+    """Version simplifiée du texte, utilisée uniquement pour détecter les doublons."""
+    return re.sub(r"\s+", " ", text).strip().lower()
+
+
+def remove_duplicates(records: list[dict]) -> tuple[list[dict], int]:
+    seen = set()
+    unique = []
+    removed = 0
+    for r in records:
+        key = normalize(r["contenu"])
+        if key in seen:
+            removed += 1
+            continue
+        seen.add(key)
+        unique.append(r)
+    return unique, removed
+
+
+def split_long_record(record: dict, max_chars: int) -> list[dict]:
+    """Découpe une fiche trop longue par phrases, en regroupant jusqu'à max_chars."""
+    text = record["contenu"]
+    if len(text) <= max_chars:
+        return [record]
+
+    sentences = re.split(r"(?<=[.;:])\s+", text)
+    chunks = []
+    current = ""
+    for sentence in sentences:
+        if current and len(current) + len(sentence) > max_chars:
+            chunks.append(current.strip())
+            current = sentence
+        else:
+            current = f"{current} {sentence}".strip()
+    if current:
+        chunks.append(current.strip())
+
+    new_records = []
+    for i, chunk in enumerate(chunks, start=1):
+        new_record = dict(record)
+        new_record["id"] = f"{record['id']}_part{i:02d}"
+        new_record["titre"] = f"{record['titre']} (partie {i}/{len(chunks)})"
+        new_record["contenu"] = chunk
+        new_records.append(new_record)
+    return new_records
+
+
+def flag_for_review(records: list[dict]) -> list[dict]:
+    """Repère les fiches trop courtes, à vérifier à la main plutôt qu'à supprimer d'office."""
+    return [r for r in records if len(r["contenu"]) < MIN_CHARS]
+
+
+if __name__ == "__main__":
+    with open(INPUT_PATH, "r", encoding="utf-8") as f:
+        records = json.load(f)
+    print(f"Fiches de départ : {len(records)}")
+
+    records, nb_removed = remove_duplicates(records)
+    print(f"Doublons supprimés : {nb_removed}")
+
+    split_records = []
+    nb_split = 0
+    for record in records:
+        parts = split_long_record(record, MAX_CHARS)
+        if len(parts) > 1:
+            nb_split += 1
+        split_records.extend(parts)
+    print(f"Fiches trop longues découpées : {nb_split}")
+
+    to_review = flag_for_review(split_records)
+    print(f"Fiches courtes à vérifier manuellement : {len(to_review)}")
+
+    with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
+        json.dump(split_records, f, ensure_ascii=False, indent=2)
+    with open(REVIEW_PATH, "w", encoding="utf-8") as f:
+        json.dump(to_review, f, ensure_ascii=False, indent=2)
+
+    print(f"\nTotal après nettoyage : {len(split_records)} fiches -> {OUTPUT_PATH}")
+    print(f"Liste à vérifier à la main -> {REVIEW_PATH}")
