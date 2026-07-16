@@ -110,7 +110,6 @@ def process_pdf(pdf_path: str, categorie: str) -> list[dict]:
                 "titre": section["titre"],
                 "contenu": section["contenu"],
                 "source": filename,
-                "type": "pdf",
             })
         print(f"  -> {len(records)} articles extraits")
         return records
@@ -126,7 +125,6 @@ def process_pdf(pdf_path: str, categorie: str) -> list[dict]:
             "titre": f"{filename} - page {page_num}",
             "contenu": text,
             "source": filename,
-            "type": "pdf",
         })
     print(f"  -> {len(records)} pages extraites (pas de structure par article détectée)")
     return records

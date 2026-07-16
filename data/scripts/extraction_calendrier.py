@@ -122,7 +122,6 @@ def build_records(events: list[dict], categorie: str, source: str) -> list[dict]
             "titre": f"{event['date']} - {event['evenement']}",
             "contenu": contenu,
             "source": source,
-            "type": "pdf",
         })
     return records
 

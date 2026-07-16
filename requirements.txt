@@ -1,0 +1,22 @@
+# Collecte des donnees (data/scripts/)
+requests
+beautifulsoup4
+pdfplumber
+
+# Module RAG (modules/rag/) -- tout tourne en local, aucune cle API
+chromadb==1.5.9
+sentence-transformers==5.6.0
+ollama==0.6.2
+
+# API REST (backend/)
+fastapi==0.139.0
+uvicorn[standard]==0.51.0
+python-multipart==0.0.32
+
+# Detection de langue + reconnaissance vocale (modules/language_detection/, modules/speech_to_text/)
+faster-whisper==1.2.1
+sounddevice==0.5.5
+soundfile==0.14.0
+
+# Synthese vocale (modules/text_to_speech/) -- 100% local, aucune cle API
+piper-tts==1.4.2

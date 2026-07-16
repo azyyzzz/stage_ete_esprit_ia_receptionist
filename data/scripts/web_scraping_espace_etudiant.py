@@ -129,6 +129,17 @@ def slugify(text: str) -> str:
     return text.strip("_")[:60]
 
 
+# Libelle du bouton "deplier/replier" d'un accordeon FAQ, scrape par erreur
+# avec la vraie question -- variantes "Ouvrir"/"Fermer", avec ou sans ":".
+ACCORDION_LABEL_PATTERN = re.compile(
+    r"^(Ouvrir|Fermer) la visibilité du contenu\s*:?\s*", re.IGNORECASE
+)
+
+
+def strip_accordion_label(text: str) -> str:
+    return ACCORDION_LABEL_PATTERN.sub("", text).strip()
+
+
 def extract_faq(soup: BeautifulSoup, url: str) -> list[dict]:
     """Traitement spécial de la page FAQ : structure question/réponse."""
     titles = soup.select(FAQ_TITLE_SELECTORS)
@@ -140,8 +151,7 @@ def extract_faq(soup: BeautifulSoup, url: str) -> list[dict]:
 
     records = []
     for i, (title_el, content_el) in enumerate(zip(titles, contents), start=1):
-        question = title_el.get_text(strip=True)
-        question = question.replace("Ouvrir la visibilité du contenu :", "").strip()
+        question = strip_accordion_label(title_el.get_text(strip=True))
         answer = content_el.get_text(" ", strip=True)
         if question and answer:
             records.append({
@@ -150,7 +160,6 @@ def extract_faq(soup: BeautifulSoup, url: str) -> list[dict]:
                 "titre": question,
                 "contenu": answer,
                 "source": url,
-                "type": "page",
             })
     return records
 
@@ -165,7 +174,7 @@ def extract_generic_page(soup: BeautifulSoup, url: str, categorie: str) -> list[
         tag.decompose()
 
     page_title_el = soup.find("h1")
-    page_title = page_title_el.get_text(strip=True) if page_title_el else url
+    page_title = strip_accordion_label(page_title_el.get_text(strip=True)) if page_title_el else url
 
     body = soup.find("body") or soup
 
@@ -186,14 +195,13 @@ def extract_generic_page(soup: BeautifulSoup, url: str, categorie: str) -> list[
                 "titre": current_heading,
                 "contenu": text,
                 "source": url,
-                "type": "page",
             })
             section_index += 1
 
     for el in body.find_all(["h1", "h2", "h3", "p", "li"]):
         if el.name in ("h1", "h2", "h3"):
             flush_section()
-            current_heading = el.get_text(strip=True) or page_title
+            current_heading = strip_accordion_label(el.get_text(strip=True)) or page_title
             current_text = []
         else:
             text = el.get_text(" ", strip=True)
@@ -239,7 +247,6 @@ def process_pdf(pdf_url: str, categorie: str) -> list[dict]:
                         "titre": f"{filename} - page {page_num}",
                         "contenu": text,
                         "source": pdf_url,
-                        "type": "pdf",
                     })
     except Exception as e:
         print(f"  [erreur] lecture PDF {pdf_url} : {e}")

@@ -118,7 +118,6 @@ RECORDS = [
 
 for record in RECORDS:
     record["source"] = SOURCE
-    record["type"] = "email"
 
 
 def load_existing(path: str) -> list[dict]:

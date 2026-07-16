@@ -1,3 +1,19 @@
 .venv/
 __pycache__/
 *.pyc
+
+# Base vectorielle ChromaDB : regeneree via `python -m modules.rag.ingest`,
+# ne doit pas etre versionnee (fichiers binaires, potentiellement volumineux).
+vector_store/
+
+# Modeles de voix Piper (TTS) : re-telechargeables via
+# `python -m piper.download_voices <voix> --download-dir voice_models`,
+# ne doivent pas etre versionnes (fichiers binaires volumineux).
+voice_models/
+
+# Fichiers auxiliaires de compilation LaTeX (rapport/) : regenerees a
+# chaque compilation, seul le .tex (source) et le .pdf (livrable) comptent.
+rapport/*.aux
+rapport/*.log
+rapport/*.out
+rapport/*.toc

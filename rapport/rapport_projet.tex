@@ -1,0 +1,565 @@
+\documentclass[11pt,a4paper]{report}
+
+\usepackage{fontspec}
+\setmainfont{Arial}
+\newfontfamily\arabicfont[Script=Arabic]{Arial}
+
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{xcolor}
+\definecolor{esprit}{RGB}{0,70,140}
+\usepackage[colorlinks=true,linkcolor=esprit,urlcolor=esprit,citecolor=esprit]{hyperref}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{fancyhdr}
+\usepackage{tcolorbox}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning}
+
+\titleformat{\chapter}[hang]{\normalfont\huge\bfseries\color{esprit}}{\thechapter.}{20pt}{\huge}
+\titleformat{\section}{\normalfont\Large\bfseries\color{esprit}}{\thesection}{10pt}{}
+\titleformat{\subsection}{\normalfont\large\bfseries}{\thesubsection}{8pt}{}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{ESPRIT AI Receptionist -- Rapport de projet}
+\fancyhead[R]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\newtcolorbox{statutfait}{colback=green!8,colframe=green!45!black,boxrule=0.5pt,arc=2pt,left=6pt,right=6pt,top=3pt,bottom=3pt}
+\newtcolorbox{statutencours}{colback=yellow!10,colframe=orange!70!black,boxrule=0.5pt,arc=2pt,left=6pt,right=6pt,top=3pt,bottom=3pt}
+\newtcolorbox{statutlimite}{colback=red!6,colframe=red!50!black,boxrule=0.5pt,arc=2pt,left=6pt,right=6pt,top=3pt,bottom=3pt}
+\newtcolorbox{noteinfo}{colback=blue!5,colframe=esprit,boxrule=0.5pt,arc=2pt,left=6pt,right=6pt,top=3pt,bottom=3pt}
+
+\title{\vspace{-2cm}\textbf{\Huge ESPRIT AI Receptionist}\\[0.3cm]\Large Rapport de suivi de projet -- Assistant vocal intelligent}
+\author{Stage -- ESPRIT}
+\date{Document vivant, mis à jour au fil du projet\\Dernière mise à jour : 12 juillet 2026}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\chapter{Introduction et contexte}
+
+\section{Objectif du projet}
+Le projet \textbf{ESPRIT AI Receptionist} vise à concevoir un assistant vocal intelligent
+capable de répondre automatiquement aux appels téléphoniques des étudiants et parents de
+l'école ESPRIT, en français et en arabe tunisien (dialecte). L'assistant doit pouvoir
+comprendre une question posée à l'oral, y répondre à partir d'une base de connaissances
+officielle de l'école, et reformuler cette réponse à l'oral.
+
+\section{Contrainte fondamentale : 100\% gratuit et local}
+L'ensemble des briques techniques utilisées sont \textbf{gratuites et fonctionnent
+entièrement en local} sur la machine de développement : aucune clé API payante, aucun
+service cloud facturé à l'usage. Ce choix structure toutes les décisions techniques du
+projet (choix des modèles, de l'infrastructure, des bibliothèques).
+
+\section{Répartition de l'équipe}
+\begin{itemize}[leftmargin=1.2cm]
+    \item \textbf{Ikbel} : module de génération de réponses (RAG) -- préparation de la
+    base de connaissances (FAQ, web scraping à partir d'un mail, règlements, calendrier,
+    admissions, paiements). Procédure de secours si l'information n'est pas disponible :
+    contacter directement les services concernés (Admission : rez-de-chaussée bloc E ;
+    FAQ : réseaux sociaux + réception entrée bloc E ; Calendrier : email sinon service
+    scolarité ; Paiement : service financier, 1\textsuperscript{er} étage bloc E).
+    \item \textbf{aziz} : backend / API REST.
+    \item \textbf{Auteur de ce rapport} : reconnaissance vocale (STT), détection de
+    langue, synthèse vocale (TTS), et backend / API REST.
+\end{itemize}
+
+\begin{noteinfo}
+\textbf{À faire, non encore attribué explicitement} : dashboard (interface CRUD documents
++ statistiques/indicateurs) et conteneurisation Docker + déploiement.
+\end{noteinfo}
+
+\chapter{Architecture globale}
+
+\section{Les cinq modules prévus}
+
+\begin{center}
+\begin{tikzpicture}[
+    node distance=0.9cm and 1.6cm,
+    box/.style={draw, rounded corners, fill=esprit!8, minimum width=3.1cm, minimum height=1.1cm, align=center, font=\small},
+    arr/.style={-{Stealth[length=2.5mm]}, thick, esprit}
+]
+\node[box] (voix1) {Appel entrant\\(voix)};
+\node[box, right=of voix1] (lang) {Détection\\de langue};
+\node[box, right=of lang] (stt) {Reconnaissance\\vocale (STT)};
+\node[box, right=of stt] (rag) {Compréhension +\\génération (RAG)};
+\node[box, right=of rag] (tts) {Synthèse\\vocale (TTS)};
+\node[box, right=of tts] (voix2) {Réponse\\(voix)};
+
+\draw[arr] (voix1) -- (lang);
+\draw[arr] (lang) -- (stt);
+\draw[arr] (stt) -- (rag);
+\draw[arr] (rag) -- (tts);
+\draw[arr] (tts) -- (voix2);
+\end{tikzpicture}
+\end{center}
+
+\begin{center}
+\begin{tabular}{@{}p{4.2cm}p{9.5cm}@{}}
+\toprule
+\textbf{Module} & \textbf{Statut} \\
+\midrule
+Détection de langue (FR / arabe tunisien) & \textbf{Fait} -- \texttt{faster-whisper}, 100\% local \\
+Reconnaissance vocale (STT) & \textbf{Fait} -- \texttt{faster-whisper} (medium), testé \\
+Compréhension de la question (LLM) & \textbf{Fait} -- intégrée au module RAG \\
+Génération de réponses (RAG) & \textbf{Fait} -- testé et amélioré (voir chap.~\ref{chap:rag}) \\
+Synthèse vocale (TTS) & \textbf{Fait} -- Piper, voix française \\
+API REST (backend) & \textbf{Fait} -- 5 endpoints fonctionnels \\
+Dashboard (CRUD + stats/KPI) & \textbf{Non commencé} \\
+Docker (conteneurisation + déploiement) & \textbf{Non commencé} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Récapitulatif des modèles utilisés}
+
+\begin{center}
+\begin{longtable}{@{}p{4cm}p{4cm}p{6cm}@{}}
+\toprule
+\textbf{Étape} & \textbf{Modèle / outil} & \textbf{Détails} \\
+\midrule
+\endhead
+Détection de langue & \texttt{faster-whisper} (medium) & Même modèle que le STT (partagé
+en mémoire), CPU, quantification int8 \\
+Reconnaissance vocale (STT) & \texttt{faster-whisper} (medium) & 100\% local,
+\texttt{device=cpu}, \texttt{compute\_type=int8} \\
+Embeddings (recherche RAG) & \texttt{sentence-transformers} \newline
+(\texttt{paraphrase-multilingual-mpnet-base-v2}) & Multilingue français + arabe, local \\
+Base vectorielle (RAG) & ChromaDB & Stockage des embeddings, persisté dans
+\texttt{vector\_store/} \\
+Génération de réponse (RAG/LLM) & Ollama \newline (\texttt{qwen2.5:7b-instruct}) & 7
+milliards de paramètres, 50\%/50\% CPU/GPU (VRAM limitée à 4~Go) \\
+Synthèse vocale (TTS) & Piper \newline (\texttt{fr\_FR-siwis-medium}) & Français
+uniquement, 100\% local \\
+\bottomrule
+\end{longtable}
+\end{center}
+
+Tous ces modèles sont \textbf{gratuits, open-source, et tournent entièrement en local}
+(aucune clé API), conformément à la contrainte fondamentale du projet (voir
+section~1.2).
+
+\section{Structure du dépôt}
+\begin{verbatim}
+data/                    Collecte et preparation de la base de connaissances
+  raw_data/              Documents bruts (PDF, pages HTML scrapees)
+  processed/             Base de connaissances nettoyee (site_esprit_clean.json)
+  scripts/               Scripts de scraping, extraction PDF, nettoyage
+
+modules/
+  rag/                   Generation de reponses (RAG)
+  language_detection/    Detection francais / arabe
+  speech_to_text/        Reconnaissance vocale
+  text_to_speech/        Synthese vocale
+
+backend/                 API REST reliant les modules
+  routers/               rag.py, stt.py, tts.py
+dashboard/               (a venir)
+docker/                  (a venir)
+tests/                   Scripts de test manuels
+voice_models/            Modeles de voix Piper (gitignore, telechargeable)
+vector_store/            Base vectorielle ChromaDB (gitignore, regeneree)
+\end{verbatim}
+
+\chapter{Infrastructure et environnement}
+
+\section{Migration du disque C vers le disque D}
+Le projet a été déplacé du disque C: vers le disque D: (\texttt{d:\textbackslash
+stage\_ia\_recepsionist}) par manque d'espace sur C. Les caches de modèles ont été
+redirigés vers D via des variables d'environnement Windows persistantes :
+\begin{itemize}
+    \item \texttt{OLLAMA\_MODELS} = \texttt{D:\textbackslash ai\_cache\textbackslash
+    ollama\_models\textbackslash models}
+    \item \texttt{HF\_HOME} = \texttt{D:\textbackslash ai\_cache\textbackslash
+    huggingface} (cache Hugging Face : embeddings + Whisper)
+\end{itemize}
+
+\begin{noteinfo}
+\textbf{Piège identifié} : un terminal déjà ouvert avant la création de la variable
+d'environnement ne la voit pas (les variables \texttt{User} ne sont lues qu'au démarrage
+d'un nouveau process). Toujours ouvrir un terminal neuf, ou refaire
+\texttt{\$env:HF\_HOME = "D:\textbackslash ai\_cache\textbackslash huggingface"}
+manuellement si un téléchargement inattendu se déclenche.
+\end{noteinfo}
+
+\section{Cause réelle de l'espace disque C qui se remplissait}
+Contrairement à l'hypothèse initiale (les modèles IA), la vraie cause identifiée est
+double :
+\begin{enumerate}
+    \item \textbf{Docker Desktop} : les disques virtuels WSL2 (\texttt{docker\_data.vhdx}
+    $\approx$ 8,7~Go et \texttt{ext4.vhdx} $\approx$ 3,5~Go) vivent sur C par défaut et ne
+    rétrécissent jamais automatiquement. Solution proposée (pas encore appliquée) :
+    déplacer l'emplacement du disque Docker vers D.
+    \item \textbf{Fichiers système Windows} : \texttt{pagefile.sys} ($\approx$ 19~Go) et
+    \texttt{hiberfil.sys} ($\approx$ 6,3~Go), gonflés par la pression mémoire (16~Go de
+    RAM, forte utilisation par Whisper + Ollama + Docker simultanément). Solution
+    proposée : déplacer le fichier d'échange vers D via les paramètres de performance
+    Windows (nécessite droits admin + redémarrage).
+\end{enumerate}
+
+\section{Matériel et limites de performance}
+\begin{itemize}
+    \item GPU : NVIDIA GeForce GTX 1650 Ti, \textbf{4~Go de VRAM seulement}.
+    \item Ollama (modèle 7B) tourne en partage \textbf{50\% CPU / 50\% GPU} (le modèle ne
+    tient pas entier dans la VRAM).
+    \item Whisper (STT) tourne \textbf{entièrement en CPU}, décision volontaire pour ne
+    pas entrer en conflit de VRAM avec Ollama (voir
+    \texttt{modules/speech\_to\_text/config.py}).
+    \item Conséquence : \texttt{/api/converse} (cycle complet voix→voix) prend environ
+    \textbf{20 à 40 secondes} par question, une fois les modèles chargés en mémoire (le
+    tout premier appel après un redémarrage du serveur est plus lent : chargement des
+    modèles en RAM).
+\end{itemize}
+
+\chapter{Module reconnaissance vocale et détection de langue}
+
+\section{Choix techniques}
+Basé sur \texttt{faster-whisper}, modèle \texttt{medium}, 100\% local et gratuit. Les
+modules \texttt{speech\_to\_text} et \texttt{language\_detection} partagent le même
+modèle chargé en mémoire (\texttt{modules/speech\_to\_text/model.py}) pour éviter de le
+charger deux fois.
+
+\section{Amélioration : biais de vocabulaire}
+Un paramètre \texttt{INITIAL\_PROMPT} a été ajouté
+(\texttt{modules/speech\_to\_text/config.py}) pour biaiser le décodage de Whisper vers le
+vocabulaire du domaine (noms propres ESPRIT, termes admissions/scolarité) et quelques
+tournures tunisiennes courantes (باش، نجم، فما، برشة). Coût nul, réversible, aucune
+garantie universelle -- aide sur des mots spécifiques, pas sur la grammaire ou l'accent
+en général.
+
+\begin{statutlimite}
+\textbf{Limite connue et documentée par la recherche} : Whisper (même en version
+\texttt{large}) est entraîné très majoritairement sur de l'arabe standard et quelques
+dialectes bien dotés en données (égyptien...). Le tunisien (derja) reste
+sous-représenté. Des modèles communautaires dédiés existent
+(\texttt{sadeemar/whisper-finetuned-Tunisian}, \texttt{SalahZa/Tunisian\_Automatic\_
+Speech\_Recognition}) mais sans garantie de qualité supérieure vérifiée, ou avec un
+changement d'architecture non négligeable (WavLM/SpeechBrain). Un fine-tuning maison
+demanderait de collecter et annoter nos propres enregistrements tunisiens -- hors
+périmètre réaliste du stage.
+\end{statutlimite}
+
+\section{Protocole de test qualité}
+Un script dédié (\texttt{tests/test\_language\_quality.py}) guide l'utilisateur à travers
+8 sujets représentatifs de la base de connaissances (admission, frais, paiement,
+calendrier, stage, documents, contact général, hors-sujet), enregistre chaque réponse en
+arabe tunisien, l'enchaîne dans le pipeline complet, et sauvegarde un rapport JSON
+(\texttt{Bureau\textbackslash test\_arabe\_resultats.json}) pour analyse structurée.
+
+\chapter{Module RAG (génération de réponses)}
+\label{chap:rag}
+
+\section{Architecture}
+\begin{itemize}
+    \item \textbf{Base vectorielle} : ChromaDB, persistée dans \texttt{vector\_store/}
+    (regénérée via \texttt{python -m modules.rag.ingest}).
+    \item \textbf{Embeddings} : \texttt{sentence-transformers}, modèle
+    \texttt{paraphrase-multilingual-mpnet-base-v2} (multilingue FR/AR).
+    \item \textbf{LLM} : Ollama, modèle \texttt{qwen2.5:7b-instruct} (bon support
+    multilingue parmi les modèles open-source).
+    \item \textbf{Seuil de pertinence} : \texttt{SCORE\_THRESHOLD = 0.45} -- en dessous,
+    redirection vers un message de fallback (service humain).
+\end{itemize}
+
+\section{Amélioration 1 : détection d'ambiguïté entre programmes}
+\textbf{Problème constaté} : une question vague (\emph{``combien ça coûte pour étudier à
+ESPRIT ?''}) piochait dans la première fiche la mieux notée, sans vérifier qu'elle
+correspondait bien au bon programme parmi plusieurs (cours du jour, cours du soir,
+EMBA...). Exemple observé : réponse de 20~000~DT (tarif EMBA) au lieu des 8~000~DT du
+programme d'ingénieur généraliste.
+
+\textbf{Solution implémentée} (\texttt{modules/rag/programmes.py} +
+\texttt{modules/rag/pipeline.py}) :
+\begin{enumerate}
+    \item Chaque fiche est associée à un \emph{programme} (cours du jour tunisiens /
+    internationaux, cours du soir, EMBA, alternance...) déduit de son URL source.
+    \item Si, parmi les meilleures fiches retrouvées (à une marge de score près), au
+    moins deux programmes différents sont représentés \textbf{et} que la question ne
+    précise pas lequel, le système répond directement par une demande de clarification
+    -- \textbf{sans appeler le LLM} (quasi instantané, $\sim$0,3s au lieu de 15 à 40s).
+    \item Garde-fou anti-faux-positif : la détection ne se déclenche que si le
+    \emph{meilleur} résultat est déjà spécifique à un programme (sinon, une question sur
+    un service général -- stage, carrière... -- ne serait pas concernée).
+    \item Garde-fou supplémentaire : si la question mentionne déjà explicitement un
+    programme par mot-clé (ex. ``cours du soir''), pas de clarification demandée.
+\end{enumerate}
+
+\textbf{Résultat validé} : questions précises (``frais des cours du soir'') répondent
+normalement ; questions vraiment vagues (``comment puis-je payer ?'') déclenchent la
+clarification ; questions sur des services généraux (``service de stage'') ne
+déclenchent plus de faux positif.
+
+\section{Amélioration 2 : qualité des données -- fiches ``gouvernance''}
+\textbf{Problème constaté} : une question sur le département des stages ne mentionnait
+jamais le contact réel (Majdi Gharbi) alors que l'information existait dans la base.
+
+\textbf{Cause racine} : \texttt{modules/rag/ingest.py} embed le texte
+\texttt{"\{titre\} : \{contenu\}"}. Pour les 28 fiches de la page gouvernance, le titre
+était le \textbf{nom de la personne} (ex. ``Majdi GHARBI''), qui dilue l'embedding au lieu
+de l'aider -- un nom propre n'apporte aucun signal utile à la recherche sémantique.
+
+\textbf{Correction appliquée} (\texttt{data/processed/site\_esprit\_clean.json},
+28 fiches) :
+\begin{itemize}
+    \item \textbf{Titre} : nom de la personne $\to$ sujet/département (ex.
+    ``Département des stages'').
+    \item \textbf{Contenu} : reformulé en phrase naturelle (ex. \emph{``Majdi GHARBI est
+    la personne à contacter pour toute question sur département des stages. Email :
+    majdi.gharbi@esprit.tn.''}).
+    \item Base réindexée.
+\end{itemize}
+
+\textbf{Résultat mesuré} : score de similarité passé de absent du top 10 à 0{,}601 (2\textsuperscript{e}
+position) sur la question ``qui contacter pour le département des stages ?''. La réponse
+finale mentionne désormais correctement le contact.
+
+\begin{noteinfo}
+\textbf{Limite honnête} : la correction fonctionne pour les formulations proches du
+vocabulaire de la fiche. Des formulations plus détournées (``je cherche un stage, qui
+dois-je contacter ?'') ne remontent toujours pas cette fiche -- limite inhérente à la
+recherche sémantique sur des textes courts.
+\end{noteinfo}
+
+\section{Amélioration 3 : extraction et regroupement du dossier Admission}
+\textbf{Objectif} : les documents \texttt{.docx} de \texttt{data/raw\_data/Admission/}
+(FAQ par programme, conseillers admission) n'étaient pas encore dans la base de
+connaissances. Plutôt que d'indexer une fiche par question isolée, le contenu est
+\textbf{regroupé par section} (titres en gras du document, ex. ``Admission et
+Inscription'', ``Modalités Financières'') : ni trop court (une seule question, mal
+retrouvée en recherche sémantique -- voir amélioration 2), ni trop long (dilution de
+l'embedding sur plusieurs sujets différents).
+
+\textbf{Script} : \texttt{data/scripts/extract\_admission\_docx.py} -- analyseur souple
+gérant plusieurs variantes de mise en forme (question/réponse en paragraphes séparés ou
+combinés, sections purement descriptives), avec nettoyage des notes d'auteur parasites
+(ex. ``(mettre 3 boutons cliquables...)''). Chaque fiche est rattachée au bon programme
+(réutilisation des URLs canoniques déjà utilisées par le système de détection
+d'ambiguïté, section~\ref{chap:rag}).
+
+\textbf{Résultat} : 27 fiches ajoutées (785 fiches au total avant l'audit ci-dessous),
+comparées à \texttt{site\_esprit\_clean.json} existant (aucun doublon exact). Test sur
+une question vague (``comment ça marche l'inscription aux cours du soir ?'') : réponse
+complète en 5 étapes -- bonne, mais pas systématiquement grâce aux nouvelles fiches
+précises (beaucoup de contenu existant fait concurrence en recherche).
+
+\section{Audit de la base de connaissances : fiches peu détaillées ou hors-sujet}
+Un audit systématique (fiches de moins de 60 caractères, 86 sur 785) a révélé plusieurs
+catégories de problèmes :
+\begin{enumerate}
+    \item \textbf{Conflit de calendriers} ($\sim$60 fiches) : trois fichiers calendrier
+    différents (1,2,3\&4A / 5A / 5DS9\&5Infini3) avec des dates différentes pour des
+    événements similaires (ex. vacances d'hiver) -- risque de réponse mélangeant les
+    années/promotions. \textbf{Pas encore corrigé.}
+    \item \textbf{Bruit PDF hors-sujet} : le document \texttt{RDI\_CATALOG\_2023-2024.pdf}
+    (rapport annuel de recherche académique -- équipes de recherche, publications
+    scientifiques, conférences) s'est révélé \textbf{entièrement hors périmètre} pour un
+    assistant de réception admissions/scolarité. \textbf{Corrigé} : 49 fiches supprimées
+    (785 $\to$ 736 fiches), base réindexée, aucune régression constatée (une des
+    nouvelles fiches ``Modalités Financières'' est même remontée en 1\textsuperscript{re}
+    position sur un test déjà validé, probablement grâce à moins de contenu parasite en
+    concurrence).
+    \item \textbf{Fiches contact avec nom en titre} (ex. ``Ramla Ben Ouirane'', ``Pr.
+    Faouzi Kamoun'') : même défaut que la correction ``Département des stages''
+    ci-dessus. \textbf{Pas encore corrigé.}
+    \item \textbf{Lignes de grille tarifaire isolées} (ex. ``550DT'' / ``Demi-pension
+    (F1)...'') : extraites une par une sans le contexte du tableau d'origine. Lié au
+    sous-dossier \texttt{Admission/Grilles tarifaires/} (PDF, Excel, zip), \textbf{pas
+    encore traité}.
+\end{enumerate}
+
+\section{Nettoyage : préfixe d'interface web et doublons de contenu}
+Deux problèmes supplémentaires, découverts en creusant le mécanisme même de la
+recherche sémantique (comment le RAG choisit une fiche pour une question donnée) :
+
+\textbf{1. Préfixe d'interface parasite} : 85 fiches sur 736 avaient un titre commençant
+par \emph{``Ouvrir la visibilité du contenu : ''} -- le libellé du bouton ``déplier'' d'un
+accordéon FAQ, scrapé par erreur avec la vraie question. Comme
+\texttt{modules/rag/ingest.py} donne du poids au titre dans l'embedding, ce préfixe
+identique sur 85 fiches diluait leur pertinence. \textbf{Corrigé} : préfixe retiré
+(regex simple, aucun risque -- ne touche jamais le contenu factuel).
+
+\textbf{2. Doublons de contenu préexistants, révélés par le nettoyage} : une fois les
+titres nettoyés, ces fiches ont mieux remonté en recherche -- révélant que
+\textbf{4 groupes de fiches quasi-identiques} existaient déjà entre plusieurs pages de
+programmes (ex. ``Les diplômes délivrés par ESPRIT sont-ils reconnus ?'' dupliqué mot
+pour mot entre les pages ``cours-du-jour-tunisiens'' et ``cours-du-jour-internationaux'').
+Conséquence concrète : le système de détection d'ambiguïté (section~\ref{chap:rag})
+demandait à tort de préciser le programme, alors que la réponse est identique quel que
+soit le programme choisi. \textbf{Corrigé} : les 4 groupes fusionnés en une seule fiche
+chacun, retaguée avec une source générique non rattachée à un programme spécifique
+(736 $\to$ 730 fiches). Testé et validé : la question ``le diplôme ESPRIT est-il
+reconnu ?'' répond désormais directement, sans fausse demande de clarification.
+
+\begin{noteinfo}
+Cet épisode illustre bien la nature itérative du nettoyage de données pour un RAG :
+corriger un problème (préfixe parasite) peut révéler un autre problème resté invisible
+jusque-là (doublons), simplement parce que les fiches concernées remontent différemment
+en recherche une fois nettoyées.
+\end{noteinfo}
+
+\section{Clôture de l'audit : les 4 chantiers restants traités}
+
+\textbf{1. Fiches contact restantes} : 2 dernières fiches avec un nom de personne en
+titre (``Ramla Ben Ouirane'', ``Pr. Faouzi Kamoun'') corrigées selon le même schéma que
+``Département des stages''. La fiche du centre de carrière a ensuite été reformulée une
+seconde fois (titre sous forme de question ``Qui contacter au centre de carrière ?'')
+après un test montrant qu'elle perdait face à des FAQ génériques ``qui contacter''
+d'autres programmes.
+
+\textbf{2. Conflit des calendriers} : les 67 fiches issues des 3 fichiers calendrier
+(1,2,3\&4A / 5A / 5DS9\&Infini3) sont désormais préfixées avec leur promotion
+(ex. \emph{``Pour 5ème année (5A) -- le mardi 2025-12-30 : Vacances d'hiver.''}) : même si
+plusieurs dates concurrentes remontent en recherche, la réponse ne peut plus mélanger les
+promotions.
+
+\textbf{3. Grilles tarifaires} (\texttt{Admission/Grilles tarifaires/}) : 7 PDF + 1 Excel
+extraits avec \texttt{pdfplumber} en mode \emph{tableau} (pas texte brut, pour ne pas
+mélanger les colonnes). Le fichier zip du dossier s'est révélé être une copie exacte de 4
+PDF déjà présents (tailles de fichier identiques) -- ignoré. 10 fiches ajoutées : foyer et
+restauration (tunisiens/internationaux), historique des frais 2018-2025 (cours du jour et
+cours du soir), classe préparatoire (PREPA, nouveau programme ajouté au système de
+détection d'ambiguïté), et ESPRIT School of Business (Bachelor/Master). Chaque montant a
+été vérifié manuellement contre le tableau source avant d'être transcrit en phrase
+complète -- aucune réécriture automatique de chiffres.
+
+\textbf{4. Champs \texttt{source} et \texttt{type}} : vérifié dans le code que ni l'un ni
+l'autre n'est jamais envoyé au LLM ni à l'embedding (\texttt{ingest.py} et
+\texttt{generator.py} n'utilisent que \texttt{titre} + \texttt{contenu}). \texttt{type}
+était réellement mort code (jamais relu) -- supprimé de toutes les fiches et des 6 scripts
+d'extraction. \texttt{source} est en revanche activement utilisé par la détection
+d'ambiguïté et les citations -- conservé. Le vrai risque de confusion identifié était
+ailleurs : \textbf{203 fiches} avaient un titre brut de type
+\emph{``nom-fichier.pdf - page N''} (ex. \texttt{Reglement-scolarite-24-25-cs.pdf - page
+8}), qui pollue l'embedding (titre pesé dans la recherche). Un test empirique a confirmé
+qu'un titre nettoyé (ex. \emph{``Règlement de la scolarité - Cours du soir
+2024-2025''}) score mieux (0,667) qu'un titre brut (0,659) et qu'une absence de titre
+(0,654) -- les 203 titres ont été remappés vers des noms lisibles pour les 18 documents
+concernés.
+
+\textbf{5. Robustesse de la détection d'ambiguïté} : un cas limite a révélé que la règle
+``ne se déclenche que si le meilleur résultat a un label'' était fragile -- un écart de
+score de 0{,}001 entre deux fiches (bruit d'embedding) suffisait à faire basculer une
+question générale (``comment fonctionne le service de stage ?'') en fausse alerte.
+\textbf{Corrigé} : la règle regarde maintenant un consensus sur les 3 meilleurs résultats
+(majorité avec un label de programme) plutôt que le seul premier résultat -- plus robuste
+au bruit, sans perdre la détection des vrais cas ambigus.
+
+Base de connaissances finale : \textbf{740 fiches} (730 avant ce chantier, +10 fiches de
+grilles tarifaires). Régression complète validée sur 5 scénarios de référence (précis /
+vague / général / contact / calendrier) avant clôture de ce chantier.
+
+\chapter{Module synthèse vocale (TTS)}
+
+\section{Choix techniques}
+Basé sur \textbf{Piper} (moteur de synthèse neuronale, 100\% local, gratuit, aucune clé
+API). Voix française \texttt{fr\_FR-siwis-medium} installée dans \texttt{voice\_models/}
+(gitignored, retéléchargeable).
+
+\section{Réglage de la vitesse}
+La voix par défaut parlait trop vite pour un usage téléphonique. Un paramètre
+\texttt{SPEECH\_LENGTH\_SCALE = 1.25} (25\% plus lent) a été ajouté dans
+\texttt{modules/text\_to\_speech/config.py}, appliqué via \texttt{SynthesisConfig} de
+Piper.
+
+\begin{statutlimite}
+\textbf{Limite connue} : aucune voix arabe tunisienne (dialecte) disponible chez Piper --
+seulement de l'arabe standard moderne. Le module reste donc pertinent uniquement pour le
+français pour l'instant.
+\end{statutlimite}
+
+\chapter{Backend / API REST}
+
+\section{Endpoints disponibles}
+\begin{center}
+\begin{longtable}{@{}p{3.2cm}p{10.5cm}@{}}
+\toprule
+\textbf{Endpoint} & \textbf{Description} \\
+\midrule
+\endhead
+\texttt{GET /api/health} & Vérifie que l'API répond. \\
+\texttt{POST /api/ask} & Pose une question texte au RAG. Renvoie réponse + sources +
+indicateurs (\texttt{used\_fallback}, \texttt{needs\_clarification}). \\
+\texttt{POST /api/transcribe} & Envoie un fichier audio, renvoie langue détectée +
+transcription. \\
+\texttt{POST /api/voice-ask} & Envoie un fichier audio contenant une question orale,
+renvoie la réponse générée par le RAG (texte). \\
+\texttt{POST /api/speak} & Envoie un texte, renvoie l'audio (.wav) synthétisé. \\
+\texttt{POST /api/converse} & Cycle complet : audio (question) $\to$ transcription
+$\to$ RAG $\to$ audio (réponse). \\
+\bottomrule
+\end{longtable}
+\end{center}
+
+\section{Ce qui reste à faire côté backend}
+\begin{itemize}
+    \item Gestion d'erreurs explicite (fichier audio corrompu, texte vide, format non
+    supporté).
+    \item Tests automatisés (actuellement : validation manuelle via \texttt{curl} et
+    \texttt{/docs}).
+    \item Endpoints pour le futur dashboard (CRUD documents, statistiques).
+\end{itemize}
+
+\chapter{Tests et validation}
+
+\section{Tests manuels effectués}
+\begin{itemize}
+    \item \texttt{/api/health}, \texttt{/api/ask}, \texttt{/api/transcribe},
+    \texttt{/api/voice-ask}, \texttt{/api/speak}, \texttt{/api/converse} : tous testés de
+    bout en bout avec succès.
+    \item Enregistrements vocaux réels (français et arabe tunisien) via
+    \texttt{tests/record\_voice.py} puis upload manuel dans \texttt{/docs}.
+    \item Cas limites du RAG testés : questions précises, questions vagues, questions sur
+    des services généraux -- comportement validé dans les trois cas après corrections.
+\end{itemize}
+
+\section{Scripts de test disponibles}
+\begin{itemize}
+    \item \texttt{tests/test\_rag\_pipeline.py} -- test interactif du RAG seul.
+    \item \texttt{tests/test\_stt\_pipeline.py} -- test interactif micro $\to$ transcription.
+    \item \texttt{tests/record\_voice.py} -- enregistrement seul (sans transcription),
+    pour tester ensuite via l'API.
+    \item \texttt{tests/test\_language\_quality.py} -- protocole structuré de test
+    qualité arabe tunisien vs français (8 scénarios, rapport JSON sauvegardé).
+\end{itemize}
+
+\chapter{Limites connues et travail restant}
+
+\section{Limites techniques actuelles}
+\begin{statutlimite}
+\begin{itemize}
+    \item \textbf{Vitesse} : $\sim$20 à 40 secondes par réponse vocale complète, due au
+    GPU limité (4~Go VRAM) partagé entre Whisper (CPU) et Ollama (50\% CPU / 50\% GPU).
+    \item \textbf{Qualité arabe tunisien} : limite structurelle des modèles gratuits
+    disponibles (Whisper et Piper), documentée par la recherche académique.
+    \item \textbf{Espace disque C} : cause identifiée (Docker + pagefile Windows) mais
+    correctif pas encore appliqué (nécessite droits admin + redémarrage).
+\end{itemize}
+\end{statutlimite}
+
+\section{Travail restant}
+\begin{statutencours}
+\begin{itemize}
+    \item \textbf{Dashboard} : interface CRUD documents + statistiques/indicateurs (nb
+    appels selon critère, FAQ, satisfaction) -- pas commencé.
+    \item \textbf{Docker} : conteneurisation des services + déploiement -- dossier vide.
+    \item \textbf{Tests arabe approfondis} : lancer \texttt{test\_language\_quality.py}
+    avec de vrais enregistrements et analyser les résultats.
+    \item \textbf{Durcissement API REST} : gestion d'erreurs, tests automatisés.
+\end{itemize}
+\end{statutencours}
+
+\begin{statutfait}
+\textbf{Qualité des données (clôturé)} : audit complet de \texttt{site\_esprit\_clean.json}
+terminé -- fiches ``gouvernance'' et contacts restants corrigés, catalogue RDI hors-sujet
+supprimé, préfixe d'interface parasite retiré, doublons de contenu fusionnés, conflit des
+calendriers multi-promotions résolu, grilles tarifaires extraites et intégrées, titres
+``nom de fichier + page'' nettoyés, champ \texttt{type} mort supprimé, détection
+d'ambiguïté rendue robuste au bruit de score. Base finale : 740 fiches.
+\end{statutfait}
+
+\end{document}
