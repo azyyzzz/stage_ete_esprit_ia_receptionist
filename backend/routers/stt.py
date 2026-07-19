@@ -63,7 +63,7 @@ def voice_ask(file: UploadFile = File(...)) -> VoiceAskResponse:
         tmp_path.unlink(missing_ok=True)
 
     question = stt_result["text"]
-    rag_result = answer_question(question)
+    rag_result = answer_question(question, allow_clarification=False)
 
     return VoiceAskResponse(
         language=lang_result["language"],
@@ -83,6 +83,11 @@ def converse(file: UploadFile = File(...)) -> FileResponse:
     (fichier audio), la transcrit, génère la réponse via le RAG, puis
     renvoie cette réponse synthétisée en audio (.wav) -- l'appelant entend
     directement la réponse, sans passer par du texte intermédiaire.
+
+    Ne demande jamais de précision sur le programme (allow_clarification=
+    False) : contrairement à /api/voice-ask, ce canal est un aller-retour
+    unique -- l'appelant n'a pas moyen de répondre à une question de
+    clarification.
     """
     tmp_path = _save_upload_to_tmp(file)
     try:
@@ -90,7 +95,7 @@ def converse(file: UploadFile = File(...)) -> FileResponse:
     finally:
         tmp_path.unlink(missing_ok=True)
 
-    rag_result = answer_question(stt_result["text"])
+    rag_result = answer_question(stt_result["text"], allow_clarification=False)
 
     output_path = Path(tempfile.mktemp(suffix=".wav"))
     synthesize_to_wav(rag_result["answer"], output_path)

@@ -44,7 +44,14 @@ def _ambiguous_programmes(chunks: list) -> set[str]:
     return labels
 
 
-def answer_question(question: str) -> dict:
+def answer_question(question: str, allow_clarification: bool = True) -> dict:
+    """
+    allow_clarification=False : ne renvoie jamais de demande de precision --
+    utilise pour les canaux a un seul aller-retour (ex. /api/converse en
+    vocal) ou l'appelant n'a pas moyen de repondre a une question de
+    clarification. Le LLM synthetise alors une reponse couvrant les
+    principaux programmes a partir du meme contexte recupere.
+    """
     chunks = retrieve(question)
     best_score = chunks[0].score if chunks else 0.0
 
@@ -57,7 +64,9 @@ def answer_question(question: str) -> dict:
         }
 
     programmes = _ambiguous_programmes(chunks)
-    if len(programmes) >= 2 and not mentioned_programme(question, programmes):
+    is_ambiguous = len(programmes) >= 2 and not mentioned_programme(question, programmes)
+
+    if is_ambiguous and allow_clarification:
         options = ", ".join(sorted(programmes))
         return {
             "answer": (
@@ -69,7 +78,7 @@ def answer_question(question: str) -> dict:
             "needs_clarification": True,
         }
 
-    answer = generate_answer(question, chunks)
+    answer = generate_answer(question, chunks, ambiguous_programme=is_ambiguous)
     return {
         "answer": answer,
         "sources": [

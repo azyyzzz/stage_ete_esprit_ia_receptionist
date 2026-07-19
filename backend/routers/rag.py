@@ -23,5 +23,5 @@ def ask(request: AskRequest) -> AskResponse:
     l'appel au LLM local est bloquant -- FastAPI l'exécute alors dans un
     thread séparé et n'empêche pas les autres requêtes d'être traitées.
     """
-    result = answer_question(request.question)
+    result = answer_question(request.question, allow_clarification=False)
     return AskResponse(**result)

@@ -30,9 +30,20 @@ def _build_context(chunks: list[RetrievedChunk]) -> str:
     return "\n\n".join(parts)
 
 
-def generate_answer(question: str, chunks: list[RetrievedChunk]) -> str:
+AMBIGUOUS_PROGRAMME_NOTE = (
+    "\n\nNote : la question ne précise pas de quel programme il s'agit, et le "
+    "contexte ci-dessus couvre plusieurs programmes différents. Ne demande "
+    "pas de précision (l'appelant ne peut pas te répondre) : donne une "
+    "réponse utile qui couvre les principaux cas, en mentionnant brièvement "
+    "que ça varie selon le programme si les montants ou modalités diffèrent."
+)
+
+
+def generate_answer(question: str, chunks: list[RetrievedChunk], ambiguous_programme: bool = False) -> str:
     context = _build_context(chunks)
     user_prompt = f"Contexte disponible :\n{context}\n\nQuestion de l'appelant : {question}"
+    if ambiguous_programme:
+        user_prompt += AMBIGUOUS_PROGRAMME_NOTE
 
     response = ollama.chat(
         model=OLLAMA_MODEL,

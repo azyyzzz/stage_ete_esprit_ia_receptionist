@@ -453,6 +453,189 @@ Base de connaissances finale : \textbf{740 fiches} (730 avant ce chantier, +10 f
 grilles tarifaires). Régression complète validée sur 5 scénarios de référence (précis /
 vague / général / contact / calendrier) avant clôture de ce chantier.
 
+\section{Correction : cul-de-sac de la clarification en mode vocal}
+\textbf{Problème découvert en testant} \texttt{/api/converse} \textbf{avec une vraie
+voix} : sur une question vague (``comment puis-je payer ?''), l'appelant recevait la
+demande de clarification (``précisez le programme'') \emph{en audio}, sans aucun moyen
+d'y répondre -- \texttt{/api/converse} est un aller-retour unique (audio $\to$ audio),
+sans mémoire de conversation entre deux appels. Demander une précision qu'on ne peut pas
+recevoir est un cul-de-sac inacceptable en usage téléphonique réel.
+
+\textbf{Correction} : \texttt{answer\_question()} accepte désormais un paramètre
+\texttt{allow\_clarification} (\texttt{modules/rag/pipeline.py}). Quand il vaut
+\texttt{False}, le LLM génère toujours une réponse directe même en cas d'ambiguïté
+détectée -- une note est ajoutée au prompt (\texttt{modules/rag/generator.py}) lui
+demandant de couvrir les principaux programmes concernés plutôt que de refuser de
+répondre.
+
+Après test, décision prise d'appliquer ce comportement \textbf{uniformément aux 3
+endpoints} (\texttt{/api/ask}, \texttt{/api/voice-ask}, \texttt{/api/converse}) : plus
+aucune demande de clarification nulle part, pour une expérience cohérente quel que soit
+le canal.
+
+Testé : la même question ambiguë donne désormais une réponse directe et utile sur les 3
+endpoints (ex. détail des tranches de paiement pour plusieurs programmes, avec une
+invitation à vérifier les spécificités de son propre programme), au lieu d'une question
+sans issue.
+
+\section{Nettoyage : catégorie ``Vie étudiante''}
+\textbf{Problème signalé} : la catégorie ``Vie étudiante'' (144 fiches) contenait
+beaucoup de détail et plusieurs fiches jugées inutiles. Analyse : 103 des 144 fiches
+étaient en réalité des \textbf{règlements de scolarité mal catégorisés} (laissés
+intacts, car potentiellement utiles pour de vraies questions réglementaires) ; les
+41 fiches restantes (clubs, alumni, étudiants internationaux, cellule d'écoute)
+constituaient la vraie ``vie étudiante'', ciblée par ce nettoyage.
+
+\textbf{Supprimé (9 fiches, aucune valeur informative)} :
+\begin{itemize}
+    \item 6 fiches ``Visite virtuelle'' : légendes marketing génériques sans même le nom
+    de la salle décrite (ex. ``un espace calme et inspirant'').
+    \item 2 fiches ``Règlement intérieur'' : renvoyaient simplement à ``télécharger le
+    règlement ailleurs'', sans contenu réel.
+    \item 1 fiche fusionnée avec une autre (cellule d'écoute, partie 2/2 courte).
+\end{itemize}
+
+\textbf{Raccourci (32 fiches : 20 clubs, 3 alumni, 6 étudiants internationaux, 3 cellule
+d'écoute)} : style promotionnel/verbeux retiré, tous les faits conservés (emails,
+téléphones, adresse, dates de fondation). Médiane de longueur : 821 $\to$ 167 caractères.
+
+\begin{noteinfo}
+\textbf{Erreur de données trouvée et corrigée au passage} : la fiche ``Cellule d'écoute''
+contenait une phrase sur la communauté Alumni, copiée par erreur depuis une autre page
+lors du scraping initial -- retirée car factuellement fausse dans ce contexte.
+\end{noteinfo}
+
+Testé : question sur un club (robotique) $\to$ bon club identifié avec email (score
+0,722) ; question de détresse psychologique (formulation naturelle) $\to$ cellule
+d'écoute remontée en premier avec coordonnées complètes.
+
+\section{Consolidation par sujet : facilités de paiement}
+\textbf{Demande} : quand la question porte sur un sujet transversal (ex. ``puis-je payer
+par facilité ?''), la réponse doit couvrir toutes les méthodes existantes, pas une seule
+au hasard parmi des doublons.
+
+\textbf{Constat} : le paragraphe ``Financement'' (prêt Fondation ESPRIT, banques
+partenaires Amen/Zitouna/UBCI, jusqu'à 36 mensualités) était dupliqué quasi à l'identique
+sur \textbf{6 fiches différentes} (plusieurs pages de grilles tarifaires, années
+2024-2025 et 2025-2026). Avec seulement 5 fiches remontées par requête
+(\texttt{TOP\_K}), 4 des 5 places pouvaient être occupées par la même information
+répétée, au détriment d'informations réellement différentes (ex. le financement
+spécifique à l'EMBA : 2 à 5 tranches, partenariat Banque Zitouna).
+
+\textbf{Corrigé} : les 6 doublons remplacés par une fiche unique ``Facilités de paiement
+et financement (tous programmes)'', couvrant le cas général (cours du jour/soir) et le
+cas EMBA côte à côte.
+
+\section{Règlements de scolarité : ré-extraction par article}
+\textbf{Constat le plus important de cette session} : les 103 fiches de règlement
+(cours du jour, cours du soir, alternance, Private School en anglais) étaient en réalité
+des \textbf{pages brutes de PDF} (une fiche = une page, 100 à 2000 caractères), et non
+des fiches organisées par sujet -- une page pouvant couper un article en plein milieu
+ou mélanger la fin d'un article et le début du suivant. Cause : ces 4 documents avaient
+été traités par le scraper web générique (extraction page par page), qui ignore la
+structure ``Article N : Titre'' pourtant bien présente dans les PDF sources.
+
+\textbf{Correction} : nouveau script \texttt{data/scripts/reextract\_reglements.py},
+qui réextrait les 4 documents en respectant leur structure par article :
+\begin{itemize}
+    \item Découpage sur le motif \texttt{Article N :}, suppression du sommaire (table
+    des matières) et des lignes de sommaire à pointillés (ASCII \texttt{.} ou ellipses
+    unicode \texttt{…}) qui polluaient certains articles.
+    \item Les articles trop longs (ex. ``Régime des examens'', ``Charte de l'étudiant'',
+    8~000 à 13~700 caractères -- ils regroupent des sous-clauses non numérotées) sont
+    sous-découpés en parties de 2000 caractères maximum, comme pour les autres documents
+    du projet.
+    \item Dédoublonnage des titres d'article répétés par erreur dans le PDF source.
+\end{itemize}
+
+\textbf{Doublon supplémentaire découvert et supprimé} : 23 fiches ``cours du jour''
+existaient déjà, issues d'une extraction antérieure non documentée (source = nom de
+fichier local, sans URL) -- contenu identique à la nouvelle extraction, supprimées au
+profit de la version cohérente avec le reste de la base (source en URL \texttt{https://}).
+
+\textbf{Résultat} : 103 fiches fragmentées $\to$ \textbf{88 fiches cohérentes par
+article et par parcours}. Base de connaissances finale : \textbf{685 fiches}. Testé :
+question sur les conditions d'obtention du diplôme (cours du jour) $\to$ score de
+pertinence 0,782 (contre absence de structure claire avant), réponse complète et exacte
+citant l'article source.
+
+\section{Test qualité sur 35 questions et corrections}
+\label{sec:test-qualite-35}
+Un test systématique sur 35 questions couvrant 6 catégories (paiements, calendrier,
+règlements, admissions, vie étudiante, questions pièges) a été mené via
+\texttt{answer\_question()} directement (script \texttt{\_test\_batch\_questions.py},
+temporaire). Deux problèmes réels ont été détectés et corrigés :
+
+\textbf{1. Mauvaise identité du directeur.} À la question ``quel est le nom du directeur
+actuel d'ESPRIT ?'', le modèle répondait \emph{Lamjed Bettaieb (Directeur Général
+Adjoint)} au lieu du vrai Président-Directeur Général, \emph{Tahar Ben Lakhdar}. Cause :
+9 fiches de gouvernance différentes (``Directeur administratif et financier'',
+``Directeur des études'', ``Directeur Général Adjoint''...) contiennent toutes le mot
+générique ``Directeur'' et scorent de façon quasi identique (0,475 à 0,561) -- le LLM,
+recevant les 5 meilleures sans distinction claire de hiérarchie, ne priorisait pas le
+Président-Directeur Général. \textbf{Corrigé} : ajout d'une fiche dédiée ``Qui est le
+directeur de l'école ESPRIT ?'' répondant sans ambiguïté -- score de similarité 0,656
+(nettement au-dessus des 9 fiches concurrentes), résout le cas.
+
+\textbf{2. Réponse totalement corrompue (bug sévère).} À la question ``combien de fois
+je peux redoubler ?'', le modèle générait un texte \textbf{en chinois}, sans rapport
+avec la question (une conversation inventée sur la météo). Cause : le score de la
+meilleure fiche récupérée n'était que 0,451 (à peine au-dessus du seuil de fallback
+0,45), noyé parmi des fragments de prix totalement hors-sujet (``20~000 DT TTC'',
+``3~200DT''...) -- le vrai fait (\emph{``le redoublement n'est toléré qu'une seule fois
+par cycle de formation''}) existait bien dans la base mais enfoui dans un article de
+règlement de 1856 caractères, mal capté par la recherche sémantique. \textbf{Corrigé} :
+ajout d'une fiche dédiée consolidant les 3 parcours, avec une phrase de désambiguïsation
+explicite (``un seul redoublement au total est autorisé, jamais deux'') après qu'une
+première version ait fait dire au LLM ``deux redoublements'' par mauvaise lecture d'une
+formulation par-parcours. Score final : 0,536 (validé empiriquement avant mise en
+production, comme pour les autres corrections de ce rapport).
+
+\begin{noteinfo}
+\textbf{Leçon retenue} : un score de similarité proche du seuil de fallback (0,45) est
+un signal fiable de risque de génération de mauvaise qualité, y compris des dérives
+complètes (langue incorrecte, hors-sujet) -- pas seulement des réponses imprécises. À
+surveiller pour d'éventuels ajustements futurs du seuil ou de garde-fous sur la
+génération.
+\end{noteinfo}
+
+\section{Contradictions entre sources sur les frais 2024-2025}
+Un script de nettoyage externe (non écrit dans cette session) proposait de supprimer les
+fiches issues d'un email de paiement, jugées ``fausses'' par rapport à la grille
+tarifaire du site. Vérification avant exécution -- deux cas distincts :
+
+\textbf{Cas 1 (résolu par suppression)} : 4 fiches (\texttt{admissions\_cours\_du\_jour\_
+tunisiens\_003} à \texttt{006}, valeurs de 2ème tranche par année) ne correspondaient pas
+exactement à la fiche historique sourcée depuis le PDF officiel de grille tarifaire (3
+des 4 valeurs différaient de 50 à 100 DT). Contrairement à ce qu'affirmait le script, ce
+n'étaient pas des doublons identiques -- mais le PDF officiel étant plus fiable qu'une
+page web potentiellement obsolète, les 4 fiches ont été supprimées.
+
+\textbf{Cas 2 (résolu par clarification, pas suppression)} : le taux de réduction pour
+mérite académique différait entre l'email (30\%/15\%) et le site (25\%/10\%). Lecture
+attentive du contenu du site : celui-ci précise explicitement que le taux 25\%/10\% est
+\emph{nouveau et applicable aux frais de 2025-2026}, décidé pendant l'année 2024-2025.
+Le taux de l'email est donc probablement correct pour 2024-2025, pas une erreur. Les deux
+valeurs ont été \textbf{conservées}, avec les titres clarifiés par année plutôt que l'une
+supprimée au profit de l'autre.
+
+\textbf{Cas 3 (non tranché, signalé pour vérification humaine)} : le montant total des
+frais 2024-2025 diffère aussi (8200 DT selon l'email vs 8400 TND selon le site et une FAQ
+docx). Contrairement au cas 2, \textbf{aucune des fiches ne mentionne de réserve
+d'année} -- les deux affirment ce montant pour la même année 2024/2025 sans nuance.
+Faute de moyen de vérifier laquelle est correcte, \textbf{aucune fiche n'a été supprimée
+ni fusionnée} : les deux valeurs restent dans \texttt{site\_esprit\_clean.json}, et le
+conflit est documenté séparément dans \texttt{data/processed/conflits\_a\_verifier.json}
+pour vérification manuelle auprès du service financier.
+
+\begin{noteinfo}
+\textbf{Principe appliqué} : ne jamais trancher automatiquement une contradiction de
+données factuelles (montants, taux) sans preuve claire de laquelle est correcte --
+soit clarifier par un facteur objectif retrouvé dans le contenu (ici, l'année
+d'application), soit signaler explicitement pour vérification humaine plutôt que de
+deviner.
+\end{noteinfo}
+
 \chapter{Module synthèse vocale (TTS)}
 
 \section{Choix techniques}
