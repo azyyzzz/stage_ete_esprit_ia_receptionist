@@ -76,7 +76,6 @@
     "contenu": "Travaillez sur votre expression orale et réfléchissez à vos motivations. Si vous avez des questions, n’hésitez pas à nous contacter pour obtenir des conseils supplémentaires.",
     "source": "https://www.esprit.tn/admissions/foire-aux-questions/"
   },
-
   {
     "id": "faq_foire_aux_questions_013",
     "categorie": "FAQ",
@@ -105,8 +104,6 @@
     "contenu": "E-mail : admission@esprit.tn Téléphone : (+216) 70 250 000",
     "source": "https://www.esprit.tn/admissions/foire-aux-questions/"
   },
- 
- 
   {
     "id": "admissions_informations_pratiques_002",
     "categorie": "Admissions",
@@ -114,7 +111,6 @@
     "contenu": "Cours du jour 1ère année : Titulaires d’un baccalauréat scientifique. 2ème année : Étudiants ayant validé une 1ère année dans un institut ou un cycle préparatoire d’ingénieur. 3ème année (Cursus A) : Titulaires d’une licence dans la spécialité choisie. 3ème année (Cursus B) : Licenciés en sciences ou technologie, ou admis aux concours nationaux (MP, PC, Techno). 4ème année : Titulaires d’un Master (M1) dans la spécialité. Formation en alternance Licenciés en informatique ou spécialité apparentée Cours du soir Professionnels titulaires d’une licence",
     "source": "https://www.esprit.tn/admissions/informations-pratiques/"
   },
-
   {
     "id": "admissions_informations_pratiques_003_part02",
     "categorie": "Admissions",
@@ -122,7 +118,6 @@
     "contenu": "Après validation, vous recevrez vos documents administratifs (attestations et carte d’étudiant). Logement et vie étudiante ESPRIT met à disposition des solutions adaptées pour votre bien-être Hébergement Des foyers proches du campus avec chambres équipées et accès internet. Une assistance est également disponible pour vous accompagner dans vos démarches. Restauration Le restaurant du campus propose des repas équilibrés et variés, adaptés à vos besoins. Vie étudiante Participez à une vie riche en activités et clubs pour une expérience unique Étudiants internationaux Pour les étudiants venant de l’étranger, ESPRIT facilite votre arrivée et votre installation : Avant votre arrivée : Obtenez votre visa étudiant en suivant les démarches auprès de l’ambassade de Tunisie de votre pays. Après votre arrivée : Demandez votre carte de séjour directement à ESPRIT (carte obtenue dans la journée). Intégration : Profitez d’un accompagnement personnalisé pour une intégration réussie. Accompagnement et ressources Pour garantir votre réussite, ESPRIT met à disposition : Accompagnement personnalisé : Un accompagnement académique personnalisé et des services d’orientation pour vous guider tout au long de votre parcours. Ressources modernes : Accès à des équipements de pointe, bibliothèques et plateformes numériques. Apprentissage basé sur des projets : Une pédagogie concrète et adaptée aux besoins du marché. Intégration et vie au campus La vie étudiante à ESPRIT est dynamique et enrichissante : Clubs et activités : Impliquez-vous dans des projets culturels, sportifs ou technologiques. Journées d’intégration : Familiarisez-vous avec le campus, les programmes et les services dès votre arrivée.",
     "source": "https://www.esprit.tn/admissions/informations-pratiques/"
   },
-
   {
     "id": "admissions_cours_du_jour_tunisiens_002_part01",
     "categorie": "Admissions",
@@ -151,9 +146,6 @@
     "contenu": "Les frais de scolarité peuvent donner lieu à remboursement. Des droits d’inscription s’élevant à 10 % des frais de scolarité seront prélevés dans tous les cas. Aucune demande d’annulation ne sera acceptée après le 30/11/2024. NB : Toute annulation d’inscription après le 30/11/2024 sera traitée sans possibilité de remboursement des frais déjà payés.",
     "source": "https://www.esprit.tn/admissions/cours-du-jour/cours-du-jour-tunisiens/"
   },
- 
- 
-
   {
     "id": "admissions_cours_du_jour_tunisiens_013",
     "categorie": "Admissions",
@@ -168,9 +160,6 @@
     "contenu": "– Foyer I : 3200dt + 300dt de caution, paiement en ligne via la rubrique “paiement et intranet” ou scanner et envoyer le reçu via le lien : https://esprit-tn.com/ESPOnline/Online/Login.aspx – Foyer II (résidence El Amen) : 3300 dt + 310 dt de caution, paiement en ligne via la rubrique “paiement et intranet” ou scanner et envoyer le reçu via le lien : https://esprit-tn.com/ESPOnline/Online/Login.aspx",
     "source": "https://www.esprit.tn/admissions/cours-du-jour/cours-du-jour-tunisiens/"
   },
-
-
-  
   {
     "id": "admissions_cours_du_jour_tunisiens_023",
     "categorie": "Admissions",
@@ -220,7 +209,6 @@
     "contenu": "Oui, les titulaires d’un master dans la spécialité choisie peuvent postuler en 4ème année.",
     "source": "https://www.esprit.tn/admissions/cours-du-jour/cours-du-jour-tunisiens/"
   },
-
   {
     "id": "admissions_cours_du_jour_tunisiens_032",
     "categorie": "Admissions",
@@ -277,7 +265,6 @@
     "contenu": "Si vous avez des interrogations, contactez-nous à l’adresse suivante : contact@esprit.tn. Nous sommes là pour vous accompagner.",
     "source": "https://www.esprit.tn/admissions/cours-du-jour/cours-du-jour-tunisiens/"
   },
-
   {
     "id": "admissions_cours_du_jour_tunisiens_041",
     "categorie": "Admissions",
@@ -295,8 +282,8 @@
   {
     "id": "admissions_cours_du_jour_tunisiens_043",
     "categorie": "Admissions",
-    "titre": "Quels sont les frais de scolarité pour l’année 2024/2025 ?",
-    "contenu": "Pour les cours du jour, les frais s’élèvent à 8 400 TND TTC, payables en deux tranches. Les détails concernant les autres programmes sont disponibles dans la grille tarifaire.",
+    "titre": "Quels sont les frais de scolarité pour l'année 2024/2025 ? (corrigé)",
+    "contenu": "Pour les cours du jour (étudiants tunisiens), les frais de scolarité 2024/2025 s'élèvent à 8 200 DT TTC, payables en deux tranches : 4050 DT avant le 31/08/2024, 4150 DT avant le 15 janvier 2025. (Confirmé par email officiel de réinscription de la Direction ; corrige une valeur erronée de 8 400 TND précédemment indiquée sur cette page.)",
     "source": "https://www.esprit.tn/admissions/cours-du-jour/cours-du-jour-tunisiens/"
   },
   {
@@ -313,7 +300,6 @@
     "contenu": "Oui, un remboursement est possible, mais des frais de gestion équivalant à 10 % des frais de scolarité seront retenus. Après le 30 novembre, aucun remboursement ne sera accordé.",
     "source": "https://www.esprit.tn/admissions/cours-du-jour/cours-du-jour-tunisiens/"
   },
- 
   {
     "id": "admissions_cours_du_jour_internationaux_002",
     "categorie": "Admissions",
@@ -356,10 +342,6 @@
     "contenu": "Pour un apprentissage optimal, chaque élève doit disposer d'un ordinateur portable personnel. Des séances de tutorat et de soutien académique sont disponibles pour aider les étudiants dans leurs études. N'hésitez pas à profiter de ces ressources pour améliorer vos compétences et performances académiques. L'école organise régulièrement des événements, des ateliers et des conférences avec des experts de divers domaines. Participez à ces événements pour enrichir vos connaissances et élargir votre réseau professionnel Le calendrier des examens sera communiqué en début de semestre. Nous vous encourageons à le consulter régulièrement et à planifier vos révisions en conséquence. Respectez les dates et les horaires fixés pour éviter tout conflit ou stress inutile. La bibliothèque de l'école offre un large éventail de ressources académiques, y compris des livres, des revues, et des accès à des bases de données en ligne. Profitez des heures d'ouverture pour maximiser vos recherches et études. Les dates des vacances scolaires vous seront envoyées à la rentrée. Nous vous invitons à organiser vos déplacements en conséquence pour respecter ces dates. Toute demande de dérogation doit être adressée à la direction de l’école avec une justification raisonnable. L'école propose diverses activités extra-scolaires, comme des clubs de sport, des associations culturelles et des groupes de discussion académique. Participez pour enrichir votre expérience et développer vos compétences sociales. L'école met à disposition un service de santé pour les urgences et les consultations médicales de routine. Assurez-vous de connaître l'emplacement et les heures d'ouverture de l'infirmerie. Des options de transport public sont disponibles à proximité de l'école. Si vous utilisez une voiture, des parkings de stationnement sont prévus, mais il est conseillé de vérifier les règles de stationnement.",
     "source": "https://www.esprit.tn/admissions/cours-du-jour/cours-du-jour-internationaux/"
   },
-
-
-
-
   {
     "id": "admissions_cours_du_jour_internationaux_011",
     "categorie": "Admissions",
@@ -423,7 +405,6 @@
     "contenu": "L’inscription se fait exclusivement en ligne via le site web d’ESPRIT (« esprit.tn »). Remplissez le formulaire, téléchargez les documents requis, et choisissez une date pour votre entretien.",
     "source": "https://www.esprit.tn/admissions/cours-du-jour/cours-du-jour-internationaux/"
   },
- 
   {
     "id": "admissions_cours_du_jour_internationaux_030",
     "categorie": "Admissions",
@@ -473,8 +454,6 @@
     "contenu": "Les frais d’inscription peuvent être remboursés en cas d’annulation avant le 30 novembre, avec une déduction de 10 % pour les frais de gestion. Aucun remboursement ne sera effectué après cette date.",
     "source": "https://www.esprit.tn/admissions/cours-du-jour/cours-du-jour-internationaux/"
   },
- 
-
   {
     "id": "admissions_grille_tarifaire_2025_2026_ecole_dingenieurs_internationaux__p001",
     "categorie": "Admissions",
@@ -482,7 +461,6 @@
     "contenu": "Grille tarifaire Année universitaire 2025/2026 « Etudiants internationaux » Ecole d’ingénieur Restauration : Paiement par tranche : (Engagement annuel) Modalités de paiement Frais Annuels Montant TTC Commodités TVA 7% 2ème tranche HTVA En € 1ère tranche à avant le En € l’inscription 15/01/2026 Pension complète (petit Déjeuner & déjeuner & dîner) 1 355 95 1 450 725 725 PC Demi-pension (F1) (petit 841 59 900 450 450 Déjeuner & déjeuner ou diner) Demi-pension (F2) (déjeuner 701 49 750 375 375 ou diner) Demi-pension (F3) (Déjeuner & dîner) 1 215 85 1 300 650 650 Paiement par mois : Toute demande d'annulation d'abonnement au restaurant entraine une révision des tarifs de la période consommée par l'application des tarifs mensuels comme suit : Commodités Montant TTC en € Pension complète (petit Déjeuner & déjeuner & dîner) PC 170 Demi-pension (F1) (petit Déjeuner & 120 déjeuner ou diner) Demi-pension (F2) (déjeuner ou diner) 100 Demi-pension (F3) (Déjeuner & dîner) 150 La demande de résiliation ne peut être validée qu'après le règlement de la différence faute de quoi la facturation suit son cours.",
     "source": "https://www.esprit.tn/wp-content/uploads/2025/07/grille-tarifaire-2025-2026-Ecole-dingenieurs-internationaux-restauration.pdf"
   },
-
   {
     "id": "admissions_cours_du_soir_002",
     "categorie": "Admissions",
@@ -560,8 +538,6 @@
     "contenu": "Génie informatique Ce parcours couvre les spécialités de : Programmation full-stack Cloud computing Ingénierie DATA et intelligence artificielle Cybersécurité",
     "source": "https://www.esprit.tn/admissions/cours-du-soir/"
   },
- 
-
   {
     "id": "admissions_cours_du_soir_014",
     "categorie": "Admissions",
@@ -569,7 +545,6 @@
     "contenu": "Des frais additionnels de 1000 dinars sont appliqués en cas de prise en charge par l’entreprise dans le cadre des mécanismes de la ristourne TFP.",
     "source": "https://www.esprit.tn/admissions/cours-du-soir/"
   },
- 
   {
     "id": "admissions_cours_du_soir_016",
     "categorie": "Admissions",
@@ -626,7 +601,6 @@
     "contenu": "L’inscription se fait via le site web d’ESPRIT (« esprit.tn »). Vous devrez remplir un formulaire en ligne et fournir les documents requis.",
     "source": "https://www.esprit.tn/admissions/cours-du-soir/"
   },
-
   {
     "id": "admissions_cours_du_soir_025",
     "categorie": "Admissions",
@@ -634,7 +608,6 @@
     "contenu": "Oui, des réductions sont disponibles : 1 000 TND pour les étudiants non pris en charge par une entreprise dans le cadre de la ristourne TFP. 25 % de réduction pour les élèves ayant une moyenne supérieure à 15/20 et classés premiers. 10 % de réduction pour les élèves classés premiers avec une moyenne inférieure à 15/20.",
     "source": "https://www.esprit.tn/admissions/cours-du-soir/"
   },
-
   {
     "id": "admissions_cours_du_soir_027",
     "categorie": "Admissions",
@@ -649,7 +622,6 @@
     "contenu": "Pédagogie innovante basée sur des projets concrets. Corps enseignant expert. Acquisition de compétences techniques et managériales reconnues. Réseau professionnel dynamique et perspectives d’évolution de carrière.",
     "source": "https://www.esprit.tn/admissions/cours-du-soir/"
   },
-  
   {
     "id": "admissions_cours_du_soir_031",
     "categorie": "Admissions",
@@ -657,8 +629,6 @@
     "contenu": "Le service des admissions ESPRIT est disponible à l’adresse suivante : Email : sami.sifi@esprit.tn Téléphone : +216 98 709 816",
     "source": "https://www.esprit.tn/admissions/cours-du-soir/"
   },
- 
- 
   {
     "id": "admissions_formation_en_alternance_001",
     "categorie": "Admissions",
@@ -701,7 +671,6 @@
     "contenu": "Candidature au cycle ingénieur en alternance BOURSE L’entreprise peut bénéficier d’avantages pour la rémunération des alternances par le biais d’une bourse imputée sur son budget conformément aux modalités prévues par la loi 2009-21 en date de 28 avril 2009 CIVP L’alternance peut bénéficier d’un salaire dans le cadre d’un contrat CIVP (contrat d’initiation à la vie professionnelle) avec l’entreprise pour une année renouvelable",
     "source": "https://www.esprit.tn/admissions/formation-en-alternance/"
   },
-
   {
     "id": "admissions_formation_en_alternance_008",
     "categorie": "Admissions",
@@ -716,8 +685,6 @@
     "contenu": "Contrat d’embauche avec une entreprise partenaire. Prise en charge complète des frais de formation par l’entreprise. Expérience professionnelle significative, améliorant l’employabilité des diplômés.",
     "source": "https://www.esprit.tn/admissions/formation-en-alternance/"
   },
- 
- 
   {
     "id": "admissions_formation_en_alternance_014",
     "categorie": "Admissions",
@@ -746,8 +713,6 @@
     "contenu": "Si vous n’êtes pas retenu, vous devrez suivre les étapes du concours d’admission pour intégrer le cycle ingénieur en cours du jour ou du soir.",
     "source": "https://www.esprit.tn/admissions/formation-en-alternance/"
   },
-
- 
   {
     "id": "admissions_mobilit_internationale_esprit_002",
     "categorie": "Admissions",
@@ -874,7 +839,6 @@
     "contenu": "Partenariats actifs • ICAM de Strasbourg (SE)  https://icam-strasbourg.eu/ 14",
     "source": "https://www.esprit.tn/wp-content/uploads/2025/02/Presentation-des-opportunites-de-mobilite-a-linternational-Esprit-Ingenieurs.pdf"
   },
- 
   {
     "id": "admissions_presentation_des_opportunites_de_mobilite_a_linternational_e_p016",
     "categorie": "Admissions",
@@ -1064,7 +1028,6 @@
     "contenu": "Remarque importante • Toutes ces informations sont données à titre indicatif  Des opportunités de mobilités peuvent disparaitre!  D’autres peuvent s’ajouter au cours des prochains mois! Les modalités exactes vous seront envoyées par mail!  mobilite-internationale@esprit.tn  Créer un ‘filtre’ pour les messages venant de MI! 42",
     "source": "https://www.esprit.tn/wp-content/uploads/2025/02/Presentation-des-opportunites-de-mobilite-a-linternational-Esprit-Ingenieurs.pdf"
   },
- 
   {
     "id": "admissions_nos_conseillers_admission_002",
     "categorie": "Admissions",
@@ -1380,7 +1343,6 @@
     "contenu": "Lire la suite Le programme de Génie Mécatronique à ESPRIM associe la mécanique, l’électronique et l’informatique pour concevoir des systèmes intelligents et automatisés. Proposé sur trois ou cinq ans, il forme des ingénieurs capables d’innover dans des secteurs tels que l’automobile, l’aéronautique ou la robotique grâce à une approche interdisciplinaire.",
     "source": "https://www.esprit.tn/nos-programmes/programmes-dingenieur/"
   },
- 
   {
     "id": "programmes_esprit_pr_pa_001",
     "categorie": "Programmes",
@@ -1591,7 +1553,6 @@
     "contenu": "Vous avez 15 jours ouvrés pour confirmer votre admission et payer la première tranche des frais de formation.",
     "source": "https://www.esprit.tn/nos-programmes/programme-executive-2/emba-esprit-tunis/"
   },
-
   {
     "id": "programmes_emba_esprit_tunis_024",
     "categorie": "Programmes",
@@ -1851,7 +1812,6 @@
     "contenu": "C-ool-Algo-Rythm est un Hackathon dédié à l’algorithmique, la programmation C, la créativité et la logique destiné aux étudiants du tronc… L’évènement Data Science Day est une conférence placée sous le signe de l’innovation, de l’impact et des métiers de demain. Cette… Marateck – 1ʳᵉ édition est un hackathon de 48 heures de coding, ouvert à tous les étudiants en Tunisie. Son nom…",
     "source": "https://www.esprit.tn/nos-programmes/classe-internationale-2/"
   },
-  
   {
     "id": "programmes_bac_3_bachelor_esb_001",
     "categorie": "Programmes",
@@ -2315,174 +2275,6 @@
     "source": "https://www.esprit.tn/a-propos-desprit/affiliation-et-accreditations/"
   },
   {
-    "id": "propos_esprit_tunisie_decision_eurace_2014_pdf_p001_part01",
-    "categorie": "À propos",
-    "titre": "Décision d'accréditation EUR-ACE 2014",
-    "contenu": "Décision n° 2014/06-13 relative à l’attribution du label EUR–ACE Master à deux diplômes de l’Ecole supérieure privée d’ingénierie et de technologies (ESPRIT) Tunisie Objet : Dossier G : Demande d’accréditation à délivrer le Label EUR-ACE - Vu la demande présentée par l’Ecole supérieure privée d’ingénierie et de technologies (ESPRIT), de Tunisie, - Vu le rapport établi par Christophe MEUNIER (rapporteur principal) et Manuel SAMUELIDES (membre de la CTI), et présenté en réunion plénière de la CTI le 12 juin 2014, La Commission des Titres d’Ingénieur a adopté la présente décision : Présentation générale ESPRIT, en tant qu’école d’ingénieurs, est un établissement d’enseignement supérieur privé, agréé par le ministère de l’enseignement supérieur tunisien depuis 2003 ayant le statut d’une société anonyme. Exerçant ses activités dans la formation, la recherche et l’expertise. La gouvernance d’ESPRIT est régie par le code des sociétés commerciales au plan financier, et par les textes de l’enseignement supérieur au plan administratif et académique. Depuis sa création en 2003, ESPRIT est habilitée par le ministère de l’enseignement supérieur à délivrer « le Diplôme National d’Ingénieur en Informatique » et « le Diplôme National d’Ingénieur en Télécommunications ». Cette habilitation a été étendue aux spécialités Electromécanique et Génie civil, depuis 2008. Les spécialités informatique, télécommunications et électromécanique sont proposées dans le cadre de la formation continue, en mode cours du soir pour les cadres en exercice (techniciens supérieurs) visant l’obtention d’un diplôme d’ingénieur. Le nombre total d’ingénieurs diplômés en 2013 est de 600, majoritairement dans la filière TIC. L’école compte 3 400 élèves ingénieurs en cours de jour, 600 en cours du soir, dont 25% de femmes. ESPRIT demande son accréditation dans les spécialités « informatique » et « télécommunications ».",
-    "source": "https://www.esprit.tn/wp-content/uploads/2025/02/esprit_tunisie_decision_eurace_2014.pdf"
-  },
-  {
-    "id": "propos_esprit_tunisie_decision_eurace_2014_pdf_p001_part02",
-    "categorie": "À propos",
-    "titre": "Décision d'accréditation EUR-ACE 2014",
-    "contenu": "Les formations proposées en informatique et télécommunications sont déclinées en trois filières : - La filière « A » comporte 5 années académiques d’études post-baccalauréat avec deux entrées principales. La première entrée concerne les titulaires d’un baccalauréat scientifique ou technique avec un flux annuel projeté de 250 par an. La deuxième entrée concerne les titulaires d’une licence spécialisée en TIC avec un flux annuel projeté de 500 par an. Cette filière propose à partir de la 4ème année deux parcours, un parcours « informatique » et un parcours « télécommunications » avec plusieurs options proposées aux élèves, dont certaines sont bi diplômantes. - La filière « B » consiste en un cursus de 3 années académiques, destiné aux titulaires d’une licence scientifique et/ou technique, ou d’une admission aux concours nationaux d’accès aux cycles de formation d’ingénieurs (prépas MP, PC ou Techno). Le flux annuel projeté pour cette filière est de 150. Cette filière se scinde également en deux parcours à partir de la 4ème année, un parcours « informatique » et un parcours Page 1 sur 4",
-    "source": "https://www.esprit.tn/wp-content/uploads/2025/02/esprit_tunisie_decision_eurace_2014.pdf"
-  },
-  {
-    "id": "propos_esprit_tunisie_decision_eurace_2014_pdf_p002_part01",
-    "categorie": "À propos",
-    "titre": "Décision d'accréditation EUR-ACE 2014",
-    "contenu": "« télécommunications ». Des options sont également proposées dans cette filière à l’instar du génie logiciel pour l’informatique, et de l’ingénierie des réseaux pour les télécommunications ; - La filière « C » offre un cursus de 4 années en mode formation continue « cours du soir », destiné aux titulaires d’une licence spécialisée en TIC, et adapté aux cadres en activité visant un diplôme d’ingénieur en informatique ou en télécommunications. Un flux annuel projeté de 150 concerne cette filière. Certaines options de la filière « A » sont également proposées dans cette filière aussi bien pour le parcours informatique que pour le parcours télécommunications. Par ailleurs, ESPRIT propose, depuis 2004, un « exécutive MBA » en partenariat avec les universités de Paris-Dauphine et Paris1. Caractéristiques globales L’effectif total est de 200 enseignants permanents, 190 enseignants vacataires et 103 personnels administratif et technique. Le taux d’encadrement est d’un enseignant pour 17 étudiants. ESPRIT dispose de 23 950 m² répartis sur trois bâtiments très bien équipés. Objectifs de la formation ESPRIT forme des ingénieurs capables de résoudre des problèmes en relation avec l’aspect matériel et l’aspect logiciel des systèmes servant à recevoir, emmagasiner, traiter, transmettre, présenter et utiliser l'information (analyse, conception, mise en œuvre, déploiement, amélioration). Ils sont à même d’intégrer les dimensions économique, financière, humaine, sociale, environnementale et éthique, tout en faisant preuve d’innovation et de créativité.",
-    "source": "https://www.esprit.tn/wp-content/uploads/2025/02/esprit_tunisie_decision_eurace_2014.pdf"
-  },
-  {
-    "id": "propos_esprit_tunisie_decision_eurace_2014_pdf_p002_part02",
-    "categorie": "À propos",
-    "titre": "Décision d'accréditation EUR-ACE 2014",
-    "contenu": "Ces ingénieurs sont aussi capables d’être autonomes, d’apprendre tout au long de leur vie professionnelle, d’évoluer et de s’adapter à différents contextes d’entreprises (grands groupes, SSII, PME/PMI, etc.), de secteurs (informatique, télécommunications, finance, santé, transport, etc.) et de métiers (développeur/intégrateur/architecte de solutions logicielles et de systèmes d’information, administrateur de réseaux, concepteur/développeur de systèmes informatiques embarqués, technico-commercial, manager de projets, consultant/expert, etc.). Spécialité Informatique L’ingénieur en Informatique peut intervenir dans la spécification, l’analyse, la conception, le déploiement, la mise en œuvre et le test des applications, dans le secteur des systèmes d'information ainsi que dans les domaines des systèmes de communication axés sur le mobile, l'embarqué et le cloud computing. La spécialité informatique propose six options en 4e et 5e année : - l’option originelle de génie logiciel de la spécialité Informatique, - informatique financière, - informatique embarquée, - informatique décisionnelle (BI, business intelligence), - systèmes d'information mobile, - cloud computing (depuis la rentrée 2013). - Les effectifs de la spécialité informatique sont de 994. Page 2 sur 4",
-    "source": "https://www.esprit.tn/wp-content/uploads/2025/02/esprit_tunisie_decision_eurace_2014.pdf"
-  },
-  {
-    "id": "propos_esprit_tunisie_decision_eurace_2014_pdf_p003_part01",
-    "categorie": "À propos",
-    "titre": "Décision d'accréditation EUR-ACE 2014",
-    "contenu": "Spécialité Télécommunications L’ingénieur en Télécommunications peut intervenir dans la spécification, l’analyse, la conception (ingénieur d’affaires, designer), la simulation, le déploiement et la mise en œuvre (ingénieur intégrateur), le test, l’exploitation et la validation de systèmes, l’intégration de systèmes électroniques analogiques et numériques dans le domaine des communications, des réseaux et des systèmes embarqués (RDI : radar Doppler à impulsions). La spécialité télécommunications propose deux options en 4e et 5e année : - l’option : Intégration réseaux et télécommunications, - l’option : Intégration des systèmes embarqués et mobiles. Ces programmes sont proposés conjointement en filières A et B. Seule l’option Intégration réseaux et télécommunications est ouverte à la filière C. Les effectifs de la spécialité télécommunications sont de 214. Synthèse de l'évaluation La CTI a noté les points forts suivants : - Une offre de formation et des programmes de qualité, cohérente et complète en adéquation avec les besoins du marché - Une gouvernance réactive et très à l’écoute des parties prenantes - Une pédagogie innovante (pédagogies par projet et par problème) exemplaire et très appréciée des apprenants et des industriels - Un encadrement des apprenants rigoureux - Une adhésion des personnels à la stratégie de l’école - Un taux de satisfaction élevé du milieu industriel pour le profil d’ingénieurs « Esprit » - Des moyens matériels à hauteur des ambitions affichées - Une auto-évaluation réaliste dans un contexte national contraint les points faibles : - Une mobilité internationale entrante et sortante trop faible - Une stratégie de communication externe et interne perfectible - Un ancrage recherche insuffisant - Une politique des ressources humaines à adapter à la forte croissance de l’école.",
-    "source": "https://www.esprit.tn/wp-content/uploads/2025/02/esprit_tunisie_decision_eurace_2014.pdf"
-  },
-  {
-    "id": "propos_esprit_tunisie_decision_eurace_2014_pdf_p003_part02",
-    "categorie": "À propos",
-    "titre": "Décision d'accréditation EUR-ACE 2014",
-    "contenu": "En conséquence, la commission des titres d’ingénieur décide d’attribuer pour une durée de 3 ans, à compter du 1er septembre 2014, le label européen pour les formations d’ingénieur EUR-ACE Master aux titres suivants : • « Diplôme national d’ingénieur » dans la spécialité « Informatique » délivré par l’Ecole supérieure privée d’ingénierie et de technologies (ESPRIT) de Tunisie, • « Diplôme national d’ingénieur » dans la spécialité « Télécommunications » délivré par l’Ecole supérieure privée d’ingénierie et de technologies (ESPRIT) de Tunisie, Page 3 sur 4",
-    "source": "https://www.esprit.tn/wp-content/uploads/2025/02/esprit_tunisie_decision_eurace_2014.pdf"
-  },
-  {
-    "id": "propos_esprit_tunisie_decision_eurace_2014_pdf_p004",
-    "categorie": "À propos",
-    "titre": "Décision d'accréditation EUR-ACE 2014",
-    "contenu": "CCeettttee pprrooppoossiittiioonn ss’’aaccccoommppaaggnnee ddeess recommandations suivantes : - PPPooouuurrrsssuuuiiivvvrrreee lllaaa dddééémmmaaarrrccchhheee qqquuuaaallliiitttééé eeennngggaaagggéééeee eeennn dddééévvveeellloooppppppaaannnttt tttooouuuttt pppaaarrrtttiiicccuuullliiièèèrrreeemmmeeennnttt llleeesss outils et indicateurs nnnéééccceeessssssaaaiiirrreeesss ààà lll’’’ooobbbssseeerrrvvvaaatttiiiooonnn dddeee lll’’’eeemmmpppllloooiii dddeeesss dddiiippplllôôômmmééésss ddd’’’uuunnneee pppaaarrrttt eeettt dduu nniivveeaauu ddeess ééllèèvveess rreeccrruuttééss dd’’aauuttrree ppaarrtt.. - FFFaaavvvooorrriiissseeerrr llleee vvvooollleeettt rrreeeccchhheeerrrccchhheee dddaaannnsss llleeesss mmmiiissssssiiiooonnnsss dddeeesss eeennnssseeeiiigggnnnaaannntttsss eeettt vvveeeiiilllllleeerrr ààà ccceee qqquuueee llleeesss aaccttiioonnss ddee rreecchheerrcchhee eett ddee ffoorrmmaattiioonn ss’’iirrrriigguueenntt mmuuttuueelllleement. - MMMeeettttttrrreee eeennn œœœuuuvvvrrreee uuunnneee pppooollliiitttiiiqqquuueee dddeeesss rrreeessssssooouuurrrccceeesss hhhuuummmaaaiiinnneeesss eeennn aaadddéééqqquuuaaatttiiiooonnn aaavvveeeccc llleeesss aammbbiittiioonnss aaffffiicchhééeess ddee ll’’ééccoollee.. DDéélliibbéérréé eenn ssééaannccee pplléénniièèrree àà PPaarriiss,, llee 1122 jjuuiinn 22001144 AApppprroouuvvéé eenn ssééaannccee pplléénniièèrree àà PPaarriiss,, llee 88 jjuuiilllleett 22001144 Le pprrééssiiddeenntt LLaauurreenntt MMAAHHIIEEUU Page 4 sur 4",
-    "source": "https://www.esprit.tn/wp-content/uploads/2025/02/esprit_tunisie_decision_eurace_2014.pdf"
-  },
-  {
-    "id": "propos_esprit_tunisie_decision_2017_1_pdf_p001_part01",
-    "categorie": "À propos",
-    "titre": "Décision d'accréditation ESPRIT 2017",
-    "contenu": "Décision n° 2017/09-03 relative à l’attribution du Label EUR-ACE à des diplômes d’ingénieur délivrés par l’École supérieure privée d'ingénierie et de technologies (ESPRIT) - Tunisie Etablissement Ecole : École supérieure privée d'ingénierie et de technologies Sigle : ESPRIT Etablissement étranger de statut privé Site : Ariana (Tunis) - Tunisie Objet de la demande Dossier G : demande d’octroi du label EUR-ACE Master pour les spécialités en Génie élec- tromécanique et en Génie civil. Dossier H : renouvellement du label EUR-ACE Master obtenu en 2014 pour les spécialités Informatique et Télécommunications. (Avis n°2014/06-13) - Vu le référentiel EAFSG 2015 adopté par ENAEE - Vu R&O 2016 (Livre 3 § III-7 et VI-10) - Vu la convention du 21 mars 2017 signée entre l’instance nationale tunisienne d’évaluation, de l’assurance qualité et d’accréditation (IEAQA) et la CTI - Vu la demande présentée par l’École supérieure privée d'ingénierie et de technologies – Tunisie - Vu la convention signée entre l’établissement demandeur et la CTI - Vu le rapport établi par Delphin RIVIÈRE (membre de la CTI et rapporteur principal), Élisabeth CRÉPON (membre de la CTI), Bertrand BONTE (expert), Danielle DOLMIÈRE (experte), Anthony GALINIER (expert élève ingénieur) et présenté lors de la séance plénière du 12 septembre 2017, La Commission des titres d’ingénieur a adopté la présente décision : Présentation générale L’Ecole supérieure privée d’ingénierie et de technologie (ESPRIT) a un statut de société anonyme exerçant ses activités dans la formation, la recherche et l’expertise. Son fonctionnement est régi par le code des sociétés commerciales au plan financier, et par les textes de l’enseignement supérieur au plan administratif et académique. Esprit est un établissement d’enseignement supérieur privé qui assure la formation d’ingénieurs dans 4 domaines de spécialité : Informatique (2003), Télécommunications (2003), Electromécanique (2008) et Génie civil (2010).",
-    "source": "https://www.esprit.tn/wp-content/uploads/2025/02/esprit_tunisie_decision_2017-1.pdf"
-  },
-  {
-    "id": "propos_esprit_tunisie_decision_2017_1_pdf_p001_part02",
-    "categorie": "À propos",
-    "titre": "Décision d'accréditation ESPRIT 2017",
-    "contenu": "Elle est habilitée par le Ministère de l’enseignement supérieur et la recherche scientifique à délivrer le Diplôme national d’ingénieur (DNI) dans les 4 spécialités. L’école compte 4 326 élèves ingénieurs en cours de jour et 603 en cours du soir. Les filles représentent 26% des étudiants. Le nombre total d’ingénieurs diplômés en 2014-2015 est de 812 dont 588 dans les spécialités Informatique et Télécommunications. Page 1 sur 7",
-    "source": "https://www.esprit.tn/wp-content/uploads/2025/02/esprit_tunisie_decision_2017-1.pdf"
-  },
-  {
-    "id": "propos_esprit_tunisie_decision_2017_1_pdf_p002_part01",
-    "categorie": "À propos",
-    "titre": "Décision d'accréditation ESPRIT 2017",
-    "contenu": "Le label EUR-ACE Master a été attribué à ces deux spécialités en 2014, par la CTI. L’école demande : - Le renouvellement de l’accréditation pour les spécialités Informatique et Télécommunications, - L’accréditation des deux nouvelles spécialités Electromécanique et Génie Civil. En 2009, ESPRIT a créé une filiale, dénommée ESPRIT – Entreprise, en charge de toutes les activités de formation continue qualifiante pour les individus et les entreprises. En 2016 une école de management dénommé ESPRIT-School of Business a été créée. ESPRIT a proposé un « executive MBA » (Master professionnel en administration des affaires) bi-diplômant en partenariat avec les universités de Paris-Dauphine et de Paris1- Sorbonne durant 10 ans. Suite à la création de Tunis Dauphine, Montpellier Business School a été choisi comme partenaire pour dérouler le MBA à partir de 2015. D’autres formations qualifiantes sont proposées par ESPRIT -Entreprise sous forme de séminaires de courte durée en intra ou inter- entreprises, ou bien de cycles plus longs visant le renforcement des capacités des cadres en activité. ESPRIT -Entreprise offre également des préparations à des certifications technologiques partenariat avec les grands éditeurs (Microsoft, Cisco, Oracle, SAP, etc.). Caractéristiques générales La gestion de la formation ainsi que la gestion administrative et financière connaissent une amélioration caractérisée par une réactivité accrue et une souplesse plus grande. ESPRIT compte actuellement 235 enseignants permanents et fait appel à une centaine de vacataires dont 40 du monde industriel. Le taux d’encadrement est de 18 étudiants pour un enseignant. Le personnel administratif et technique est actuellement composé de 153 salariés. ESPRIT met à la disposition de ses étudiants et personnels un espace couvert de plus de 50 000 m2 répartis sur 6 bâtiments et comprenant les équipements nécessaires pour un espace de vie agréable et de travail convivial.",
-    "source": "https://www.esprit.tn/wp-content/uploads/2025/02/esprit_tunisie_decision_2017-1.pdf"
-  },
-  {
-    "id": "propos_esprit_tunisie_decision_2017_1_pdf_p002_part02",
-    "categorie": "À propos",
-    "titre": "Décision d'accréditation ESPRIT 2017",
-    "contenu": "Les ressources de l’école sont passées de 23,5 millions de Dinars (9,8 M€) en 2014-2015 à 26 millions de Dinars (10,8 M€) en 2015-2016. Il y a lieu de signaler que la gouvernance prend une place de plus en plus importante à tous les niveaux pour l’ensemble des secteurs d’activité de l’Ecole. Structure de la formation Les formations pour les différentes spécialités sont déclinées en 3 Filières : A, B, C - La filière A est un cursus intégré s’étalant sur 5 années d’études post-baccalauréat avec deux entrées principales. La première concerne les titulaires d’un baccalauréat scientifique ou technique. La deuxième concerne les titulaires d’une licence spécialisée. Cette filière propose à partir de la 4ème année une quinzaine d’options pour l’ensemble des quatre spécialités - La filière B est un cursus de 3 années d’études, destinée aux titulaires d’une licence scientifique et/ou technique, ou d’une admission aux concours nationaux d’accès aux cycles de formation d’ingénieurs (prépas MP, PC ou Techno). Cette filière propose à ses étudiants plusieurs options à partir de la 4ème année - La filière C est un cursus de 4 années d’études en cours du soir (formation continue) destinée aux titulaires d’une licence spécialisée. Elle est adaptée aux personnes en activité visant un diplôme d’ingénieur. Selon les spécialités, certaines options sont proposées dans cette filière Page 2 sur 7",
-    "source": "https://www.esprit.tn/wp-content/uploads/2025/02/esprit_tunisie_decision_2017-1.pdf"
-  },
-  {
-    "id": "propos_esprit_tunisie_decision_2017_1_pdf_p003_part01",
-    "categorie": "À propos",
-    "titre": "Décision d'accréditation ESPRIT 2017",
-    "contenu": "Les filières A et B correspondent à des cursus différents, la formation dans la spécialité démarrant dès le début du cursus. Quelques options sont communes à ces deux filières. La filière C correspond à un cursus de 180 ECTS et n’inclut pas de validation des acquis de l’expérience. La mise en œuvre d’une pédagogie active se déploie de façon déterminée dans son approche et large dans sa pratique elle-même : l’apprentissage par problème (APPb) et par projet (APP) représentent 25% des crédits. Ainsi, les projets intégrés ainsi que le projet de fin d’études occupent une part importante dans le cursus. L’approche de la formation à ESPRIT permet à l’ingénieur diplômé de : - Poser et résoudre les problèmes techniques de complexité variable de conception et de réalisation que rencontrent les entreprises. - Tenir compte, dans les solutions proposées, des aspects liés au Développement Durable et à la Responsabilité Sociétale (DD&RS) ainsi que d’autres contraintes (économique, financière, humaine, sociale, environnementale, éthique, etc.). - Faire preuve d’autonomie, d’innovation et de créativité. Par ailleurs, l’esprit d’entrepreneuriat acquis et la capacité d’apprendre tout au long de la vie, permettent à l’ingénieur diplômé d’évoluer dans des contextes professionnels variés. L’Ingénieur ESPRIT est un ingénieur « opérationnel ». La formation s’appuie sur un cursus post-bac progressif de 5 années et s’articule autour de 15 à 20 % de sciences de base, 25 à 30% d’enseignements d’ouverture, 55 et 60% de sciences de l’ingénieur. Le cursus intègre trois stages : un stage d’exécutant (1 mois), un stage d’ingénieur (1 mois) et le projet de fin d’études (5 mois). En 4ème année, les élèves ont également la possibilité de réaliser un projet intégré proposé par une entreprise.",
-    "source": "https://www.esprit.tn/wp-content/uploads/2025/02/esprit_tunisie_decision_2017-1.pdf"
-  },
-  {
-    "id": "propos_esprit_tunisie_decision_2017_1_pdf_p003_part02",
-    "categorie": "À propos",
-    "titre": "Décision d'accréditation ESPRIT 2017",
-    "contenu": "1/ Spécialité Informatique L’ingénieur en Informatique peut intervenir dans la spécification, l’analyse, la conception, le déploiement, la mise en œuvre et le test des applications, en utilisant les meilleures pratiques et les méthodologies de développement dans le secteur des systèmes d'information ainsi que dans les domaines des systèmes de communication axés sur le mobile, l'embarqué et le cloud computing. La spécialité informatique propose neuf options en 4e et 5e année (informatique financière, informatique embarquée, informatique décisionnelle, systèmes d'information mobile, cloud computing, sécurité informatique, applications web, informatique et management et génie logiciel). L’effectif pour l’ensemble des étudiants de la spécialité informatique s’élève à 3176 avec un flux à l’entrée de 985. Points forts - En prise directe avec les entreprises (évolution des compétences, moyens matériels et logiciels…) - Une insertion professionnelle élevée dans le secteur de la spécialité Points faibles - Des cursus de filière trop scindés - L’enquête globalisée informatique et télécom ne permet pas de distinguer si les emplois occupés sont dans le secteur du diplôme (la question se pose pour les spécialités télécom) Page 3 sur 7",
-    "source": "https://www.esprit.tn/wp-content/uploads/2025/02/esprit_tunisie_decision_2017-1.pdf"
-  },
-  {
-    "id": "propos_esprit_tunisie_decision_2017_1_pdf_p004_part01",
-    "categorie": "À propos",
-    "titre": "Décision d'accréditation ESPRIT 2017",
-    "contenu": "2/ Spécialité Télécommunications L’ingénieur en Télécommunications peut intervenir dans la spécification, l’analyse, la conception (ingénieur d’affaires, designer), la simulation, le déploiement et la mise en œuvre (ingénieur intégrateur), le test, l’exploitation et la validation de systèmes et de services, l’intégration de systèmes électroniques analogiques et numériques dans le domaine des communications, des réseaux et des systèmes embarqués. La spécialité télécommunications propose deux options : intégration réseaux et télécommunications, intégration des systèmes embarqués et mobiles. L’effectif pour l’ensemble des étudiants de la spécialité télécommunications s’élève à 273 avec un flux à l’entrée de 167. Ce flux correspond au choix annoncé par les nouveaux inscrits à ESPRIT. Certains élèves changent leur choix au terme de la 2e année d’études et migrent vers la spécialité Informatique. Points forts - En prise directe avec les entreprises (évolution des compétences, moyens matériels et logiciels…) - Une insertion professionnelle élevée dans le secteur de la spécialité Points faibles - Des cursus de filière trop scindés - L’enquête globalisée informatique et télécom ne permet pas de distinguer si les emplois occupés sont dans le secteur du diplôme (la question se pose pour les spécialités télécom) 3/ Spécialité Electromécanique L’ingénieur électromécanicien intervient dans les différentes phases du processus industriel, spécification, conception, simulation, fabrication, implémentation et amélioration continue. Il est capable de planifier de manière optimale les tâches au sein d’une structure, d’organiser et de gérer des équipes de travail. Il est familiarisé à la démarche qualité, tout en veillant particulièrement, à la sécurité des personnes et des biens ainsi qu’à la sauvegarde de l’environnement.",
-    "source": "https://www.esprit.tn/wp-content/uploads/2025/02/esprit_tunisie_decision_2017-1.pdf"
-  },
-  {
-    "id": "propos_esprit_tunisie_decision_2017_1_pdf_p004_part02",
-    "categorie": "À propos",
-    "titre": "Décision d'accréditation ESPRIT 2017",
-    "contenu": "L’ingénieur électromécanicien doit posséder une capacité d’adaptation et un pouvoir d’intervention dans différents secteurs de l’activité industrielle (électrique, électronique, mécanique, métallurgie, textile, matériaux de construction, agro-industrie, plasturgie, automobile, aéronautique, etc.). La spécialité Electromécanique offre actuellement à ses étudiants deux options à partir de la 4ème année : Mécatronique et Gestion Industrielle. L’effectif pour l’ensemble des étudiants de la spécialité électromécanique s’élève à 1130 avec un flux à l’entrée de 359. Points forts : - Pédagogie basée sur l'approche par projet et pédagogie activement Points faibles : - La recherche - La qualité et la disponibilité du matériel mécanique encore insuffisantes Page 4 sur 7",
-    "source": "https://www.esprit.tn/wp-content/uploads/2025/02/esprit_tunisie_decision_2017-1.pdf"
-  },
-  {
-    "id": "propos_esprit_tunisie_decision_2017_1_pdf_p005_part01",
-    "categorie": "À propos",
-    "titre": "Décision d'accréditation ESPRIT 2017",
-    "contenu": "Risques : - L'emploi 4/ Spécialité Génie civil L’ingénieur génie civil intervient directement dans la réalisation, l’exploitation et la réhabilitation d’ouvrages de construction et d’infrastructures (constructions à usage industriel ou d’habitation, infrastructures de transport, ouvrages hydrauliques, infrastructures urbaines etc.). Il peut être impliqué dans l’activité d’une équipe de conception. Il est en mesure d’assurer la gestion de différents ouvrages et de planifier leur entretien. L’activité de l’ingénieur diplômé peut couvrir plusieurs aspects : structures, géotechnique, hydraulique, transport, environnement, etc. Il est en mesure de préparer notamment des appels d’offre et de faire le suivi de chantiers. L’effectif pour l’ensemble des étudiants de la spécialité génie civil s’élève à 350 avec un flux à l’entrée de 115. Points forts : - L'emploi des diplômés - La pédagogie par projet Points faibles : - La recherche Conclusions et synthèse de l’évaluation Le parcours d’ESPRIT durant la période 2013-2016 a été témoin de la réalisation d’un certain nombre d’objectifs inscrits dans le cadre des choix fondamentaux de l’Institution. Des procédures ont été mises en place pour les atteindre ou s’en approcher davantage. L’adhésion du corps enseignant aux nouvelles approches pédagogiques ainsi que leur volonté de s’investir en RDI dans des projets mobilisateurs ont conforté les actions entreprises. Celles- ci ont permis, dans le même temps, de renforcer les structures d’appui à la formation, de développer les spécialités déjà existantes et de donner une impulsion à celles nouvellement créées. La CTI a noté les points forts suivants :",
-    "source": "https://www.esprit.tn/wp-content/uploads/2025/02/esprit_tunisie_decision_2017-1.pdf"
-  },
-  {
-    "id": "propos_esprit_tunisie_decision_2017_1_pdf_p005_part02",
-    "categorie": "À propos",
-    "titre": "Décision d'accréditation ESPRIT 2017",
-    "contenu": "- Réflexion stratégique 2017-2022 - Comité d'orientation stratégique comprenant toutes les parties prenantes internes et externes - Voies d'admission multiples - Syllabus et matrices croisées mis en place - Plates-formes technologiques de développement et d'innovation (pour les TIC) - Cadre de vie des élèves - Exigence du niveau B2 attesté en français et en anglais pour obtenir le diplôme - Mixité des recrutements - Formations à l'entreprenariat - Méthodes pédagogiques innovantes Page 5 sur 7",
-    "source": "https://www.esprit.tn/wp-content/uploads/2025/02/esprit_tunisie_decision_2017-1.pdf"
-  },
-  {
-    "id": "propos_esprit_tunisie_decision_2017_1_pdf_p006_part01",
-    "categorie": "À propos",
-    "titre": "Décision d'accréditation ESPRIT 2017",
-    "contenu": "- Pédagogie par projets - Formation des enseignants - Existence d'une cellule d'écoute et gestion des échecs - Des salles de travaux pratiques en Electromécanique et Génie civil, à développer La CTI a noté les points faibles suivants : - La démarche qualité n'est pas encore intégrée dans les pratiques de chacun - Le plan d'actions n'est pas complet, il doit comporter pour chaque action le pilote et un calendrier de mise en œuvre - L'évaluation des enseignements par les étudiants n'est pas bouclée par un retour aux élèves - L'évaluation des cours n'est pas encore adaptée aux nouvelles approches pédagogiques - Les aspects développement durable responsabilité sociétale, et santé sécurité au travail ne sont pas suffisamment intégrés dans les enseignements - Contribution trop faible des anciens élèves à la pédagogie et à la vie de l'école - La recherche en Electromécanique et en Génie civil est inexistante - Les mobilités sortantes trop faibles et entrantes quasi inexistantes - Peu de mobilité internationale des enseignants - Trop peu d'enseignants vacataires issus de l'entreprise - Le stage « ingénieur » trop court - Les taux de réponse aux différentes enquêtes, et notamment l'enquête emploi trop faibles - Pas de projets multidisciplinaires - Pas de formation des délégués de classe à leur rôle - Prévoir quelques abonnements à des revues internationales La CTI a identifié les opportunités suivantes : - Développement des partenariats académiques - Insertion dans les réseaux d'excellence euro-méditerranéens - Synergie avec la formation au management d'ESPRIT School of business - Regroupement de toutes les spécialités sur un seul site La CTI a identifié les risques suivants :",
-    "source": "https://www.esprit.tn/wp-content/uploads/2025/02/esprit_tunisie_decision_2017-1.pdf"
-  },
-  {
-    "id": "propos_esprit_tunisie_decision_2017_1_pdf_p006_part02",
-    "categorie": "À propos",
-    "titre": "Décision d'accréditation ESPRIT 2017",
-    "contenu": "- Opposition public-privé exacerbée en Tunisie - Manque de visibilité sur la politique de développement de l'enseignement supérieur et de la recherche en Tunisie - Dégradation de l'environnement socio-économique A l’heure où l’enseignement supérieur se développe en Afrique, il conviendrait de poursuivre les soutiens apportés à cet établissement et également d’encourager sa visibilité internationale. Page 6 sur 7",
-    "source": "https://www.esprit.tn/wp-content/uploads/2025/02/esprit_tunisie_decision_2017-1.pdf"
-  },
-  {
-    "id": "propos_esprit_tunisie_decision_2017_1_pdf_p007_part01",
-    "categorie": "À propos",
-    "titre": "Décision d'accréditation ESPRIT 2017",
-    "contenu": "En conséquence, Premièrement, la Commission des titres d’ingénieur décide de renouveler l’attribution du label européen pour les formations d’ingénieur EUR-ACE Master pour une durée maximale de 6 ans à compter de l’année civile 2017 jusqu’à la fin de l’année universitaire 2022-2023, aux diplômes suivants délivrés par l’Ecole supérieure privée d'ingénierie et de technologies de Tunisie : « Diplôme national d’ingénieur spécialité Informatique » « Diplôme national d’ingénieur spécialité Télécommunications » Deuxièmement, la Commission des titres d’ingénieur décide d’attribuer le label européen pour les formations d’ingénieur EUR-ACE Master pour une durée restreinte de 3 ans, à compter de l’année civile 2017 jusqu’à la fin de l’année universitaire 2019-2020, aux diplômes suivants délivrés par l’Ecole supérieure privée d'ingénierie et de technologies de Tunisie : « Diplôme national d’ingénieur spécialité Electromécanique » « Diplôme national d’ingénieur spécialité Génie civil » La Commission accompagne ces décisions des recommandations suivantes : - Mettre en place la recherche dans les deux nouvelles spécialités - Intégrer la démarche qualité dans l'ensemble des services de l'école - Compléter le plan d'actions par la désignation des pilotes et le calendrier de mise en œuvre - Assurer bouclage de l'évaluation des enseignements vers les élèves Par ailleurs, la Commission souligne des pistes d’améliorations utiles : - Développer la mobilité sortante pour les élèves - Augmenter la mobilité entrante pour les élèves, les enseignants et les chercheurs, - Réfléchir à l'installation de toutes les spécialités sur un site unique Les présents diplômes seront enregistrés dans la base de données ENAEE du label EUR-ACE. Les diplômés durant la période d’attribution du label pourront faire valoir dans le supplément au diplôme, ou ce qui en tient lieu, de cette attribution conférée à leur diplôme.",
-    "source": "https://www.esprit.tn/wp-content/uploads/2025/02/esprit_tunisie_decision_2017-1.pdf"
-  },
-  {
-    "id": "propos_esprit_tunisie_decision_2017_1_pdf_p007_part02",
-    "categorie": "À propos",
-    "titre": "Décision d'accréditation ESPRIT 2017",
-    "contenu": "La communication de l’établissement veillera à être explicite quant à la période d’attribution du label et son périmètre. Délibéré en séance plénière à Paris, le 12 septembre 2017. Approuvé en séance plénière à Paris, le 10 octobre 2017. Le président Laurent MAHIEU Page 7 sur 7",
-    "source": "https://www.esprit.tn/wp-content/uploads/2025/02/esprit_tunisie_decision_2017-1.pdf"
-  },
-  {
-    "id": "propos_esprit_tunisie_decision_202307_pdf_p001_part01",
-    "categorie": "À propos",
-    "titre": "Décision d'accréditation ESPRIT juillet 2023",
-    "contenu": "Décision n° 2023/07 de la Commission des titres d’ingénieur (CTI) relative à l’attribution du label EUR-ACE® à quatre formations de l’École supérieure privée d'ingénierie et de technologies, Tunisie École Nom : École supérieure privée d'ingénierie et de technologies Sigle : ESPRIT Type : Établissement étranger Établissement d’enseignement supérieur privé Pays : Tunisie Site de l’école : Ariana Type de formation : Diplôme d’ingénieur Suivi des accréditations précédentes Décision n° 2021/07-03, n° 2017/09-03 Objet de la demande d’attribution du label EUR-ACE® : Catégorie REU (Renouvellement de l’attribution du label EUR-ACE®) : Diplôme national d’ingénieur spécialité Électromécanique - École supérieure privée d’ingénierie et de technologies de Tunisie (ESPRIT) Diplôme national d’ingénieur spécialité Informatique - École supérieure privée d’ingénierie et de technologies de Tunisie (ESPRIT) Diplôme national d’ingénieur spécialité Télécommunications - École supérieure privée d’ingénierie et de technologies de Tunisie (ESPRIT) Diplôme national d’ingénieur spécialité Génie civil - École supérieure privée d’ingénierie et de technologies de Tunisie (ESPRIT) - Vu la demande présentée par l’École supérieure privée d'ingénierie et de technologies ; - Vu le rapport d’évaluation établi par Pascal TRIBOULOT (membre de la CTI et rapporteur principal), Anne- Marie JOLLY (experte auprès de la CTI), Francisco ARCEGA SOLSONA (expert international auprès de la CTI) et Jules COEUILLET (expert élève-ingénieur auprès de la CTI), présenté en assemblée plénière de la CTI) le 11 juillet 2023, L’assemblée plénière a statué comme suit : Le label européen EUR-ACE® pour les formations d’ingénieur, niveau master, est attribué aux diplômes suivants :",
-    "source": "https://www.esprit.tn/wp-content/uploads/2025/02/esprit_tunisie_decision_202307.pdf"
-  },
-  {
-    "id": "propos_esprit_tunisie_decision_202307_pdf_p001_part02",
-    "categorie": "À propos",
-    "titre": "Décision d'accréditation ESPRIT juillet 2023",
-    "contenu": "À compter du Jusqu'au Intitulé du diplôme 1er janvier de 31 décembre l’année civile de l’année civile Diplôme national d’ingénieur spécialité Électromécanique - École 2023 2028 supérieure privée d’ingénierie et de technologies de Tunisie (ESPRIT) Diplôme national d’ingénieur spécialité Informatique - École 2023 2028 supérieure privée d’ingénierie et de technologies de Tunisie (ESPRIT) Diplôme national d’ingénieur spécialité Télécommunications - École 2023 2028 supérieure privée d’ingénierie et de technologies de Tunisie (ESPRIT) Diplôme national d’ingénieur spécialité Génie civil - École supérieure 2023 2028 privée d’ingénierie et de technologies de Tunisie (ESPRIT) Page 1 sur 2",
-    "source": "https://www.esprit.tn/wp-content/uploads/2025/02/esprit_tunisie_decision_202307.pdf"
-  },
-  {
-    "id": "propos_esprit_tunisie_decision_202307_pdf_p002",
-    "categorie": "À propos",
-    "titre": "Décision d'accréditation ESPRIT juillet 2023",
-    "contenu": "Cette décision s'accompagne des recommandations suivantes : Pour l'école - Préparer une transition sereine à la tête de l’école sans en perdre les valeurs qui en ont fait la force et la réputation ; - S'assurer en permanence du niveau scientifique des étudiants recrutés et des diplômés, mettre en place des indicateurs sur le niveau de recrutement ; - Mettre en place un dispositif de suivi de cohorte ; - Renforcer l’ouverture sociale ; - Exposer les élèves à une recherche appliquée bien comprise et s’appuyant sur les résultats de la recherche académique, amplifier l’activité recherche des enseignants-chercheurs ; - S'assurer que la démarche compétence et la démarche qualité soient comprises et intégrées par les élèves ; - Augmenter la participation des étudiants dans toutes les commissions de management de l’école et clarifier l’organigramme de l’école ; - Amplifier les équipements technologiques du campus (électromécanique et génie civil) et améliorer les accès aux réseaux informatiques pour les élèves ; - Assurer un taux d’encadrement en phase avec l’augmentation des effectifs et limiter le turnover, augmenter le pourcentage d’intervenants extérieurs dans toutes les spécialités ; - Amplifier les compétences des élèves sur le développement durable et intégrer fortement l’écoconstruction dans les programmes de génie civil. Délibérée en séance plénière à Paris, le 11 juillet 2023. Approuvée en séance plénière à Paris, le 12 septembre 2023. La présidente Elisabeth CRÉPON Page 2 sur 2",
-    "source": "https://www.esprit.tn/wp-content/uploads/2025/02/esprit_tunisie_decision_202307.pdf"
-  },
-  {
     "id": "propos_20250317_avis_habilitation_esprit_4digital_ge_pdf_p001",
     "categorie": "À propos",
     "titre": "Avis d'habilitation ESPRIT - 4Digital / Génie Électrique (mars 2025)",
@@ -2664,7 +2456,6 @@
     "contenu": "Expertise reconnue Des programmes conçus en étroite collaboration avec des experts et entreprises partenaires. Flexibilité et adaptation Capacité à élaborer des formations sur mesure pour répondre précisément aux besoins des organisations. Support continu Accompagnement des professionnels et entreprises dans leur montée en compétences et leur transformation digitale.",
     "source": "https://www.esprit.tn/groupe-esprit/esprit-entreprise/"
   },
-  
   {
     "id": "groupe_esprit_centre_de_langues_esprit_001",
     "categorie": "Groupe ESPRIT",
@@ -3043,7 +2834,6 @@
     "contenu": "Mettre en place une solution pour résoudre un problème complexe Combiner les compétences acquises pour résoudre des problèmes Appliquer les normes en vigueur dans les solutions adoptées Accorder la priorité aux enjeux sociétaux et environnementaux Produire un document conforme aux normes Argumenter les choix effectués Défendre les choix avec les différents intervenants du monde professionnel, en contexte national et international Identifier les besoins de l’entreprise Agir efficacement en équipe pour résoudre le problème Adapter les choix aux contraintes rencontrées",
     "source": "https://www.esprit.tn/stages-et-entreprises/stages/"
   },
- 
   {
     "id": "contact_contact_001",
     "categorie": "Contact",
@@ -3093,7 +2883,6 @@
     "contenu": "Pour Années 1, 2, 3 et 4 -- Le mardi 2025-09-02 : APP0.",
     "source": "Calendrier_1,2,3&4A_ 2526_S1.pdf"
   },
-
   {
     "id": "calendrier_1_re_4_me_ann_e_2026-01-03_006",
     "categorie": "Calendrier 1ère à 4ème année",
@@ -3115,7 +2904,6 @@
     "contenu": "Pour Années 1, 2, 3 et 4 -- Le vendredi 2025-09-05 : APP0.",
     "source": "Calendrier_1,2,3&4A_ 2526_S1.pdf"
   },
-
   {
     "id": "calendrier_1_re_4_me_ann_e_2026-01-06_010",
     "categorie": "Calendrier 1ère à 4ème année",
@@ -3123,7 +2911,6 @@
     "contenu": "Pour Années 1, 2, 3 et 4 -- Le mardi 2026-01-06 : Soutenances.",
     "source": "Calendrier_1,2,3&4A_ 2526_S1.pdf"
   },
-
   {
     "id": "calendrier_1_re_4_me_ann_e_2026-01-07_013",
     "categorie": "Calendrier 1ère à 4ème année",
@@ -3138,7 +2925,6 @@
     "contenu": "Pour Années 1, 2, 3 et 4 -- Le lundi 2025-09-08 : Début Semestre 1.",
     "source": "Calendrier_1,2,3&4A_ 2526_S1.pdf"
   },
- 
   {
     "id": "calendrier_1_re_4_me_ann_e_2026-01-10_016",
     "categorie": "Calendrier 1ère à 4ème année",
@@ -3146,7 +2932,6 @@
     "contenu": "Pour Années 1, 2, 3 et 4 -- Le samedi 2026-01-10 : Examens S1.",
     "source": "Calendrier_1,2,3&4A_ 2526_S1.pdf"
   },
- 
   {
     "id": "calendrier_1_re_4_me_ann_e_2025-10-15_020",
     "categorie": "Calendrier 1ère à 4ème année",
@@ -3161,7 +2946,6 @@
     "contenu": "Pour Années 1, 2, 3 et 4 -- Le jeudi 2026-01-15 : Examens S1.",
     "source": "Calendrier_1,2,3&4A_ 2526_S1.pdf"
   },
-  
   {
     "id": "calendrier_1_re_4_me_ann_e_2025-12-17_023",
     "categorie": "Calendrier 1ère à 4ème année",
@@ -3169,7 +2953,6 @@
     "contenu": "Pour Années 1, 2, 3 et 4 -- Le mercredi 2025-12-17 : Fête de la Révolution.",
     "source": "Calendrier_1,2,3&4A_ 2526_S1.pdf"
   },
-  
   {
     "id": "calendrier_1_re_4_me_ann_e_2026-01-19_026",
     "categorie": "Calendrier 1ère à 4ème année",
@@ -3184,7 +2967,6 @@
     "contenu": "Pour Années 1, 2, 3 et 4 -- Le samedi 2025-12-20 : Fin des cours Semestre 1.",
     "source": "Calendrier_1,2,3&4A_ 2526_S1.pdf"
   },
- 
   {
     "id": "calendrier_1_re_4_me_ann_e_2025-12-27_031",
     "categorie": "Calendrier 1ère à 4ème année",
@@ -3192,7 +2974,6 @@
     "contenu": "Pour Années 1, 2, 3 et 4 -- Le samedi 2025-12-27 : Vacances d'hiver.",
     "source": "Calendrier_1,2,3&4A_ 2526_S1.pdf"
   },
-
   {
     "id": "calendrier_1_re_4_me_ann_e_2025-10-30_033",
     "categorie": "Calendrier 1ère à 4ème année",
@@ -3200,7 +2981,6 @@
     "contenu": "Pour Années 1, 2, 3 et 4 -- Le jeudi 2025-10-30 : Examens/DS_ P1.",
     "source": "Calendrier_1,2,3&4A_ 2526_S1.pdf"
   },
-  
   {
     "id": "calendrier_5_me_ann_e_2025-12-03_005",
     "categorie": "Calendrier 5ème année",
@@ -3215,7 +2995,6 @@
     "contenu": "Pour 5ème année (5A) -- Le vendredi 2025-12-05 : Proclamation des résultats de la session principale.",
     "source": "Calendrier_5A_ 2526_S1.pdf"
   },
- 
   {
     "id": "calendrier_5_me_ann_e_2025-12-10_014",
     "categorie": "Calendrier 5ème année",
@@ -3279,7 +3058,6 @@
     "contenu": "Pour 5ème année (5A) -- Le mercredi 2025-12-24 : Conseils Session de rattraoage.",
     "source": "Calendrier_5A_ 2526_S1.pdf"
   },
-
   {
     "id": "calendrier_5_me_ann_e_2025-11-26_032",
     "categorie": "Calendrier 5ème année",
@@ -3308,7 +3086,6 @@
     "contenu": "Pour 5ème année (5A) -- Le mardi 2025-12-30 : Vacances d'hiver.",
     "source": "Calendrier_5A_ 2526_S1.pdf"
   },
- 
   {
     "id": "calendrier_5ds9_et_5infini3_2026-01-07_011",
     "categorie": "Calendrier 5DS9 et 5Infini3",
@@ -3330,8 +3107,6 @@
     "contenu": "Pour 5ème année, spécialités DS9 et Infini3 -- Le mardi 2026-01-13 : Examens de la session principale 5DS9 & 5Infini.",
     "source": "Calendrier_5DS9 & 5INFINI3.pdf"
   },
- 
-  
   {
     "id": "calendrier_5ds9_et_5infini3_2026-01-16_021",
     "categorie": "Calendrier 5DS9 et 5Infini3",
@@ -3406,7 +3181,7 @@
     "id": "paiements_2024-2025_montant_total",
     "categorie": "Paiements",
     "titre": "Montant des frais de scolarité 2024-2025",
-    "contenu": "Pour l'année universitaire 2024-2025, les frais de scolarité s'élèvent à 8200,0 dinars par an, payables en deux tranches.",
+    "contenu": "Pour l'année universitaire 2024-2025, les frais de scolarité s'élèvent à 8200, payables en deux tranches.",
     "source": "Email de paiement/réinscription 2024-2025"
   },
   {
@@ -3560,7 +3335,7 @@
     "id": "admission_docx_faq_admission_tunisiens_cours_du_jour_site_web_06",
     "categorie": "Admissions",
     "titre": "FAQ Admission tunisiens cours du jour site web — Frais et Aides Financières",
-    "contenu": "Q: Quels sont les frais de scolarité pour l’année 2024/2025 ?\nR: Pour les cours du jour, les frais s’élèvent à 8 400 TND TTC, payables en deux tranches. Les détails pour les autres programmes sont disponibles dans la grille tarifaire.\n\nQ: Les réductions pour les frères et sœurs sont-elles cumulables ?\nR: Oui, une réduction de 25 % est accordée pour le deuxième enfant et 30 % pour le troisième enfant, calculée sur les frais les plus élevés.\n\nQ: Puis-je demander un remboursement si j’annule mon inscription ?\nR: Oui, un remboursement est possible, mais des frais de gestion équivalant à 10 % des frais de scolarité seront retenus. Après le 30 novembre, aucun remboursement ne sera accordé.",
+    "contenu": "Q: Quels sont les frais de scolarité pour l’année 2024/2025 ?\nR: Pour les cours du jour (étudiants tunisiens), les frais s’élèvent à 8 200 DT TTC pour 2024/2025 (4050 DT avant le 31/08/2024, 4150 DT avant le 15 janvier 2025), confirmé par email officiel de réinscription de la Direction.\n\nQ: Les réductions pour les frères et sœurs sont-elles cumulables ?\nR: Oui, une réduction de 25 % est accordée pour le deuxième enfant et 30 % pour le troisième enfant, calculée sur les frais les plus élevés.\n\nQ: Puis-je demander un remboursement si j’annule mon inscription ?\nR: Oui, un remboursement est possible, mais des frais de gestion équivalant à 10 % des frais de scolarité seront retenus. Après le 30 novembre, aucun remboursement ne sera accordé.",
     "source": "https://www.esprit.tn/admissions/cours-du-jour/cours-du-jour-tunisiens/"
   },
   {
@@ -4298,7 +4073,6 @@
     "contenu": "Article 11: Discipline Dress Code: Students must maintain a neat, clean, and appropriate dress code. In all circumstances, students must display impeccable behavior. Repeated violations of the dress code may result in sanctions. Attitude and Responsibility: Mutual respect must be observed among all members of the school community, including students, teachers, and staff. Each student is required to:  Respect others and protect themselves from all forms of psychological, physical, or moral violence.  Preserve facilities, furniture, and equipment. In case of damage or theft, the student may face the school's council.  Maintain the cleanliness and arrangement of classrooms and all school facilities. Restrictions:  Smoking is prohibited within the school premises (classrooms, areas in front of classrooms, hallways, offices, and any other closed areas of the school).  The consumption and distribution of alcoholic beverages, drugs, and any toxic substances of any kind are strictly forbidden on the premises and will lead to sanctions. CHAPTER II: LIFE AT ESPRIT",
     "source": "https://www.esprit.tn/wp-content/uploads/2025/02/Private-School-of-Engineering-and-Technology.pdf"
   },
- 
   {
     "id": "gouvernance_qui_est_le_directeur_001",
     "categorie": "À propos",
@@ -4312,5 +4086,33 @@
     "titre": "Redoublement : combien de fois est-ce autorisé ?",
     "contenu": "Cours du jour : le redoublement n'est toléré qu'une seule fois par cycle de formation. Cours du soir et formation en alternance : le redoublement est autorisé une seule fois au cours des quatre années de la scolarité. Dans tous les cas (cours du jour, cours du soir, alternance), un seul redoublement au total est autorisé, jamais deux. En cas de redoublement, les UE déjà validées l'année précédente peuvent être repassées pour améliorer la moyenne générale.",
     "source": "https://www.esprit.tn/admissions/foire-aux-questions/"
+  },
+  {
+    "id": "paiements_2025-2026_montant_total",
+    "categorie": "Paiements",
+    "titre": "Frais de scolarité 2025/2026",
+    "contenu": "Pour l'année universitaire 2025/2026, les frais de scolarité s'élèvent à 8350,0 dinars par an, payables en deux tranches. Ce montant concerne spécifiquement l'année 2025/2026 (différent du montant de l'année précédente 2024/2025).",
+    "source": "Email de paiement/réinscription 2025-2026 (Direction ESPRIT)"
+  },
+  {
+    "id": "paiements_2025-2026_tranche1",
+    "categorie": "Paiements",
+    "titre": "1ère tranche des frais de scolarité 2025/2026",
+    "contenu": "La 1ère tranche des frais de scolarité pour l'année 2025/2026 est de 4050 TND, payable avant le 31/08/2025, exigée dès l'inscription. Ce montant concerne spécifiquement l'année 2025/2026.",
+    "source": "Email de paiement/réinscription 2025-2026 (Direction ESPRIT)"
+  },
+  {
+    "id": "paiements_2025-2026_tranche2",
+    "categorie": "Paiements",
+    "titre": "2ème tranche des frais de scolarité 2025/2026",
+    "contenu": "La 2ème tranche des frais de scolarité pour l'année 2025/2026 est de 4300 TND, payable avant le 15 janvier 2026. Ce montant concerne spécifiquement l'année 2025/2026.",
+    "source": "Email de paiement/réinscription 2025-2026 (Direction ESPRIT)"
+  },
+  {
+    "id": "paiements_moyens_detailles_2025_2026",
+    "categorie": "Paiements",
+    "titre": "Tous les moyens de paiement disponibles (2025-2026)",
+    "contenu": "Moyens de paiement des frais de scolarité : (1) En ligne par carte bancaire, nationale ou internationale, via https://esprit-tn.com/ESPOnline/Online/Login.aspx. (2) Versement en espèces à l'agence Amen Bank, en indiquant nom et identifiant étudiant. (3) Versement en espèces à l'agence BIAT, compte ESPRIT n° 51 10 98009 6, en indiquant nom et identifiant étudiant. (4) Chèque bancaire ou postal libellé à l'ordre d'ESPRIT, à déposer au service financier. (5) Paiement sur place par carte bancaire, directement auprès du service financier de l'école. (6) Prélèvement bancaire mensuel : paiement en 10 mensualités égales (1/10e des frais), nécessite de constituer un dossier auprès du service financier. (7) Traite avalisée (effet de commerce signé par la banque), dossier à constituer auprès du service financier.",
+    "source": "Email de paiement/réinscription 2025-2026 (Direction ESPRIT)"
   }
 ]

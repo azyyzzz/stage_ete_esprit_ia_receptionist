@@ -636,6 +636,33 @@ d'application), soit signaler explicitement pour vérification humaine plutôt q
 deviner.
 \end{noteinfo}
 
+\section{Test qualité sur 100 questions et confirmation des montants par email officiel}
+Un second test systématique, sur 100 questions couvrant 10 catégories, a révélé que le
+bug de dérive complète du LLM (section~\ref{sec:test-qualite-35}) n'était pas propre à
+la question du redoublement : il est réapparu sur une question sans rapport (classe
+préparatoire), confirmant qu'il s'agit d'un risque systémique lié à un score de
+pertinence faible, pas d'un cas isolé. Deux autres réponses se sont révélées fausses ou
+contradictoires (campus de Monastir, existence d'ESPRIT School of Business),à recouper
+avec les catégories internes de programmes.
+
+L'utilisateur a ensuite fourni les deux emails officiels de réinscription (2024-2025 et
+2025-2026) envoyés par la Direction, résolvant définitivement le conflit du montant
+total signalé plus haut : \textbf{8200 DT pour 2024-2025 est confirmé correct} (les
+fiches affirmant 8400 TND, aujourd'hui corrigées, étaient fausses) ; \textbf{8350 TND
+pour 2025-2026} est ajouté comme nouvelle donnée confirmée (4050 TND avant le
+31/08/2025, 4300 TND avant le 15/01/2026), avec 7 moyens de paiement détaillés (en
+ligne, Amen Bank, BIAT, chèque, sur place, prélèvement 10 mensualités, traite avalisée).
+
+\textbf{Difficulté technique rencontrée et résolue} : les nouvelles fiches 2025-2026,
+formulées de façon neutre, scoraient moins bien (0,68) que l'ancienne fiche 2024-2025
+(0,85) pour une question portant explicitement sur 2025/2026 -- confirmation que les
+embeddings distinguent mal les années pures, un chiffre à 4 chiffres se ressemblant
+sémantiquement d'une année à l'autre. Corrigé en répétant l'année plusieurs fois dans le
+contenu et en contrastant explicitement avec l'année précédente (``concerne
+spécifiquement 2025/2026, différent de 2024/2025'') : score porté à 0,88, redevenant la
+source la plus pertinente. Le \texttt{conflits\_a\_verifier.json} a été mis à jour pour
+marquer ce conflit comme résolu.
+
 \chapter{Module synthèse vocale (TTS)}
 
 \section{Choix techniques}

@@ -1,7 +1,7 @@
 [
   {
     "sujet": "Montant total des frais de scolarité 2024/2025 (cours du jour, étudiants tunisiens)",
-    "statut": "NON TRANCHE -- verification manuelle requise aupres du service financier",
+    "statut": "RESOLU -- confirme par email officiel de reinscription de la Direction (2026-07)",
     "valeurs_en_conflit": [
       {
         "montant": "8200 DT (2 tranches : 4050 DT avant le 31/08/2024, 4150 DT avant le 15/01/2025)",
@@ -21,6 +21,7 @@
         ]
       }
     ],
-    "note": "Contrairement au conflit sur la reduction merite, aucune des fiches ne precise une annee d'application differente (reserve type \"applicable a 2025-2026\") -- les deux sources affirment ce montant pour la MEME annee 2024/2025 sans nuance. Impossible de determiner laquelle est correcte sans verification humaine. Les deux jeux de fiches sont conserves tels quels dans site_esprit_clean.json (aucune suppression, aucune fusion)."
+    "note": "Contrairement au conflit sur la reduction merite, aucune des fiches ne precise une annee d'application differente (reserve type \"applicable a 2025-2026\") -- les deux sources affirment ce montant pour la MEME annee 2024/2025 sans nuance. Impossible de determiner laquelle est correcte sans verification humaine. Les deux jeux de fiches sont conserves tels quels dans site_esprit_clean.json (aucune suppression, aucune fusion).",
+    "resolution": "8200 DT confirme correct par l'email officiel de reinscription 2024-2025 (1ere tranche 4050 DT avant le 31/08/2024, 2eme tranche 4150 DT avant le 15/01/2025). Les fiches affirmant 8400 TND (admissions_cours_du_jour_tunisiens_043, admission_docx_faq_admission_tunisiens_cours_du_jour_site_web_06) etaient incorrectes et ont ete corrigees."
   }
 ]
