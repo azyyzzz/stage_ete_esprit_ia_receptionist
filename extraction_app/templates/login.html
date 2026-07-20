@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Connexion - Extraction KB ESPRIT</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <main class="login-page">
+    <form class="login-form" method="post" action="/login">
+      <h1>Extraction KB ESPRIT</h1>
+      {% if error %}<p class="error">{{ error }}</p>{% endif %}
+      <label for="username">Utilisateur</label>
+      <input type="text" id="username" name="username" autocomplete="username" required>
+      <label for="password">Mot de passe</label>
+      <input type="password" id="password" name="password" autocomplete="current-password" required>
+      <button type="submit">Se connecter</button>
+    </form>
+  </main>
+</body>
+</html>

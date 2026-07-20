@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block title %}Extraire - Extraction KB ESPRIT{% endblock %}
+{% block content %}
+<h1>Ajouter une source</h1>
+
+<form class="upload-form" method="post" action="/extract" enctype="multipart/form-data">
+  <label for="source_type">Type de source</label>
+  <select id="source_type" name="source_type" onchange="toggleFields()" required>
+    <option value="pdf">PDF</option>
+    <option value="docx">Word (.docx)</option>
+    <option value="excel">Excel (.xlsx)</option>
+    <option value="image">Image (.jpg/.jpeg/.png)</option>
+    <option value="url">URL de site web</option>
+  </select>
+
+  <label for="categorie">Catégorie</label>
+  <input list="categorie-list" id="categorie" name="categorie" required placeholder="Ex : Admissions">
+  <datalist id="categorie-list">
+    {% for c in categories %}<option value="{{ c }}">{% endfor %}
+  </datalist>
+
+  <div id="file-field">
+    <label for="file">Fichier</label>
+    <input type="file" id="file" name="file">
+  </div>
+
+  <div id="url-field" style="display:none">
+    <label for="url">URL</label>
+    <input type="url" id="url" name="url" placeholder="https://www.esprit.tn/...">
+  </div>
+
+  <button type="submit">Extraire</button>
+</form>
+
+{% if result %}
+<section class="result">
+  <h2>Résultat</h2>
+  <p><strong>Source :</strong> {{ result.source }}</p>
+  {% if result.error %}
+    <p class="error">{{ result.error }}</p>
+  {% elif result.manual_review %}
+    <p class="warning">Contenu extrait mais qualité insuffisante (OCR) — mis de côté pour vérification manuelle, rien n'a été fusionné automatiquement. Voir <a href="/history">l'historique</a>.</p>
+  {% elif result.summary %}
+    <ul class="summary">
+      <li>Fiches ajoutées : <strong>{{ result.summary.added|length }}</strong></li>
+      <li>Rejetées (hors sujet) : {{ result.summary.rejected_relevance_count }}</li>
+      <li>Rejetées (déjà présentes) : {{ result.summary.rejected_duplicate_count }}</li>
+      <li>Rejetées (id déjà existant) : {{ result.summary.rejected_id_count }}</li>
+    </ul>
+    {% if result.summary.rejected_duplicate_details %}
+    <details>
+      <summary>Détail des doublons détectés</summary>
+      <ul>
+        {% for d in result.summary.rejected_duplicate_details %}
+        <li>« {{ d.titre_candidat }} » ~ déjà présente sous « {{ d.titre_existant }} » (score {{ d.score }})</li>
+        {% endfor %}
+      </ul>
+    </details>
+    {% endif %}
+  {% endif %}
+</section>
+{% endif %}
+
+<script>
+var ACCEPT_BY_TYPE = {
+  pdf: '.pdf',
+  docx: '.docx',
+  excel: '.xlsx',
+  image: '.jpg,.jpeg,.png'
+};
+function toggleFields() {
+  var type = document.getElementById('source_type').value;
+  document.getElementById('file-field').style.display = (type === 'url') ? 'none' : 'block';
+  document.getElementById('url-field').style.display = (type === 'url') ? 'block' : 'none';
+  document.getElementById('file').setAttribute('accept', ACCEPT_BY_TYPE[type] || '');
+}
+toggleFields();
+</script>
+{% endblock %}

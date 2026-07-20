@@ -2,6 +2,7 @@
 requests
 beautifulsoup4
 pdfplumber
+python-docx==1.2.0
 
 # Module RAG (modules/rag/) -- tout tourne en local, aucune cle API
 chromadb==1.5.9
@@ -20,3 +21,12 @@ soundfile==0.14.0
 
 # Synthese vocale (modules/text_to_speech/) -- 100% local, aucune cle API
 piper-tts==1.4.2
+
+# Extraction KB (extraction_app/) -- appli separee, cf extraction_app/README.md
+pandas==2.3.3
+openpyxl==3.1.5
+pytesseract==0.3.13
+Pillow==11.1.0
+scikit-learn==1.6.1
+APScheduler==3.11.0
+jinja2==3.1.5

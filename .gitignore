@@ -17,3 +17,14 @@ rapport/*.aux
 rapport/*.log
 rapport/*.out
 rapport/*.toc
+
+# extraction_app : fichiers uploades temporaires, identifiants locaux (mot
+# de passe hashe genere au premier lancement) et journaux d'execution
+# (historique/registre des URLs, propres a chaque environnement) -- jamais
+# versionnes.
+extraction_app/uploads/*
+!extraction_app/uploads/.gitkeep
+extraction_app/data/config_local.json
+extraction_app/data/historique.json
+extraction_app/data/url_sources.json
+extraction_app/data/a_verifier.json

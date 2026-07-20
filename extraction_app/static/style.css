@@ -1,0 +1,53 @@
+* { box-sizing: border-box; }
+body {
+  font-family: -apple-system, "Segoe UI", Arial, sans-serif;
+  margin: 0;
+  background: #f5f6f8;
+  color: #1c1e21;
+}
+.topnav {
+  background: #1c2b3a;
+  padding: 0.8rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+.topnav .brand { color: #fff; font-weight: 600; margin-right: auto; }
+.topnav a { color: #cfe0f0; text-decoration: none; }
+.topnav a:hover { text-decoration: underline; }
+.topnav .logout { color: #f0a; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
+
+.login-page { display: flex; justify-content: center; align-items: center; height: 100vh; }
+.login-form {
+  background: #fff; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  display: flex; flex-direction: column; gap: 0.6rem; width: 320px;
+}
+.login-form h1 { font-size: 1.2rem; margin: 0 0 0.5rem; }
+
+.upload-form, form {
+  background: #fff; padding: 1.5rem; border-radius: 8px; box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+  display: flex; flex-direction: column; gap: 0.6rem; max-width: 480px;
+}
+label { font-size: 0.85rem; font-weight: 600; color: #444; }
+input, select, button {
+  padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px; font-size: 0.95rem;
+}
+button {
+  background: #1c6ef2; color: #fff; border: none; cursor: pointer; margin-top: 0.5rem;
+}
+button:hover { background: #1558c0; }
+
+.result { background: #fff; padding: 1.2rem 1.5rem; border-radius: 8px; margin-top: 1.5rem; box-shadow: 0 1px 6px rgba(0,0,0,0.06); }
+.summary { list-style: none; padding: 0; }
+.summary li { padding: 0.2rem 0; }
+
+.error { color: #c0392b; font-weight: 600; }
+.warning { color: #b7791f; font-weight: 600; }
+.ok { color: #2e7d32; }
+
+.history-table { width: 100%; border-collapse: collapse; background: #fff; box-shadow: 0 1px 6px rgba(0,0,0,0.06); }
+.history-table th, .history-table td {
+  padding: 0.5rem 0.7rem; border-bottom: 1px solid #eee; text-align: left; font-size: 0.85rem; vertical-align: top;
+}
+.history-table th { background: #f0f2f5; }

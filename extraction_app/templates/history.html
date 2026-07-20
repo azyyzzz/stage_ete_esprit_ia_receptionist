@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Historique - Extraction KB ESPRIT{% endblock %}
+{% block content %}
+<h1>Historique des extractions</h1>
+
+{% if not entries %}
+<p>Aucune extraction enregistrée pour l'instant.</p>
+{% else %}
+<table class="history-table">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Source</th>
+      <th>Type</th>
+      <th>Origine</th>
+      <th>Ajoutées</th>
+      <th>Rejetées (pertinence)</th>
+      <th>Rejetées (doublon)</th>
+      <th>Statut</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for e in entries %}
+    <tr>
+      <td>{{ e.date }}</td>
+      <td>{{ e.source }}</td>
+      <td>{{ e.type }}</td>
+      <td>{{ e.origine }}</td>
+      <td>{{ e.nb_ajoutees }}</td>
+      <td>{{ e.nb_rejetees_pertinence }}</td>
+      <td>
+        {{ e.nb_rejetees_doublon }}
+        {% if e.doublons_detail %}
+        <details>
+          <summary>détail</summary>
+          <ul>
+            {% for d in e.doublons_detail %}
+            <li>« {{ d.titre_candidat }} » ~ « {{ d.titre_existant }} » ({{ d.score }})</li>
+            {% endfor %}
+          </ul>
+        </details>
+        {% endif %}
+      </td>
+      <td>
+        {% if e.erreur %}<span class="error">{{ e.erreur }}</span>
+        {% elif e.a_verifier_manuellement %}<span class="warning">à vérifier manuellement</span>
+        {% else %}<span class="ok">ok</span>{% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+{% endblock %}

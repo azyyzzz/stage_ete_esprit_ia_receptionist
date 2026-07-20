@@ -34,7 +34,7 @@
 
 \title{\vspace{-2cm}\textbf{\Huge ESPRIT AI Receptionist}\\[0.3cm]\Large Rapport de suivi de projet -- Assistant vocal intelligent}
 \author{Stage -- ESPRIT}
-\date{Document vivant, mis à jour au fil du projet\\Dernière mise à jour : 12 juillet 2026}
+\date{Document vivant, mis à jour au fil du projet\\Dernière mise à jour : 20 juillet 2026}
 
 \begin{document}
 
@@ -159,6 +159,8 @@ modules/
 
 backend/                 API REST reliant les modules
   routers/               rag.py, stt.py, tts.py
+extraction_app/          Appli separee : ingestion controlee de nouvelles
+                          fiches dans site_esprit.json (PDF/Excel/image/URL)
 dashboard/               (a venir)
 docker/                  (a venir)
 tests/                   Scripts de test manuels
@@ -526,6 +528,137 @@ spécifique à l'EMBA : 2 à 5 tranches, partenariat Banque Zitouna).
 et financement (tous programmes)'', couvrant le cas général (cours du jour/soir) et le
 cas EMBA côte à côte.
 
+\section{Consolidation par sujet : réductions sur les frais de scolarité}
+\textbf{Constat} : l'information sur les réductions (mérite académique, fratrie, cours du
+soir) était éparpillée sur une douzaine de fiches (FAQ générale, pages Admissions
+spécifiques par programme, fiches Paiements 2024-2025), avec des taux légèrement
+différents selon la fiche (25\%/10\% ici, 30\%/15\% là) sans qu'il soit évident qu'il
+s'agissait en réalité de la même politique exprimée sous forme de fourchettes
+(``excellence haute'' 25--30\%, ``excellence standard'' 10--15\%) plutôt que de valeurs
+contradictoires. Aucune fiche ne couvrait le cas des étudiants internationaux (plafonds
+30\%/40\%), la règle de non-cumul, ni la procédure de demande (dossier conjoint signé par
+les tuteurs + copies des cartes d'identité).
+
+\textbf{Corrigé} : ajout d'une fiche unique consolidée (\texttt{paiements\_reductions\_}
+\texttt{scolarite\_detail\_complet}) couvrant les quatre volets (mérite, fratrie, cours du
+soir, conditions générales/démarche) à partir d'informations internes confirmées. Les
+fiches existantes (issues du site, déjà validées) n'ont pas été supprimées -- elles
+restent cohérentes avec la nouvelle fiche (leurs taux sont des cas particuliers dans les
+fourchettes données), seulement incomplètes prises isolément.
+
+\begin{noteinfo}
+Test de bout en bout après ré-indexation (\texttt{python -m modules.rag.ingest}) : la
+nouvelle fiche remonte en premier ($\text{score}=0.876$) sur la question ``Quelles sont
+les réductions possibles sur les frais de scolarité ?''. La réponse générée reste
+volontairement concise (persona vocal, \texttt{SYSTEM\_PROMPT} impose des ``réponses
+courtes et naturelles à l'oral'') et ne récite donc pas exhaustivement tous les
+pourcentages -- comportement voulu pour un appel téléphonique, mais qui mérite d'être
+validé avec l'utilisateur si le besoin réel est une réponse plus détaillée pour ce type de
+question transversale.
+\end{noteinfo}
+
+\section{Écart de vocabulaire : ``conseil de classe'' vs libellés calendrier}
+
+\textbf{Constat} : la question ``Quelle est la date des conseils de classe ?'' ne
+remontait \textbf{aucune} des fiches calendrier pertinentes (meilleur score 0{,}69, sur
+une fiche totalement hors-sujet), alors que la question ``Quelle est la date du conseil
+de la session principale ?'' fonctionnait (score 0{,}765). Cause : les 4 fiches
+calendrier concernées utilisent exclusivement les libellés bruts du PDF source
+(``Conseils Session Principale'', ``Conseils de la session principale'') et ne
+contiennent jamais le mot ``classe'' -- le terme générique que les appelants utilisent
+naturellement n'existe nulle part dans le texte embeddé de ces fiches.
+
+En vérifiant les PDF sources (\texttt{pdfplumber}, avant toute correction) : le libellé
+``Conseils de la session principale'' apparaît bien deux fois à l'identique dans
+\texttt{Calendrier\_5DS9 \& 5INFINI3.pdf} (16 et 30 janvier) -- confirmé fidèle au PDF,
+pas une erreur d'extraction, donc non modifié. En revanche, la coquille ``Session de
+rattraoage'' (pour ``rattrapage'') est également confirmée présente telle quelle dans le
+PDF source (\texttt{Calendrier\_5A\_ 2526\_S1.pdf}) -- corrigée dans la base car elle
+nuit à la recherche sans changer le sens.
+
+\textbf{Corrigé} : les 4 fiches calendrier mentionnant un conseil (2 pour 5ème année/5A,
+2 pour 5DS9/5Infini3) enrichies pour inclure explicitement ``conseil de classe'' en
+titre et contenu, en plus du libellé original conservé.
+
+\begin{statutfait}
+Test après ré-indexation : la question ``conseils de classe'' fait maintenant remonter
+les deux fiches 5A (scores 0{,}679 et 0{,}635) et la réponse générée donne correctement
+les deux dates (3 décembre : session principale, 24 décembre : rattrapage). Point de
+vigilance : les scores restent inférieurs à certains résultats hors-sujet (0{,}69/0{,}68)
+-- la correction fonctionne mais reste proche du seuil, une base plus large de synonymes
+(ex. mentionner aussi ``conseil de classe'' dans les fiches 1\textsuperscript{re} à
+4\textsuperscript{e} année si un tel évènement existe dans leur calendrier) resterait à
+vérifier si le problème réapparaît sur d'autres formulations.
+\end{statutfait}
+
+\section{Refonte complète des calendriers : extraction groupée par type d'événement}
+
+\textbf{Demande} : l'ancienne extraction (\texttt{data/scripts/extraction\_calendrier.py})
+produisait une fiche minuscule par événement individuel (une par jour), jugée
+insatisfaisante. Un nouveau fichier a par ailleurs été ajouté
+(\texttt{Calendrier du deuxième semestre\_2526.pdf}), à intégrer également.
+
+\textbf{Nouveau script} : \texttt{data/scripts/reextract\_calendrier\_groupe.py}.
+Reprend la reconstruction de date fiable (extraction de tableaux \texttt{pdfplumber},
+déjà éprouvée), mais regroupe les événements par \textbf{type}
+(rentrée/débuts de semestre, APP0, examens session principale, examens session de
+rattrapage, conseils de classe, proclamation des résultats, fin des cours, vacances,
+soutenances, autres) plutôt qu'un par jour -- une seule fiche cohérente par (groupe
+d'année × type) listant toutes les dates correspondantes.
+
+\begin{statutlimite}
+\textbf{Bug d'extraction découvert et corrigé} : en inspectant la structure brute des
+tableaux \texttt{pdfplumber} (pas seulement le texte à plat), certains événements dont
+le libellé est trop long pour une seule case (ex. ``Examens de la Session de
+Rattrapage'') débordent visuellement sur la case du jour \textbf{suivant} dans le PDF
+source -- \texttt{pdfplumber} attribue alors à tort le second morceau de texte
+(``Rattrapage'' seul) à ce jour suivant, créant deux évènements fantômes tronqués au
+lieu d'un seul événement complet correctement daté. Corrigé par une fusion des
+fragments de continuation reconnus (\texttt{CONTINUATION\_FRAGMENTS}) avec l'événement
+de la veille, quand les deux jours sont consécutifs. Egalement filtrés : les numéros de
+semaine (``S1'' à ``S16'') affichés dans la grille, qui ne sont pas de vrais événements.
+\end{statutlimite}
+
+\begin{statutfait}
+Les 45 anciennes fiches ``Calendrier*'' supprimées de \texttt{site\_esprit\_clean.json}
+et \texttt{site\_esprit.json}, remplacées par 34 fiches regroupées (ajoutées en fin de
+fichier). Après ré-indexation, trois questions testées avec de bons scores : date de
+l'APP0 (0{,}783), début des études 5ème année (0{,}751), conseils de classe (0{,}771 --
+contre 0{,}679 avec la version précédente, et 0{,}69 sur une fiche hors-sujet avant tout
+correctif). La réponse sur les conseils de classe mentionne aussi correctement l'absence
+de date pour les années 1\textsuperscript{re} à 4\textsuperscript{e} (vérifié : ce
+calendrier ne contient effectivement aucun événement ``conseil'').
+\end{statutfait}
+
+\section{Confirmation utilisateur : le calendrier semestre 2 est commun à tous les groupes}
+
+Point laissé ouvert plus haut : confirmé par l'utilisateur que
+\texttt{Calendrier du deuxième semestre\_2526.pdf} s'applique de la même façon aux 5
+groupes d'année (1\textsuperscript{re} à 5\textsuperscript{e}), malgré l'absence de
+qualificatif dans son titre. Les événements de ce fichier sont donc désormais fusionnés
+dans les fiches de \textbf{chacun} des 3 groupes existants (au lieu d'une catégorie à
+part), avec la source combinée des deux fichiers d'origine par fiche concernée.
+
+\begin{statutlimite}
+\textbf{Bug de génération découvert en aval} : même après cette fusion, la question
+``Quand commence la session de contrôle pour les 1ère année ?'' produisait toujours une
+réponse vague et non sourcée (``généralement en février ou mars... vérifiez le site
+web''), alors que la fiche pertinente était bel et bien récupérée (2\textsuperscript{e}
+sur 5 sources, score 0{,}692) -- le LLM ne faisait simplement pas le lien entre
+``session de contrôle'' (terme de l'utilisateur) et ``session de rattrapage'' (terme
+utilisé dans la fiche), et ignorait cette source dans sa réponse malgré sa présence dans
+le contexte fourni. Corrigé par le même type de synonyme explicite que pour ``conseil de
+classe'' : les fiches de type rattrapage portent désormais aussi la mention ``(session
+de contrôle)''.
+\end{statutlimite}
+
+\begin{statutfait}
+Après ce correctif et une nouvelle ré-indexation : la fiche concernée remonte en
+\textbf{premier} résultat (score 0{,}706, contre 2\textsuperscript{e} position à 0{,}692
+avant), et la réponse générée cite désormais une vraie date de la base (``la session de
+contrôle commencera le mercredi 24 juin 2026'') au lieu d'une réponse générique inventée.
+\end{statutfait}
+
 \section{Règlements de scolarité : ré-extraction par article}
 \textbf{Constat le plus important de cette session} : les 103 fiches de règlement
 (cours du jour, cours du soir, alternance, Private School en anglais) étaient en réalité
@@ -713,6 +846,147 @@ $\to$ RAG $\to$ audio (réponse). \\
     \texttt{/docs}).
     \item Endpoints pour le futur dashboard (CRUD documents, statistiques).
 \end{itemize}
+
+\chapter{Application d'ingestion de la base de connaissances (\texttt{extraction\_app})}
+
+\section{Contexte et objectif}
+
+Le pipeline de collecte existant (\texttt{data/scripts/}) est un ensemble de scripts
+lancés manuellement, un par source, sans filtrage de pertinence, sans détection de
+doublon et sans journal d'activité. Pour permettre d'ajouter de nouvelles fiches à la
+base de connaissances de façon plus contrôlée -- et sans risquer de polluer
+\texttt{site\_esprit\_clean.json} avec du contenu hors-sujet ou déjà présent -- une
+application web séparée a été développée : \texttt{extraction\_app/}. Elle vit dans un
+dossier indépendant du reste du projet (ne touche ni \texttt{backend/}, ni
+\texttt{modules/}, ni \texttt{data/scripts/}) et tourne sur un port distinct
+(\texttt{8001}) pendant que le backend principal reste sur le port \texttt{8000}.
+
+\section{Pipelines d'extraction par type de source}
+
+\begin{center}
+\begin{longtable}{@{}p{2.6cm}p{11cm}@{}}
+\toprule
+\textbf{Source} & \textbf{Logique} \\
+\midrule
+\endhead
+PDF & \texttt{pdfplumber}, découpage par \texttt{Article~N~:} si la structure existe
+(réutilise le même algorithme que \texttt{data/scripts/reextract\_reglements.py} --
+retrait du sommaire, découpage des articles trop longs), sinon repli sur une fiche par
+page. \\
+Word (.docx) & \texttt{python-docx}, regroupement par section (dernier titre en gras
+rencontré), détection des paires question/réponse à l'intérieur d'une section (réutilise
+la logique de \texttt{data/scripts/extract\_admission\_docx.py}) -- une fiche par sujet
+complet plutôt que par mini-question isolée. \\
+Excel (.xlsx) & \texttt{pandas}/\texttt{openpyxl}, une fiche par ligne pertinente de
+chaque feuille (concaténation \texttt{colonne: valeur}). \\
+Image (.jpg/.png) & OCR \texttt{pytesseract}, puis même découpage que le PDF. Si le
+texte reconnu est trop court ou contient trop de caractères non reconnus, la fiche
+n'est \textbf{jamais} fusionnée silencieusement -- elle est mise de côté dans
+\texttt{data/a\_verifier.json} pour vérification manuelle. \\
+URL & \texttt{requests} + BeautifulSoup, structure FAQ-accordéon dédiée pour
+\texttt{esprit.tn} (réutilise la logique de
+\texttt{data/scripts/web\_scraping\_espace\_etudiant.py}, y compris le nettoyage des
+libellés d'accordéon), extraction générique par sections \texttt{h2}/\texttt{h3} sinon.
+\\
+\bottomrule
+\end{longtable}
+\end{center}
+
+\section{Garde-fous obligatoires avant sauvegarde}
+
+Deux vérifications s'appliquent à toute fiche candidate, quelle que soit sa source,
+avant toute fusion dans la base :
+\begin{enumerate}
+    \item \textbf{Filtrage de pertinence} (\texttt{services/relevance\_filter.py}) --
+    rejette une fiche si ni son titre ni son contenu ne contiennent de mot-clé d'un des
+    domaines couverts par l'assistant (admissions, scolarité, règlements, examens,
+    calendrier, paiements, vie étudiante, stages, programmes, contacts).
+    \item \textbf{Vérification sémantique} (\texttt{services/semantic\_dedup.py}) --
+    TF-IDF + similarité cosinus (scikit-learn), comparée contre le contenu de
+    \textbf{toutes} les fiches déjà présentes dans \texttt{site\_esprit.json} (pas
+    seulement même catégorie/source). Seuil configurable en haut de
+    \texttt{config.py} (\texttt{SIMILARITY\_THRESHOLD~=~0.85}).
+\end{enumerate}
+Une dédup complémentaire par \texttt{id} empêche par ailleurs tout écrasement d'une
+fiche existante d'une autre source. Chaque extraction (manuelle ou planifiée) est
+journalisée dans \texttt{data/historique.json} : date, source, type, nombre de fiches
+ajoutées/rejetées (avec le titre de la fiche recoupée en cas de doublon), erreurs
+éventuelles -- consultable sur la page \texttt{/history}.
+
+\section{Authentification et planificateur}
+
+Un compte unique protège l'interface (mot de passe généré aléatoirement au premier
+lancement, affiché une seule fois en console, jamais versionné). Un job
+\texttt{APScheduler} quotidien (03h00) rejoue automatiquement l'extraction pour les
+sources de type URL déjà soumises via l'interface -- jamais pour les PDF/Excel/image
+uploadés manuellement, dont le fichier d'origine n'est pas conservé.
+
+\begin{noteinfo}
+\textbf{Point d'attention} : \texttt{extraction\_app} écrit uniquement dans
+\texttt{data/processed/site\_esprit.json} (le fichier brut), jamais dans
+\texttt{site\_esprit\_clean.json} (celui que le RAG ingère réellement). Après une
+session d'extraction, il faut donc relancer manuellement
+\texttt{data/scripts/clean\_knowledgebase} puis \texttt{python -m modules.rag.ingest}
+pour que les nouvelles fiches soient prises en compte par le RAG. Décision
+délibérée pour ne jamais court-circuiter le nettoyage exact-match existant.
+\end{noteinfo}
+
+\section{Découverte : corruption d'encodage dans les fichiers .docx d'admission}
+
+En testant le nouveau pipeline Word sur \texttt{FAQ admission cours du soir.docx}, une
+section absente de la base (« Modalités Financières et Annulations ») a été correctement
+identifiée comme nouvelle par la vérification sémantique -- mais son contenu s'est révélé
+truffé du caractère de remplacement Unicode \texttt{U+FFFD} (\texttt{�}) à la place de
+tous les accents français (\textit{« R�gler mes frais de scolarit� »}). Vérification
+faite en lisant le \texttt{.docx} source directement avec \texttt{python-docx} (sans
+passer par \texttt{extraction\_app}) : la corruption est bien dans le fichier source
+lui-même, pas introduite par le nouveau pipeline. Les 4 sections de ce même document déjà
+fusionnées en base via \texttt{data/scripts/extract\_admission\_docx.py} lors d'un travail
+antérieur présentent exactement la même corruption -- ce n'est donc pas une régression,
+mais un défaut préexistant qui touche déjà des fiches en production.
+\begin{statutlimite}
+\texttt{U+FFFD} signale une perte de données irréversible (un octet n'a pas pu être
+décodé à un moment donné et a été remplacé) -- aucune astuce de réencodage ne peut
+récupérer les caractères d'origine. La correction nécessite d'obtenir une copie propre
+(non corrompue) des fichiers \texttt{.docx} concernés, pas un correctif côté code. Fiches
+concernées à ré-extraire une fois une copie saine disponible : les 4 sections déjà en
+base (\texttt{admission\_docx\_faq\_admission\_cours\_du\_soir\_01/02/03/05}) et la
+section manquante détectée (\texttt{04}), et potentiellement d'autres fichiers du dossier
+\texttt{data/raw\_data/Admission/} non encore vérifiés un par un.
+\end{statutlimite}
+
+\section{Limites assumées}
+\begin{statutlimite}
+\begin{itemize}
+    \item Le filtrage de pertinence est une simple correspondance de mots-clés, pas une
+    compréhension du sens -- peut laisser passer du hors-sujet ou rejeter du contenu
+    pertinent mal formulé.
+    \item La vérification sémantique (TF-IDF/cosinus) est lexicale, pas une vraie
+    compréhension sémantique comme les embeddings du RAG -- deux fiches formulées très
+    différemment peuvent passer sous le seuil et être dupliquées.
+    \item Le scraping générique ne peut ni exécuter de JavaScript ni contourner un
+    blocage anti-bot ; si le contenu récupéré est vide ou anormalement court, aucune
+    fiche trompeuse n'est sauvegardée -- un avertissement explicite est affiché à la
+    place.
+    \item La dédup sémantique recalcule le vectoriseur TF-IDF sur toute la base à
+    chaque extraction -- viable à l'échelle actuelle ($\sim$600 fiches), mais à
+    surveiller si la base grossit à plusieurs milliers de fiches (piste
+    d'optimisation non implémentée : vecteurs pré-calculés).
+\end{itemize}
+\end{statutlimite}
+
+\begin{statutfait}
+\textbf{Validation effectuée} : les cinq pipelines testés de bout en bout via
+l'interface -- Excel (fiche pertinente acceptée, fiche hors-sujet rejetée), PDF
+(ré-extraction d'un règlement déjà en base : 23 sections correctement détectées comme
+doublons, zéro ajout), Word (ré-extraction d'un FAQ admission déjà partiellement en
+base : 4 sections détectées comme doublons, 1 section manquante correctement identifiée
+comme nouvelle -- voir découverte de corruption d'encodage ci-dessus), URL (page
+\texttt{esprit.tn} et site générique hors-sujet), et image (échec propre et message
+clair en l'absence du binaire Tesseract, sans plantage). Dédup par \texttt{id} vérifiée
+sur un ré-upload exact du même fichier. Job planifié déclenché manuellement sans
+erreur. \texttt{site\_esprit\_clean.json} confirmé non modifié par l'application.
+\end{statutfait}
 
 \chapter{Tests et validation}
 
