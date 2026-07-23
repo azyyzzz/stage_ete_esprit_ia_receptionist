@@ -950,6 +950,133 @@ questions réelles :
 \end{itemize}
 \end{statutfait}
 
+\section{Constat : ``liste toutes les matières'' ne remontait qu'une partie}
+
+\textbf{Constat} : la question ``Liste toutes les matières que j'étudie en 4ème
+ERP-BI'' ne renvoyait que 11 matières sur 26 réelles. Cause : chaque panier
+(unité d'enseignement) est une fiche séparée -- 13 fiches pour la seule classe
+``4 ERP-BI'' -- alors que \texttt{TOP\_K = 5} limite structurellement le nombre de
+fiches transmises au LLM à chaque question. Pour une question ``liste tout'', 8 des
+13 paniers n'atteignaient jamais son contexte, quel que soit le prompt -- pas un
+problème de génération.
+
+\textbf{Corrigé} : ajout d'une fiche récapitulative dédiée par classe
+(\texttt{\_build\_liste\_complete} dans
+\texttt{programme\_etude\_extractor.py}), groupant tous les paniers et matières
+d'une classe en un seul chunk dense, découpée en parties si elle dépasse 2000
+caractères (aucune des 56 classes n'en a eu besoin après simplification du format).
+Générée par la même fonction partagée que les fiches par panier -- s'applique donc
+aussi bien à un futur upload via \texttt{extraction\_app} qu'à la fusion en masse.
+
+\begin{statutfait}
+50 fiches ``liste complète'' ajoutées (56 classes attendues, quelques doublons d'id
+internes dédupliqués). Question retestée après ré-indexation : les 13 paniers et 26
+matières sont désormais listés, avec le total exact (26 matières, 60 ECTS) --
+contre 11 matières sur 5 fiches auparavant.
+\end{statutfait}
+
+\section{Rebond : confusion entre classes voisines (4e/5e année)}
+
+\textbf{Constat} : avec la formulation exacte de l'utilisateur (``Quels sont toutes
+les matières à étudier en 4ème ERP/BI ?''), la fiche ``5 ERP-BI -- Liste complète''
+remontait à la place de ``4 ERP-BI -- Liste complète'' (score plus élevé), qui elle
+ne rentrait pas dans le top 5 -- réponse à nouveau incomplète. Cause : les deux
+fiches ont un gabarit quasi identique, seul un chiffre (4 vs 5) les distingue --
+signal trop faible pour l'embedding, exactement la même classe de problème que la
+confusion d'année déjà rencontrée sur les tarifs de scolarité 2024-2025/2025-2026.
+
+\textbf{Corrigé} : \texttt{\_annee\_disambiguation} ajoute désormais une phrase
+explicite (numéro + ordinal, ex. ``Ceci concerne précisément la classe 4 ERP-BI,
+4ème année -- à ne pas confondre avec une autre année du même programme'') en tête
+de chaque fiche (panier \emph{et} liste complète) dont le nom de classe contient un
+chiffre. Le script de fusion a été rendu idempotent par \textbf{upsert} (retire puis
+régénère toutes les fiches \texttt{upload\_pdf\_prog\_*}) pour pouvoir appliquer une
+amélioration de génération sans laisser d'anciennes versions périmées en base.
+
+\begin{statutfait}
+524 fiches régénérées avec la désambiguation (même total, 1099 fiches). Question
+retestée après ré-indexation : les 5 sources sont désormais toutes ``4 ERP-BI''
+(plus de confusion avec ``5 ERP-BI''), la fiche liste complète en 2\textsuperscript{e}
+position (score 0{,}807), réponse correcte sur les 12 paniers et le total exact
+(60 ECTS).
+\end{statutfait}
+
+\section{Solution de fond : NLU léger et filtrage par métadonnée}
+
+\textbf{Constat} : la désambiguation par texte répété (section précédente) corrige
+bien le cas testé, mais reste fragile à la formulation exacte de la question --
+un rephrasage légèrement différent peut à nouveau faire remonter la mauvaise
+classe, puisque tout repose sur le poids qu'accorde l'embedding à un simple
+chiffre noyé dans un texte par ailleurs quasi identique. Le même problème
+structurel touche aussi le bug \texttt{TOP\_K} (section ``Constat : liste
+toutes les matières'') : une rustine de contenu (fiche récapitulative) aide,
+mais ne résout pas la cause racine -- la recherche reste une similarité
+d'embedding non bornée par la structure réelle des données (une classe = un
+ensemble précis et connu de fiches).
+
+\textbf{Corrigé} : ajout d'une couche de compréhension légère, à base de règles
+(pas de framework NLU/ML -- cohérent avec la contrainte 100\,\% gratuit/local et
+avec un mécanisme déjà existant dans le projet, \texttt{modules/rag/programmes.py}
+et sa fonction \texttt{mentioned\_programme}, qui ne retient un candidat que s'il
+est \emph{seul} à correspondre, sans jamais deviner). Le nouveau module
+\texttt{modules/rag/nlu.py} ajoute deux détections :
+\begin{enumerate}
+    \item \texttt{detect\_classe\_mention(question)} -- normalise la question
+    (accents, casse, séparateurs \texttt{-\,/\,\_}, suffixes ordinaux
+    \texttt{4ème}/\texttt{4eme}) et la compare à la liste des classes connues,
+    extraite dynamiquement des titres des fiches ``Programme d'étude'' déjà en
+    base. Ne renvoie une classe que si \textbf{une seule} correspond dans la
+    question -- sinon \texttt{None}, et le comportement reste inchangé (même
+    règle de prudence que \texttt{mentioned\_programme}, jamais de
+    clarification demandée en mode vocal).
+    \item \texttt{is\_list\_all\_intent(question)} -- détecte les formulations
+    de type ``liste toutes les matières'', ``tous les paniers'', etc.
+\end{enumerate}
+Ces deux signaux permettent de filtrer la recherche par \textbf{métadonnée}
+plutôt que de compter uniquement sur la similarité d'embedding : chaque fiche
+reçoit désormais un champ \texttt{classe} lors de l'indexation
+(\texttt{ingest.py}), et ChromaDB (déjà en place, \texttt{where=} supporté
+nativement par la version installée) filtre la recherche à ce sous-ensemble
+avant de calculer la similarité. Quand la question demande une liste
+exhaustive, \texttt{retrieve\_all} récupère \textbf{toutes} les fiches de la
+classe via \texttt{collection.get(where=...)} -- en s'affranchissant totalement
+de la limite \texttt{TOP\_K}, plutôt que de dépendre d'une fiche récapitulative
+suffisamment bien classée. Le prompt envoyé au LLM reçoit dans ce cas une note
+explicite (\texttt{LIST\_ALL\_NOTE}) lui demandant d'énumérer tout le contexte
+fourni sans en résumer une partie. Portée : uniquement la catégorie
+``Programme d'étude'' (524 fiches sur 1099, seule catégorie structurée en
+``une entité, plusieurs fiches'' -- confirmé, les autres catégories sont des
+FAQ plates) ; si aucune classe n'est détectée, le comportement est strictement
+identique à avant pour toutes les autres questions (calendrier, paiements,
+règlements...).
+
+\begin{statutfait}
+Quatre vérifications effectuées après ré-indexation (1099 fiches, nouveau champ
+\texttt{classe}) et redémarrage de l'API :
+\begin{itemize}
+    \item Question ``Quels sont toutes les matières à étudier en 4ème
+    ERP/BI ?'' -- 14 sources renvoyées, \textbf{toutes} ``4 ERP-BI'' (zéro
+    contamination ``5 ERP-BI''), les 12 paniers et 26 matières correctement
+    énumérés.
+    \item Question ECTS précise (``Combien d'ECTS vaut le module Architecture
+    des SI I en 4 ERP-BI ?'') -- 5 sources renvoyées, toutes ``4 ERP-BI'',
+    réponse exacte.
+    \item Non-régression : question calendrier déjà testée (``Quand
+    commencent les études pour la 5ème année ?'', aucune classe détectée) --
+    mêmes fiches retournées qu'avant l'ajout du NLU, comportement inchangé.
+    \item Cas ambigu : ``4DS'' seul se résout sans ambiguïté sur ``Classe
+    4DS'' (le nom ``Classe 4DS Actuariat'' n'est pas confondu, son motif
+    complet n'apparaissant pas dans la question) ; ``classe 4DS Actuariat''
+    correspond en revanche aux deux classes à la fois -- aucun filtre n'est
+    appliqué (comme prévu), et la recherche globale retombe malgré tout sur
+    les bonnes fiches grâce au mot ``Actuariat'' dans la question. Aucun
+    plantage, aucune fausse demande de clarification dans les deux cas.
+\end{itemize}
+Les deux bugs sont donc corrigés à la racine, pour l'ensemble des classes du
+programme d'étude (pas seulement ``ERP-BI''), et de façon indépendante de la
+formulation exacte de la question.
+\end{statutfait}
+
 \section{Garde-fous obligatoires avant sauvegarde}
 
 Deux vérifications s'appliquent à toute fiche candidate, quelle que soit sa source,

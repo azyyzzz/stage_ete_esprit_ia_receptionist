@@ -13,6 +13,11 @@ jamais vu auparavant dans la base -- pas de verification semantique TF-IDF
 ici, contrairement a extraction_app, car il ne s'agit pas d'une source
 externe non maitrisee mais d'un brouillon deja relu par l'utilisateur).
 
+Idempotent par UPSERT : toutes les fiches "upload_pdf_prog_*" deja presentes
+sont retirees puis regenerees a neuf avant chaque fusion -- permet de
+relancer ce script apres une amelioration de build_fiches_from_classes (ex.
+ajout d'une desambiguation) sans laisser d'anciennes versions perimees.
+
 Lancement (depuis la racine du projet) :
     python data/scripts/merge_programmes_etude.py
 """
@@ -50,13 +55,13 @@ def main() -> None:
     for path in (CLEAN_PATH, RAW_KB_PATH):
         with open(path, encoding="utf-8") as f:
             kb = json.load(f)
-        existing_ids = {r["id"] for r in kb}
-        added = [r for r in all_new_records if r["id"] not in existing_ids]
-        skipped = len(all_new_records) - len(added)
-        kb.extend(added)
+        before = len(kb)
+        kb = [r for r in kb if not r["id"].startswith("upload_pdf_prog_")]
+        removed = before - len(kb)
+        kb.extend(all_new_records)
         with open(path, "w", encoding="utf-8") as f:
             json.dump(kb, f, ensure_ascii=False, indent=2)
-        print(f"[{path.name}] +{len(added)} fiches ajoutees, {skipped} deja presentes (id) -> {len(kb)} fiches au total")
+        print(f"[{path.name}] {removed} anciennes fiches retirees, {len(all_new_records)} regenerees -> {len(kb)} fiches au total")
 
 
 if __name__ == "__main__":

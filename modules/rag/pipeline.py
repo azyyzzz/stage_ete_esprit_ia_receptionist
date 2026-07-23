@@ -9,8 +9,9 @@ from __future__ import annotations
 from modules.rag.config import PROGRAMME_AMBIGUITY_MARGIN, SCORE_THRESHOLD
 from modules.rag.fallback import get_fallback_message
 from modules.rag.generator import generate_answer
+from modules.rag.nlu import detect_classe_mention, is_list_all_intent
 from modules.rag.programmes import mentioned_programme, programme_label
-from modules.rag.retriever import retrieve
+from modules.rag.retriever import retrieve, retrieve_all
 
 
 TOP_N_FOR_CONSENSUS = 3
@@ -52,7 +53,28 @@ def answer_question(question: str, allow_clarification: bool = True) -> dict:
     clarification. Le LLM synthetise alors une reponse couvrant les
     principaux programmes a partir du meme contexte recupere.
     """
-    chunks = retrieve(question)
+    # Detection de classe (programme d'etude) : filtre la recherche par
+    # metadonnee plutot que de compter uniquement sur l'embedding, qui
+    # confond facilement deux classes voisines (ex. "4 ERP-BI" / "5 ERP-BI",
+    # signal distinctif = un seul chiffre). Ne s'applique que si une SEULE
+    # classe est reconnue sans ambiguite (voir nlu.detect_classe_mention) --
+    # sinon comportement inchange (pas de clarification demandee).
+    classe = detect_classe_mention(question)
+    list_all = False
+    if classe and is_list_all_intent(question):
+        list_all = True
+        chunks = retrieve_all(question, where={"classe": classe})
+    elif classe:
+        chunks = retrieve(question, where={"classe": classe})
+    else:
+        chunks = retrieve(question)
+
+    if classe and not chunks:
+        # Filet de securite : ne devrait pas arriver (la classe vient de la
+        # base connue), mais si le filtre ne renvoie rien, on retombe sur la
+        # recherche globale plutot que de renvoyer un fallback a tort.
+        chunks = retrieve(question)
+
     best_score = chunks[0].score if chunks else 0.0
 
     if not chunks or best_score < SCORE_THRESHOLD:
@@ -78,7 +100,7 @@ def answer_question(question: str, allow_clarification: bool = True) -> dict:
             "needs_clarification": True,
         }
 
-    answer = generate_answer(question, chunks, ambiguous_programme=is_ambiguous)
+    answer = generate_answer(question, chunks, ambiguous_programme=is_ambiguous, list_all=list_all)
     return {
         "answer": answer,
         "sources": [

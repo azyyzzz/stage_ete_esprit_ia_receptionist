@@ -15,6 +15,7 @@ import json
 
 from modules.rag.config import KNOWLEDGE_BASE_PATH
 from modules.rag.embeddings import embed
+from modules.rag.nlu import TITRE_CLASSE_PATTERN
 from modules.rag.vectorstore import add_records, reset_collection
 
 BATCH_SIZE = 64
@@ -25,6 +26,16 @@ def record_to_text(record: dict) -> str:
     titre = record.get("titre", "").strip()
     contenu = record.get("contenu", "").strip()
     return f"{titre} : {contenu}" if titre else contenu
+
+
+def record_to_classe(record: dict) -> str:
+    """Nom de classe extrait du titre pour les fiches "Programme d'étude"
+    (voir modules/rag/nlu.py), utilisé comme métadonnée filtrable pour la
+    recherche par classe -- vide pour toute autre catégorie."""
+    if record.get("categorie") != "Programme d'étude":
+        return ""
+    match = TITRE_CLASSE_PATTERN.match(record.get("titre", ""))
+    return match.group(1) if match else ""
 
 
 def main() -> None:
@@ -43,6 +54,7 @@ def main() -> None:
                 "categorie": r.get("categorie", ""),
                 "titre": r.get("titre", ""),
                 "source": r.get("source", ""),
+                "classe": record_to_classe(r),
             }
             for r in batch
         ]

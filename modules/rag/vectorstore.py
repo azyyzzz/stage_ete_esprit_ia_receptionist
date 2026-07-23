@@ -47,6 +47,19 @@ def add_records(
     collection.add(ids=ids, documents=documents, embeddings=embeddings, metadatas=metadatas)
 
 
-def query(embedding: list[float], top_k: int) -> dict:
+def query(embedding: list[float], top_k: int, where: dict | None = None) -> dict:
     collection = get_collection()
-    return collection.query(query_embeddings=[embedding], n_results=top_k)
+    kwargs = {"query_embeddings": [embedding], "n_results": top_k}
+    if where:
+        kwargs["where"] = where
+    return collection.query(**kwargs)
+
+
+def get_all(where: dict) -> dict:
+    """Recupere TOUTES les fiches correspondant a un filtre de metadonnee,
+    sans limite top-k -- utilise pour "liste toutes les matieres d'une
+    classe" (voir modules/rag/nlu.py et retriever.retrieve_all), la ou une
+    simple recherche par similarite plafonnee a TOP_K en omettrait
+    mecaniquement une partie."""
+    collection = get_collection()
+    return collection.get(where=where, include=["documents", "metadatas", "embeddings"])

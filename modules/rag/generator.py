@@ -39,11 +39,26 @@ AMBIGUOUS_PROGRAMME_NOTE = (
 )
 
 
-def generate_answer(question: str, chunks: list[RetrievedChunk], ambiguous_programme: bool = False) -> str:
+LIST_ALL_NOTE = (
+    "\n\nNote : le contexte ci-dessus contient TOUTES les fiches de la classe "
+    "concernée (pas une sélection partielle) car la question demande une liste "
+    "exhaustive. Énumère bien tous les paniers/matières présents dans le "
+    "contexte, sans en résumer ou en omettre une partie."
+)
+
+
+def generate_answer(
+    question: str,
+    chunks: list[RetrievedChunk],
+    ambiguous_programme: bool = False,
+    list_all: bool = False,
+) -> str:
     context = _build_context(chunks)
     user_prompt = f"Contexte disponible :\n{context}\n\nQuestion de l'appelant : {question}"
     if ambiguous_programme:
         user_prompt += AMBIGUOUS_PROGRAMME_NOTE
+    if list_all:
+        user_prompt += LIST_ALL_NOTE
 
     response = ollama.chat(
         model=OLLAMA_MODEL,
