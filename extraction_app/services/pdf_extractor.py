@@ -1,12 +1,18 @@
 """
 Extraction PDF -- adapte de data/scripts/reextract_reglements.py.
 
-Strategie a deux niveaux, identique au script d'origine :
-1. Si le PDF a une vraie structure "Article N : ..." (>= 2 occurrences),
+Strategie a TROIS niveaux :
+1. Programme d'etude (paniers/UE, matieres, heures, periode, ECTS) -- voir
+   services/programme_etude_extractor.py, qui reutilise la logique deja
+   validee de data/scripts/extract_programmes_etude.py. Essaye en premier
+   car sa detection est specifique (necessite un vrai tableau UE/ECTS) ;
+   si rien n'est detecte, le PDF n'est probablement pas de ce type et on
+   continue avec les niveaux suivants.
+2. Si le PDF a une vraie structure "Article N : ..." (>= 2 occurrences),
    une fiche par article, avec retrait du sommaire et decoupage des
    articles trop longs.
-2. Sinon (documents uploades arbitraires, sans cette structure), repli sur
-   une fiche par page -- meme logique de secours que
+3. Sinon (documents uploades arbitraires, sans structure reconnue), repli
+   sur une fiche par page -- meme logique de secours que
    data/scripts/extract_local_documents_reglements.py.
 """
 
@@ -18,6 +24,7 @@ from pathlib import Path
 import pdfplumber
 
 from extraction_app.config import MAX_CHARS
+from extraction_app.services.programme_etude_extractor import extract_programme_etude
 
 ARTICLE_PATTERN = re.compile(r"(Article\s*\d+\s*:.*?)(?=Article\s*\d+\s*:|\Z)", re.DOTALL)
 TITLE_FROM_ARTICLE = re.compile(r"(Article\s*\d+\s*:\s*[^\n]*)")
@@ -104,6 +111,10 @@ def extract_pdf(pdf_path: Path, categorie: str, source: str, id_slug: str | None
     la dedup par id (kb_merge.py) sur un re-upload du meme fichier -- a
     fournir a partir du nom de fichier ORIGINAL (pas du chemin temporaire,
     qui est aleatoire). A defaut, derive du nom du fichier temporaire."""
+    programme_records = extract_programme_etude(pdf_path, source)
+    if programme_records is not None:
+        return programme_records
+
     full_text = _extract_full_text(pdf_path)
     sections = _split_by_article(full_text)
     if not sections:

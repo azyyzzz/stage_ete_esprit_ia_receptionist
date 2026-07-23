@@ -557,6 +557,16 @@ validé avec l'utilisateur si le besoin réel est une réponse plus détaillée 
 question transversale.
 \end{noteinfo}
 
+\section{Nouvelle fiche : attestations et relevé de notes}
+
+Ajout d'une fiche FAQ (\texttt{faq\_attestation\_presence\_reussite\_releve\_notes}) sur
+la procédure pour obtenir une attestation de réussite, une attestation de présence ou un
+relevé de notes -- information communiquée directement par l'utilisateur (contact par
+email au service des élèves correspondant à la classe, une adresse par année de
+1\textsuperscript{re} à 5\textsuperscript{e}, puis passage au bureau du service des
+élèves trois jours après l'envoi). Vérifié : aucune fiche existante ne couvrait déjà ce
+sujet, pas de risque de doublon.
+
 \section{Écart de vocabulaire : ``conseil de classe'' vs libellés calendrier}
 
 \textbf{Constat} : la question ``Quelle est la date des conseils de classe ?'' ne
@@ -869,10 +879,12 @@ dossier indépendant du reste du projet (ne touche ni \texttt{backend/}, ni
 \textbf{Source} & \textbf{Logique} \\
 \midrule
 \endhead
-PDF & \texttt{pdfplumber}, découpage par \texttt{Article~N~:} si la structure existe
-(réutilise le même algorithme que \texttt{data/scripts/reextract\_reglements.py} --
-retrait du sommaire, découpage des articles trop longs), sinon repli sur une fiche par
-page. \\
+PDF & Trois niveaux, dans l'ordre : (1) programme d'étude -- détection d'un tableau
+UE/panier + matières + heures/période/ECTS (réutilise
+\texttt{data/scripts/extract\_programmes\_etude.py}, une fiche par classe$\times$panier) ;
+(2) \texttt{Article~N~:} si la structure existe (réutilise
+\texttt{data/scripts/reextract\_reglements.py} -- retrait du sommaire, découpage des
+articles trop longs) ; (3) sinon repli sur une fiche par page. \\
 Word (.docx) & \texttt{python-docx}, regroupement par section (dernier titre en gras
 rencontré), détection des paires question/réponse à l'intérieur d'une section (réutilise
 la logique de \texttt{data/scripts/extract\_admission\_docx.py}) -- une fiche par sujet
@@ -891,6 +903,52 @@ libellés d'accordéon), extraction générique par sections \texttt{h2}/\texttt
 \bottomrule
 \end{longtable}
 \end{center}
+
+\section{Extraction des programmes d'étude dans \texttt{extraction\_app}}
+
+Suite à l'extraction en masse des 30 PDF de programmes d'étude (registre de validation
+publié pour revue -- voir \texttt{data/processed/programmes\_etude\_a\_valider.json}),
+la même logique a été intégrée directement dans le pipeline PDF de
+\texttt{extraction\_app} (\texttt{services/programme\_etude\_extractor.py}), pour que
+tout nouveau programme d'étude uploadé soit traité automatiquement de la même façon,
+sans script séparé à relancer manuellement.
+
+\begin{statutfait}
+Testé de bout en bout via l'interface (upload de \texttt{SAE.pdf}, non testé
+auparavant) : 17 fiches ajoutées (une par classe$\times$panier), 0 rejet hors-sujet
+(le texte contient naturellement ``programme d'étude'', reconnu par le filtre de
+pertinence), 1 rejet par déduplication d'id (collision interne, comportement attendu).
+Fiches de test retirées après vérification -- rien n'est resté dans la base en
+attendant la validation du reste des 30 fichiers.
+\end{statutfait}
+
+\section{Fusion du brouillon dans la base de connaissances}
+
+Après revue du registre par l'utilisateur, fusion en masse du brouillon complet via
+\texttt{data/scripts/merge\_programmes\_etude.py} -- réutilise la \textbf{même} fonction
+de construction de fiche que \texttt{extraction\_app}
+(\texttt{build\_fiches\_from\_classes}) pour générer des id identiques : un futur
+ré-upload d'un de ces mêmes PDF via l'appli sera donc reconnu comme doublon plutôt que
+dupliqué. Dédup par id uniquement (pas de vérification sémantique TF-IDF ici -- contenu
+entièrement nouveau, brouillon déjà relu par l'utilisateur, contrairement à une source
+externe non maîtrisée).
+
+\begin{statutfait}
+\textbf{474 fiches ajoutées} dans \texttt{site\_esprit\_clean.json} et
+\texttt{site\_esprit.json} (13 collisions d'id internes au brouillon correctement
+dédupliquées, 0 collision avec la base existante). Testé après ré-indexation avec deux
+questions réelles :
+\begin{itemize}
+    \item ``Quelles sont les matières du panier Recherche Opérationnelle en 4DS ?'' --
+    réponse exacte et complète (3 matières, heures/période/ECTS corrects, total 5 ECTS,
+    score 0{,}742), désambiguïsée correctement de la classe voisine ``4DS Actuariat''.
+    \item ``Combien d'ECTS vaut le module Architecture des SI I en 4 ERP-BI ?'' -- fiche
+    correcte retrouvée en premier (score 0{,}722), mais réponse légèrement imprécise
+    (cite le total ECTS du panier entier -- 6 -- plutôt que l'ECTS du module précis
+    demandé -- 2 -- alors que l'information exacte est bien présente dans la fiche).
+    Limite de génération, pas de récupération ni de donnée.
+\end{itemize}
+\end{statutfait}
 
 \section{Garde-fous obligatoires avant sauvegarde}
 

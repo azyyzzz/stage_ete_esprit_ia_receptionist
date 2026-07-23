@@ -49,6 +49,18 @@ note-le immediatement. Pour le regenerer, supprime
 4. La page `/history` liste toutes les extractions passees (manuelles et
    planifiees), avec le detail des doublons detectes.
 
+## Extraction PDF -- programmes d'étude (paniers/UE, matières, ECTS)
+
+Avant les stratégies génériques (article / page), un PDF uploadé est d'abord
+testé contre la détection de programme d'étude (tableau UE/panier +
+matières + heures/charge + période + ECTS ou Workload/Credits en anglais)
+-- réutilise la même logique déjà validée par
+`data/scripts/extract_programmes_etude.py` (voir le registre de
+validation). Si détecté, une fiche est créée par (classe, panier),
+listant ses matières avec heures/période/ECTS ; sinon le PDF retombe sur
+l'extraction article/page classique. Catégorie dédiée : `Programme
+d'étude`.
+
 ## Extraction Word (.docx)
 
 Regroupe le contenu par section (dernier titre en gras rencontre dans le
