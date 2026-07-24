@@ -108,13 +108,31 @@ LIST_ALL_KEYWORDS = [
     "quels sont toutes",
     "quelles sont les matieres",
     "quels sont les matieres",
+    # Questions de comparaison/superlatif ("quel panier a le plus d'ECTS ?") :
+    # ne visent pas un fait unique mais exigent de comparer TOUTES les
+    # fiches d'une classe -- meme besoin que "liste tout" (retrieve_all),
+    # sinon le TOP_K=5 ne contient pas forcement le bon panier a comparer,
+    # et aucune fiche individuelle ne "ressemble" a une question de
+    # comparaison (score de similarite trop bas, reponse en repli a tort).
+    "le plus eleve",
+    "la plus elevee",
+    "le plus haut",
+    "la plus haute",
+    "le plus grand",
+    "la plus grande",
+    "le moins eleve",
+    "la moins elevee",
+    "le plus petit",
+    "la plus petite",
+    "le maximum",
+    "le minimum",
 ]
 
 
 def is_list_all_intent(question: str) -> bool:
-    """True si la question demande une liste exhaustive (matieres/paniers
-    d'une classe) plutot qu'un fait precis sur une matiere -- determine
-    si la recherche doit recuperer TOUTES les fiches d'une classe plutot
-    que TOP_K."""
+    """True si la question demande une liste exhaustive OU une comparaison
+    (matieres/paniers d'une classe) plutot qu'un fait precis sur une seule
+    matiere -- determine si la recherche doit recuperer TOUTES les fiches
+    d'une classe plutot que TOP_K."""
     q_norm = _normalize(question)
     return any(keyword in q_norm for keyword in LIST_ALL_KEYWORDS)

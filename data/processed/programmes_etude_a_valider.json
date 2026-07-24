@@ -253,6 +253,7 @@
               "semestre": null,
               "panier_col": 0,
               "matiere_col": 1,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 2,
               "ects_module_col": 5,
@@ -264,6 +265,7 @@
               "semestre": "Semestre-2",
               "panier_col": 0,
               "matiere_col": 1,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 2,
               "ects_module_col": 5,
@@ -445,6 +447,7 @@
               "semestre": "Semestre-1",
               "panier_col": 0,
               "matiere_col": 1,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 2,
               "ects_module_col": 6,
@@ -454,8 +457,9 @@
             },
             {
               "semestre": "Semestre-2",
-              "panier_col": 0,
+              "panier_col": null,
               "matiere_col": 0,
+              "matiere_overflow_col": null,
               "heures_module_col": 2,
               "heures_total_col": 3,
               "ects_module_col": null,
@@ -717,6 +721,7 @@
               "semestre": "Semestre-1",
               "panier_col": 0,
               "matiere_col": 1,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 2,
               "ects_module_col": 5,
@@ -728,6 +733,7 @@
               "semestre": "Semestre-2",
               "panier_col": 0,
               "matiere_col": 1,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 2,
               "ects_module_col": 5,
@@ -879,6 +885,7 @@
               "semestre": "Semestre-1",
               "panier_col": 0,
               "matiere_col": 1,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 2,
               "ects_module_col": 5,
@@ -888,8 +895,9 @@
             },
             {
               "semestre": "Semestre-2",
-              "panier_col": 0,
+              "panier_col": null,
               "matiere_col": 0,
+              "matiere_overflow_col": null,
               "heures_module_col": 2,
               "heures_total_col": 3,
               "ects_module_col": null,
@@ -1177,6 +1185,7 @@
               "semestre": "Semestre-1",
               "panier_col": 0,
               "matiere_col": 1,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 2,
               "ects_module_col": 5,
@@ -1188,6 +1197,7 @@
               "semestre": "Semestre-2",
               "panier_col": 0,
               "matiere_col": 1,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 2,
               "ects_module_col": 5,
@@ -1369,6 +1379,7 @@
               "semestre": "Semestre-1",
               "panier_col": 0,
               "matiere_col": 1,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 2,
               "ects_module_col": 5,
@@ -1380,6 +1391,7 @@
               "semestre": "Semestre-2",
               "panier_col": 1,
               "matiere_col": 0,
+              "matiere_overflow_col": null,
               "heures_module_col": 2,
               "heures_total_col": 3,
               "ects_module_col": null,
@@ -1697,6 +1709,7 @@
               "semestre": "Semestre-1",
               "panier_col": 0,
               "matiere_col": 1,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 2,
               "ects_module_col": 6,
@@ -1708,6 +1721,7 @@
               "semestre": "Semestre-2",
               "panier_col": 0,
               "matiere_col": 1,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 2,
               "ects_module_col": 6,
@@ -1899,6 +1913,7 @@
               "semestre": "Semestre-1",
               "panier_col": 0,
               "matiere_col": 1,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 2,
               "ects_module_col": 6,
@@ -1908,8 +1923,9 @@
             },
             {
               "semestre": "Semestre-2",
-              "panier_col": 0,
+              "panier_col": null,
               "matiere_col": 0,
+              "matiere_overflow_col": null,
               "heures_module_col": 2,
               "heures_total_col": 3,
               "ects_module_col": null,
@@ -2101,6 +2117,7 @@
               "semestre": "Semestre-1",
               "panier_col": 0,
               "matiere_col": 1,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 2,
               "ects_module_col": 6,
@@ -2110,8 +2127,9 @@
             },
             {
               "semestre": "Semestre-2",
-              "panier_col": 0,
+              "panier_col": null,
               "matiere_col": 0,
+              "matiere_overflow_col": null,
               "heures_module_col": 2,
               "heures_total_col": 3,
               "ects_module_col": null,
@@ -2134,7 +2152,7 @@
         "lignes": [
           {
             "semestre": null,
-            "panier": "Software engineering",
+            "panier": "Software and data management",
             "matiere": "Software engineering",
             "heures_matiere": "42",
             "heures_panier_total": "21",
@@ -2144,7 +2162,7 @@
           },
           {
             "semestre": null,
-            "panier": "Software engineering",
+            "panier": "Software and data management",
             "matiere": "Data base management system",
             "heures_matiere": "42",
             "heures_panier_total": "21",
@@ -2154,7 +2172,7 @@
           },
           {
             "semestre": null,
-            "panier": "Software engineering",
+            "panier": "Web development",
             "matiere": "Python framework for the web",
             "heures_matiere": "42",
             "heures_panier_total": "21",
@@ -2164,7 +2182,7 @@
           },
           {
             "semestre": null,
-            "panier": "Semestre 5",
+            "panier": "Data engineering",
             "matiere": "Python for Data Engineering",
             "heures_matiere": "21",
             "heures_panier_total": "21",
@@ -2174,7 +2192,7 @@
           },
           {
             "semestre": null,
-            "panier": "Semestre 5",
+            "panier": "Data engineering",
             "matiere": "Data warehousing",
             "heures_matiere": "42",
             "heures_panier_total": "42",
@@ -2184,7 +2202,7 @@
           },
           {
             "semestre": null,
-            "panier": "Semestre 5",
+            "panier": "Data engineering",
             "matiere": "Machine learning basics",
             "heures_matiere": "42",
             "heures_panier_total": "0",
@@ -2194,7 +2212,7 @@
           },
           {
             "semestre": null,
-            "panier": "Semestre 5",
+            "panier": "Data engineering",
             "matiere": "Workshop \"Fundamentals on Deep Learning\"",
             "heures_matiere": "18",
             "heures_panier_total": "18",
@@ -2204,7 +2222,7 @@
           },
           {
             "semestre": null,
-            "panier": "Semestre 5",
+            "panier": "Networking and Systems",
             "matiere": "Networks and TCP/IP Protocols",
             "heures_matiere": "42",
             "heures_panier_total": "21",
@@ -2214,7 +2232,7 @@
           },
           {
             "semestre": null,
-            "panier": "Semestre 5",
+            "panier": "Estimation Techniques for Engineers",
             "matiere": "Estimation Techniques for Engineers",
             "heures_matiere": "42",
             "heures_panier_total": "21",
@@ -2224,7 +2242,7 @@
           },
           {
             "semestre": null,
-            "panier": "Semestre 5",
+            "panier": "Communication, Culture and Citizenship A3",
             "matiere": "Communication, Culture and Citizenship A3",
             "heures_matiere": "42",
             "heures_panier_total": "21",
@@ -2234,7 +2252,7 @@
           },
           {
             "semestre": null,
-            "panier": "Semestre 5",
+            "panier": "Communication, Culture and Citizenship A3",
             "matiere": "Object-oriented design and Java Programming",
             "heures_matiere": "42",
             "heures_panier_total": "21",
@@ -2244,7 +2262,7 @@
           },
           {
             "semestre": null,
-            "panier": "Semestre 5",
+            "panier": "Object-oriented Programming",
             "matiere": "Programming for Mobile Terminals",
             "heures_matiere": "21",
             "heures_panier_total": "0",
@@ -2254,7 +2272,7 @@
           },
           {
             "semestre": null,
-            "panier": "Semestre 5",
+            "panier": "Object-oriented Programming",
             "matiere": "Multimodal AI",
             "heures_matiere": "21",
             "heures_panier_total": "21",
@@ -2264,7 +2282,7 @@
           },
           {
             "semestre": null,
-            "panier": "Semestre 6",
+            "panier": "AI: Fundamentals and techniques",
             "matiere": "Problem-Solving",
             "heures_matiere": "21",
             "heures_panier_total": "0",
@@ -2274,7 +2292,7 @@
           },
           {
             "semestre": null,
-            "panier": "Semestre 6",
+            "panier": "AI: Fundamentals and techniques",
             "matiere": "Khnowledge and raisoning",
             "heures_matiere": "21",
             "heures_panier_total": "21",
@@ -2284,7 +2302,7 @@
           },
           {
             "semestre": null,
-            "panier": "Semestre 6",
+            "panier": "AI: Fundamentals and techniques",
             "matiere": "Optimization Techniques I",
             "heures_matiere": "21",
             "heures_panier_total": "21",
@@ -2294,7 +2312,7 @@
           },
           {
             "semestre": null,
-            "panier": "Semestre 6",
+            "panier": "Networking and Systems",
             "matiere": "Operating System Administration: Unix",
             "heures_matiere": "42",
             "heures_panier_total": "21",
@@ -2304,7 +2322,7 @@
           },
           {
             "semestre": null,
-            "panier": "Semestre 6",
+            "panier": "Business Management",
             "matiere": "Business Environment",
             "heures_matiere": "21",
             "heures_panier_total": "21",
@@ -2314,7 +2332,7 @@
           },
           {
             "semestre": null,
-            "panier": "Semestre 6",
+            "panier": "Business Management",
             "matiere": "Financial Analysis",
             "heures_matiere": "21",
             "heures_panier_total": "0",
@@ -2324,7 +2342,7 @@
           },
           {
             "semestre": null,
-            "panier": "Semestre 6",
+            "panier": "AI Project",
             "matiere": "AI Project",
             "heures_matiere": "84",
             "heures_panier_total": "42",
@@ -2334,7 +2352,7 @@
           },
           {
             "semestre": null,
-            "panier": "Semestre 6",
+            "panier": "Communication, Culture et Citoyenneté F3",
             "matiere": "Communication, Culture et Citoyenneté F3",
             "heures_matiere": "42",
             "heures_panier_total": "21",
@@ -2347,8 +2365,9 @@
           "sections": [
             {
               "semestre": null,
-              "panier_col": 0,
+              "panier_col": 1,
               "matiere_col": 2,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 5,
               "ects_module_col": 4,
@@ -2365,7 +2384,7 @@
         "lignes": [
           {
             "semestre": null,
-            "panier": "Probabilities",
+            "panier": "Numerical Methods",
             "matiere": "Probabilities",
             "heures_matiere": "42",
             "heures_panier_total": "21",
@@ -2375,7 +2394,7 @@
           },
           {
             "semestre": null,
-            "panier": "Probabilities",
+            "panier": "Numerical Methods",
             "matiere": "Graph Theory",
             "heures_matiere": "21",
             "heures_panier_total": "0",
@@ -2385,7 +2404,7 @@
           },
           {
             "semestre": null,
-            "panier": "Probabilities",
+            "panier": "Numerical Methods",
             "matiere": "Statistics",
             "heures_matiere": "42",
             "heures_panier_total": "21",
@@ -2395,7 +2414,7 @@
           },
           {
             "semestre": null,
-            "panier": "Probabilities",
+            "panier": "Edge Artificial Intelligence",
             "matiere": "Deep Learning Project",
             "heures_matiere": "84",
             "heures_panier_total": "42",
@@ -2405,7 +2424,7 @@
           },
           {
             "semestre": null,
-            "panier": "Probabilities",
+            "panier": "Edge Artificial Intelligence",
             "matiere": "Introduction to robotics",
             "heures_matiere": "21",
             "heures_panier_total": "21",
@@ -2415,7 +2434,7 @@
           },
           {
             "semestre": null,
-            "panier": "Semestre 7",
+            "panier": "Data management",
             "matiere": "Big Data and NoSQL Databases",
             "heures_matiere": "42",
             "heures_panier_total": "21",
@@ -2425,7 +2444,7 @@
           },
           {
             "semestre": null,
-            "panier": "Semestre 7",
+            "panier": "Data management",
             "matiere": "Database administration",
             "heures_matiere": "21",
             "heures_panier_total": "0",
@@ -2435,7 +2454,7 @@
           },
           {
             "semestre": null,
-            "panier": "Semestre 7",
+            "panier": "Management and Marketing",
             "matiere": "Digital Marketing",
             "heures_matiere": "21",
             "heures_panier_total": "0",
@@ -2445,7 +2464,7 @@
           },
           {
             "semestre": null,
-            "panier": "Semestre 7",
+            "panier": "Management and Marketing",
             "matiere": "Project Management",
             "heures_matiere": "21",
             "heures_panier_total": "21",
@@ -2455,7 +2474,7 @@
           },
           {
             "semestre": null,
-            "panier": "Semestre 7",
+            "panier": "Communication, Culture et Citoyenneté F4",
             "matiere": "Communication, Culture et Citoyenneté F4",
             "heures_matiere": "42",
             "heures_panier_total": "21",
@@ -2465,7 +2484,7 @@
           },
           {
             "semestre": null,
-            "panier": "Semestre 7",
+            "panier": "Internship",
             "matiere": "Stage d'immersion en entreprise",
             "heures_matiere": "",
             "heures_panier_total": "",
@@ -2475,7 +2494,7 @@
           },
           {
             "semestre": null,
-            "panier": "Semestre 7",
+            "panier": "Advanced Deep Learning",
             "matiere": "Natural Langage Processing",
             "heures_matiere": "21",
             "heures_panier_total": "21",
@@ -2485,7 +2504,7 @@
           },
           {
             "semestre": null,
-            "panier": "Semestre 7",
+            "panier": "Advanced Deep Learning",
             "matiere": "Natural Langage Understanding",
             "heures_matiere": "21",
             "heures_panier_total": "0",
@@ -2495,7 +2514,7 @@
           },
           {
             "semestre": null,
-            "panier": "Semestre 7",
+            "panier": "Advanced Deep Learning",
             "matiere": "Time series",
             "heures_matiere": "21",
             "heures_panier_total": "0",
@@ -2505,7 +2524,7 @@
           },
           {
             "semestre": null,
-            "panier": "Semestre 7",
+            "panier": "Immersive Reality",
             "matiere": "XR",
             "heures_matiere": "42",
             "heures_panier_total": "0",
@@ -2515,7 +2534,7 @@
           },
           {
             "semestre": null,
-            "panier": "Semestre 7",
+            "panier": "Immersive Reality",
             "matiere": "Unity",
             "heures_matiere": "21",
             "heures_panier_total": "21",
@@ -2525,7 +2544,7 @@
           },
           {
             "semestre": null,
-            "panier": "Semestre 8",
+            "panier": "Markov Decision Process and RL",
             "matiere": "Markov Decision Process",
             "heures_matiere": "21",
             "heures_panier_total": "21",
@@ -2535,7 +2554,7 @@
           },
           {
             "semestre": null,
-            "panier": "Semestre 8",
+            "panier": "Markov Decision Process and RL",
             "matiere": "Reinforcement Learning",
             "heures_matiere": "21",
             "heures_panier_total": "0",
@@ -2545,7 +2564,7 @@
           },
           {
             "semestre": null,
-            "panier": "Semestre 8",
+            "panier": "Advanced AI Project",
             "matiere": "Advanced AI Project",
             "heures_matiere": "84",
             "heures_panier_total": "42",
@@ -2555,7 +2574,7 @@
           },
           {
             "semestre": null,
-            "panier": "Semestre 8",
+            "panier": "AI on the cloud",
             "matiere": "Cloud fundamentals",
             "heures_matiere": "21",
             "heures_panier_total": "21",
@@ -2565,7 +2584,7 @@
           },
           {
             "semestre": null,
-            "panier": "Semestre 8",
+            "panier": "AI on the cloud",
             "matiere": "Service and network administration",
             "heures_matiere": "21",
             "heures_panier_total": "21",
@@ -2575,7 +2594,7 @@
           },
           {
             "semestre": null,
-            "panier": "Semestre 8",
+            "panier": "Management et pilotage des projets",
             "matiere": "Innovation and entrepreneurship",
             "heures_matiere": "21",
             "heures_panier_total": "0",
@@ -2585,7 +2604,7 @@
           },
           {
             "semestre": null,
-            "panier": "Semestre 8",
+            "panier": "English For Engineers A4",
             "matiere": "English For Engineers A4",
             "heures_matiere": "42",
             "heures_panier_total": "21",
@@ -2598,8 +2617,9 @@
           "sections": [
             {
               "semestre": null,
-              "panier_col": 0,
+              "panier_col": 1,
               "matiere_col": 2,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 5,
               "ects_module_col": 4,
@@ -2616,7 +2636,7 @@
         "lignes": [
           {
             "semestre": null,
-            "panier": "DevOps",
+            "panier": "Advanced ML Engineering & Operations",
             "matiere": "DevOps",
             "heures_matiere": "21",
             "heures_panier_total": "21",
@@ -2626,7 +2646,7 @@
           },
           {
             "semestre": null,
-            "panier": "DevOps",
+            "panier": "Advanced ML Engineering & Operations",
             "matiere": "MLOps",
             "heures_matiere": "21",
             "heures_panier_total": "21",
@@ -2636,7 +2656,7 @@
           },
           {
             "semestre": null,
-            "panier": "DevOps",
+            "panier": "Advanced ML Engineering & Operations",
             "matiere": "Automation for Business",
             "heures_matiere": "14",
             "heures_panier_total": "14",
@@ -2646,7 +2666,7 @@
           },
           {
             "semestre": null,
-            "panier": "DevOps",
+            "panier": "Advanced ML Engineering & Operations",
             "matiere": "Cognitive Psychology",
             "heures_matiere": "21",
             "heures_panier_total": "12",
@@ -2656,7 +2676,7 @@
           },
           {
             "semestre": null,
-            "panier": "DevOps",
+            "panier": "Humanities and Social science",
             "matiere": "Ethics, AI and society",
             "heures_matiere": "21",
             "heures_panier_total": "15",
@@ -2666,7 +2686,7 @@
           },
           {
             "semestre": null,
-            "panier": "DevOps",
+            "panier": "Humanities and Social science",
             "matiere": "Philosophy of science",
             "heures_matiere": "12",
             "heures_panier_total": "0",
@@ -2676,7 +2696,7 @@
           },
           {
             "semestre": null,
-            "panier": "Semestre 9",
+            "panier": "Emerging trends in AI",
             "matiere": "Quantum computing & AI",
             "heures_matiere": "21",
             "heures_panier_total": "21",
@@ -2686,7 +2706,7 @@
           },
           {
             "semestre": null,
-            "panier": "Semestre 9",
+            "panier": "Emerging trends in AI",
             "matiere": "Article Review",
             "heures_matiere": "12",
             "heures_panier_total": "12",
@@ -2696,7 +2716,7 @@
           },
           {
             "semestre": null,
-            "panier": "Semestre 9",
+            "panier": "Emerging trends in AI",
             "matiere": "Explainable AI (XAI)",
             "heures_matiere": "6",
             "heures_panier_total": "0",
@@ -2706,7 +2726,7 @@
           },
           {
             "semestre": null,
-            "panier": "Semestre 9",
+            "panier": "Preparing for the Professional World",
             "matiere": "Sustainable Development",
             "heures_matiere": "15",
             "heures_panier_total": "15",
@@ -2716,7 +2736,7 @@
           },
           {
             "semestre": null,
-            "panier": "Semestre 9",
+            "panier": "Preparing for the Professional World",
             "matiere": "Personal competencies A",
             "heures_matiere": "15",
             "heures_panier_total": "15",
@@ -2726,7 +2746,7 @@
           },
           {
             "semestre": null,
-            "panier": "Semestre 9",
+            "panier": "Preparing for the Professional World",
             "matiere": "Personal competencies F",
             "heures_matiere": "15",
             "heures_panier_total": "0",
@@ -2736,7 +2756,7 @@
           },
           {
             "semestre": null,
-            "panier": "Semestre 9",
+            "panier": "Séminaires",
             "matiere": "Blockchain",
             "heures_matiere": "15",
             "heures_panier_total": "15",
@@ -2746,7 +2766,7 @@
           },
           {
             "semestre": null,
-            "panier": "Semestre 9",
+            "panier": "Séminaires",
             "matiere": "AWS Fundamentals",
             "heures_matiere": "21",
             "heures_panier_total": "15",
@@ -2756,7 +2776,7 @@
           },
           {
             "semestre": null,
-            "panier": "Semestre 10",
+            "panier": "Projet de fin d'études (PFE)",
             "matiere": "Projet de fin d'études (PFE)",
             "heures_matiere": "",
             "heures_panier_total": "",
@@ -2769,8 +2789,9 @@
           "sections": [
             {
               "semestre": null,
-              "panier_col": 0,
+              "panier_col": 1,
               "matiere_col": 2,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 5,
               "ects_module_col": 4,
@@ -2793,7 +2814,7 @@
         "lignes": [
           {
             "semestre": "Semestre-1",
-            "panier": "Mathématiques de base 1",
+            "panier": "UE Mathématiques de base 1",
             "matiere": "Mathématiques de base 1",
             "heures_matiere": "84",
             "heures_panier_total": "84",
@@ -2803,7 +2824,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Mathématiques de base 1",
+            "panier": "UE Mathématiques de base 1",
             "matiere": "Algorithmique",
             "heures_matiere": "21",
             "heures_panier_total": "84",
@@ -2813,7 +2834,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Mathématiques de base 1",
+            "panier": "UE Mathématiques de base 1",
             "matiere": "Techniques Multimédia",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -2823,7 +2844,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Mathématiques de base 1",
+            "panier": "UE Mathématiques de base 1",
             "matiere": "Edition de documents",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -2833,7 +2854,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Mathématiques de base 1",
+            "panier": "UE Mathématiques de base 1",
             "matiere": "Projet bibliographique (informatique appliquée au GC)",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -2843,7 +2864,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Mathématiques de base 1",
+            "panier": "UE Aménagement Urbain et Développement Durable",
             "matiere": "Dessin Technique",
             "heures_matiere": "21",
             "heures_panier_total": "84",
@@ -2853,7 +2874,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Mathématiques de base 1",
+            "panier": "UE Aménagement Urbain et Développement Durable",
             "matiere": "Architecture & lecture de plans",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -2863,7 +2884,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Mathématiques de base 1",
+            "panier": "UE Aménagement Urbain et Développement Durable",
             "matiere": "Projet Aménagement Urbain et Développement Durable",
             "heures_matiere": "42",
             "heures_panier_total": null,
@@ -2873,7 +2894,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Mathématiques de base 1",
+            "panier": "UE Physique Chimie",
             "matiere": "Circuits électriques",
             "heures_matiere": "21",
             "heures_panier_total": "42",
@@ -2883,7 +2904,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Mathématiques de base 1",
+            "panier": "UE Physique Chimie",
             "matiere": "Chimie",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -2893,7 +2914,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Mathématiques de base 1",
+            "panier": "UE Communication, Culture et Citoyenneté F1",
             "matiere": "CCC F1",
             "heures_matiere": "42",
             "heures_panier_total": "42",
@@ -2902,8 +2923,18 @@
             "ects_panier_total": null
           },
           {
+            "semestre": "Semestre-1",
+            "panier": "UE Communication, Culture et Citoyenneté F1",
+            "matiere": "APP0",
+            "heures_matiere": "",
+            "heures_panier_total": "",
+            "periode": null,
+            "ects_matiere": "",
+            "ects_panier_total": null
+          },
+          {
             "semestre": "Semestre-2",
-            "panier": "Mathématiques de base 2",
+            "panier": "UE Mathématiques de base 2",
             "matiere": "Mathématiques de base 2",
             "heures_matiere": "84",
             "heures_panier_total": "84",
@@ -2913,7 +2944,7 @@
           },
           {
             "semestre": "Semestre-2",
-            "panier": "Mathématiques de base 2",
+            "panier": "UE Mécanique Computationelle",
             "matiere": "Algorithmique & Programmation",
             "heures_matiere": "42",
             "heures_panier_total": "84",
@@ -2923,7 +2954,7 @@
           },
           {
             "semestre": "Semestre-2",
-            "panier": "Mathématiques de base 2",
+            "panier": "UE Mécanique Computationelle",
             "matiere": "Statique",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -2933,7 +2964,7 @@
           },
           {
             "semestre": "Semestre-2",
-            "panier": "Mathématiques de base 2",
+            "panier": "UE Mécanique Computationelle",
             "matiere": "Dynamique",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -2943,7 +2974,7 @@
           },
           {
             "semestre": "Semestre-2",
-            "panier": "Mathématiques de base 2",
+            "panier": "UE Introduction au Génie Civil",
             "matiere": "Dessin GC assisté par ordinateur",
             "heures_matiere": "42\n30",
             "heures_panier_total": "72",
@@ -2953,7 +2984,7 @@
           },
           {
             "semestre": "Semestre-2",
-            "panier": "Mathématiques de base 2",
+            "panier": "UE Introduction au Génie Civil",
             "matiere": "Technologies de construction",
             "heures_matiere": null,
             "heures_panier_total": null,
@@ -2963,7 +2994,7 @@
           },
           {
             "semestre": "Semestre-2",
-            "panier": "Mathématiques de base 2",
+            "panier": "UE Projet Batiment Intéligent",
             "matiere": "Domotique",
             "heures_matiere": "21",
             "heures_panier_total": "63",
@@ -2973,7 +3004,7 @@
           },
           {
             "semestre": "Semestre-2",
-            "panier": "Mathématiques de base 2",
+            "panier": "UE Projet Batiment Intéligent",
             "matiere": "Projet Domotique",
             "heures_matiere": "42",
             "heures_panier_total": null,
@@ -2983,7 +3014,7 @@
           },
           {
             "semestre": "Semestre-2",
-            "panier": "Mathématiques de base 2",
+            "panier": "UE Communication, Culture et Citoyenneté A1",
             "matiere": "CCC A1",
             "heures_matiere": "42",
             "heures_panier_total": "42",
@@ -2996,8 +3027,9 @@
           "sections": [
             {
               "semestre": "Semestre-1",
-              "panier_col": 2,
+              "panier_col": 0,
               "matiere_col": 1,
+              "matiere_overflow_col": 2,
               "heures_module_col": 7,
               "heures_total_col": 4,
               "ects_module_col": 10,
@@ -3007,8 +3039,9 @@
             },
             {
               "semestre": "Semestre-2",
-              "panier_col": 2,
+              "panier_col": 0,
               "matiere_col": 1,
+              "matiere_overflow_col": 2,
               "heures_module_col": 4,
               "heures_total_col": 7,
               "ects_module_col": 10,
@@ -3031,7 +3064,7 @@
         "lignes": [
           {
             "semestre": "Semestre-3",
-            "panier": "Mathématiques de base 3",
+            "panier": "UE Mathématiques de base 3",
             "matiere": "Mathématiques de base 3",
             "heures_matiere": "84",
             "heures_panier_total": "84",
@@ -3041,7 +3074,7 @@
           },
           {
             "semestre": "Semestre-3",
-            "panier": "Mathématiques de base 3",
+            "panier": "UE Matériaux",
             "matiere": "Matériaux de construction",
             "heures_matiere": "42",
             "heures_panier_total": "99",
@@ -3051,7 +3084,7 @@
           },
           {
             "semestre": "Semestre-3",
-            "panier": "Mathématiques de base 3",
+            "panier": "UE Matériaux",
             "matiere": "Tp matériaux de construction",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -3061,7 +3094,7 @@
           },
           {
             "semestre": "Semestre-3",
-            "panier": "Mathématiques de base 3",
+            "panier": "UE Matériaux",
             "matiere": "Métallurgie (Visite)",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -3071,7 +3104,7 @@
           },
           {
             "semestre": "Semestre-3",
-            "panier": "Mathématiques de base 3",
+            "panier": "UE Matériaux",
             "matiere": "Géologie de l'ingénieur",
             "heures_matiere": "15",
             "heures_panier_total": null,
@@ -3081,7 +3114,7 @@
           },
           {
             "semestre": "Semestre-3",
-            "panier": "Mathématiques de base 3",
+            "panier": "UE construction durable",
             "matiere": "Réseaux urbains",
             "heures_matiere": "21",
             "heures_panier_total": "63",
@@ -3091,7 +3124,7 @@
           },
           {
             "semestre": "Semestre-3",
-            "panier": "Mathématiques de base 3",
+            "panier": "UE construction durable",
             "matiere": "Systèmes d'Information Géographique (SIG)",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -3101,7 +3134,7 @@
           },
           {
             "semestre": "Semestre-3",
-            "panier": "Mathématiques de base 3",
+            "panier": "UE construction durable",
             "matiere": "Projet Construction Durable et Environnement",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -3111,7 +3144,7 @@
           },
           {
             "semestre": "Semestre-3",
-            "panier": "Mathématiques de base 3",
+            "panier": "UE Physique appliquée",
             "matiere": "Thermodynamique",
             "heures_matiere": "21",
             "heures_panier_total": "",
@@ -3121,7 +3154,7 @@
           },
           {
             "semestre": "Semestre-3",
-            "panier": "Mathématiques de base 3",
+            "panier": "UE Physique appliquée",
             "matiere": "Vibrations mécaniques",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -3131,7 +3164,7 @@
           },
           {
             "semestre": "Semestre-3",
-            "panier": "Mathématiques de base 3",
+            "panier": "UE Physique appliquée",
             "matiere": "Transfert de chaleur",
             "heures_matiere": "30",
             "heures_panier_total": null,
@@ -3141,7 +3174,7 @@
           },
           {
             "semestre": "Semestre-3",
-            "panier": "Mathématiques de base 3",
+            "panier": "UE Communication, Culture et Citoyennité A2",
             "matiere": "CCC A2",
             "heures_matiere": "42",
             "heures_panier_total": "42",
@@ -3151,7 +3184,7 @@
           },
           {
             "semestre": "Semestre-3",
-            "panier": "Mathématiques de base 3",
+            "panier": "UE Stages 1",
             "matiere": "Stage de formation humaine et sociale",
             "heures_matiere": "-",
             "heures_panier_total": "-",
@@ -3161,7 +3194,7 @@
           },
           {
             "semestre": "Semestre-4",
-            "panier": "Mathématiques de base 4",
+            "panier": "UE Mathématiques de base 4",
             "matiere": "Mathématiques de base 4",
             "heures_matiere": "84",
             "heures_panier_total": "105",
@@ -3171,7 +3204,7 @@
           },
           {
             "semestre": "Semestre-4",
-            "panier": "Mathématiques de base 4",
+            "panier": "UE Mathématiques de base 4",
             "matiere": "Atelier Mathématiques appliquées",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -3181,7 +3214,7 @@
           },
           {
             "semestre": "Semestre-4",
-            "panier": "Mathématiques de base 4",
+            "panier": "UE Mesures et Topographie",
             "matiere": "Mesures et Instrumentation",
             "heures_matiere": "30",
             "heures_panier_total": "66",
@@ -3191,7 +3224,7 @@
           },
           {
             "semestre": "Semestre-4",
-            "panier": "Mathématiques de base 4",
+            "panier": "UE Mesures et Topographie",
             "matiere": "Topographie (+TP)",
             "heures_matiere": "36",
             "heures_panier_total": null,
@@ -3201,7 +3234,7 @@
           },
           {
             "semestre": "Semestre-4",
-            "panier": "Mathématiques de base 4",
+            "panier": "UE Projet Associatif & Collaboratif",
             "matiere": "Projet Associatif & Collaboratif",
             "heures_matiere": "9",
             "heures_panier_total": "9",
@@ -3211,7 +3244,7 @@
           },
           {
             "semestre": "Semestre-4",
-            "panier": "Mathématiques de base 4",
+            "panier": "UE Mécanique",
             "matiere": "Mécanique des fluides",
             "heures_matiere": "30",
             "heures_panier_total": "72",
@@ -3221,7 +3254,7 @@
           },
           {
             "semestre": "Semestre-4",
-            "panier": "Mathématiques de base 4",
+            "panier": "UE Mécanique",
             "matiere": "Résistance Des Matériaux",
             "heures_matiere": "42",
             "heures_panier_total": null,
@@ -3231,7 +3264,7 @@
           },
           {
             "semestre": "Semestre-4",
-            "panier": "Mathématiques de base 4",
+            "panier": "UE Physique du bâtiment",
             "matiere": "Physique du bâtiment",
             "heures_matiere": "21",
             "heures_panier_total": "42",
@@ -3241,7 +3274,7 @@
           },
           {
             "semestre": "Semestre-4",
-            "panier": "Mathématiques de base 4",
+            "panier": "UE Physique du bâtiment",
             "matiere": "Projet Physique du Bâtiment",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -3251,7 +3284,7 @@
           },
           {
             "semestre": "Semestre-4",
-            "panier": "Mathématiques de base 4",
+            "panier": "UE Communication, Culture et Citoyenneté F2",
             "matiere": "CCC F2",
             "heures_matiere": "42",
             "heures_panier_total": "42",
@@ -3264,8 +3297,9 @@
           "sections": [
             {
               "semestre": "Semestre-3",
-              "panier_col": 2,
+              "panier_col": 0,
               "matiere_col": 1,
+              "matiere_overflow_col": 2,
               "heures_module_col": 7,
               "heures_total_col": 4,
               "ects_module_col": 10,
@@ -3275,8 +3309,9 @@
             },
             {
               "semestre": "Semestre-4",
-              "panier_col": 2,
+              "panier_col": 0,
               "matiere_col": 1,
+              "matiere_overflow_col": 2,
               "heures_module_col": 7,
               "heures_total_col": 4,
               "ects_module_col": 10,
@@ -3299,7 +3334,7 @@
         "lignes": [
           {
             "semestre": "Semestre-5",
-            "panier": "Mécanique des solides déformables",
+            "panier": "UE Mécanique appliquée au GC",
             "matiere": "Mécanique des solides déformables",
             "heures_matiere": "21",
             "heures_panier_total": "63",
@@ -3309,7 +3344,7 @@
           },
           {
             "semestre": "Semestre-5",
-            "panier": "Mécanique des solides déformables",
+            "panier": "UE mécanique des sols",
             "matiere": "Mécanique des sols",
             "heures_matiere": "42",
             "heures_panier_total": "54",
@@ -3319,7 +3354,7 @@
           },
           {
             "semestre": "Semestre-5",
-            "panier": "Mécanique des solides déformables",
+            "panier": "UE Techniques de Construction",
             "matiere": "Béton armé",
             "heures_matiere": "42",
             "heures_panier_total": "99",
@@ -3329,7 +3364,7 @@
           },
           {
             "semestre": "Semestre-5",
-            "panier": "Mécanique des solides déformables",
+            "panier": "UE Techniques de Construction",
             "matiere": "TP béton armé",
             "heures_matiere": "15",
             "heures_panier_total": null,
@@ -3339,7 +3374,7 @@
           },
           {
             "semestre": "Semestre-5",
-            "panier": "Mécanique des solides déformables",
+            "panier": "UE Techniques de Construction",
             "matiere": "Construction Métallique et Mixte",
             "heures_matiere": "42",
             "heures_panier_total": null,
@@ -3349,7 +3384,7 @@
           },
           {
             "semestre": "Semestre-5",
-            "panier": "Mécanique des solides déformables",
+            "panier": "UE Homogénéisation",
             "matiere": "RDM/ SDGs / Math appliquées",
             "heures_matiere": "42",
             "heures_panier_total": "42",
@@ -3359,7 +3394,7 @@
           },
           {
             "semestre": "Semestre-6",
-            "panier": "Probabilité & Statistiques",
+            "panier": "UE Analyse des données",
             "matiere": "Probabilité & Statistiques",
             "heures_matiere": "30",
             "heures_panier_total": "72",
@@ -3369,7 +3404,7 @@
           },
           {
             "semestre": "Semestre-6",
-            "panier": "Probabilité & Statistiques",
+            "panier": "UE Analyse des données",
             "matiere": "Atelier Intelligence Artificielle",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -3379,7 +3414,7 @@
           },
           {
             "semestre": "Semestre-6",
-            "panier": "Probabilité & Statistiques",
+            "panier": "UE Analyse des données",
             "matiere": "Base de données",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -3389,7 +3424,7 @@
           },
           {
             "semestre": "Semestre-6",
-            "panier": "Probabilité & Statistiques",
+            "panier": "UE Fondations & Soutènements",
             "matiere": "Fondations & Soutènements",
             "heures_matiere": "30",
             "heures_panier_total": "51",
@@ -3399,7 +3434,7 @@
           },
           {
             "semestre": "Semestre-6",
-            "panier": "Probabilité & Statistiques",
+            "panier": "UE Fondations & Soutènements",
             "matiere": "BE Systèmes de Fondation",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -3409,7 +3444,7 @@
           },
           {
             "semestre": "Semestre-6",
-            "panier": "Probabilité & Statistiques",
+            "panier": "UE Calcul et conception des structures",
             "matiere": "Conception et Calcul de Structures en Béton Armé (CCSBA)",
             "heures_matiere": "42",
             "heures_panier_total": "105",
@@ -3419,7 +3454,7 @@
           },
           {
             "semestre": "Semestre-6",
-            "panier": "Probabilité & Statistiques",
+            "panier": "UE Calcul et conception des structures",
             "matiere": "Conception et Calcul de Structures Métalliques et Mixtes (CCSMM)",
             "heures_matiere": "42",
             "heures_panier_total": null,
@@ -3429,7 +3464,7 @@
           },
           {
             "semestre": "Semestre-6",
-            "panier": "Probabilité & Statistiques",
+            "panier": "UE Calcul et conception des structures",
             "matiere": "BE Chapente métallique",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -3439,7 +3474,7 @@
           },
           {
             "semestre": "Semestre-6",
-            "panier": "Probabilité & Statistiques",
+            "panier": "UE Management de l'entreprise",
             "matiere": "Environnement de l'entreprise",
             "heures_matiere": "21",
             "heures_panier_total": "42",
@@ -3449,7 +3484,7 @@
           },
           {
             "semestre": "Semestre-6",
-            "panier": "Probabilité & Statistiques",
+            "panier": "UE Management de l'entreprise",
             "matiere": "Analyse et décision financière",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -3459,7 +3494,7 @@
           },
           {
             "semestre": "Semestre-6",
-            "panier": "Probabilité & Statistiques",
+            "panier": "UE Communication, Culture et Citoyenneté F3",
             "matiere": "CCC F3",
             "heures_matiere": "42",
             "heures_panier_total": "42",
@@ -3469,7 +3504,7 @@
           },
           {
             "semestre": "Semestre-6",
-            "panier": "Probabilité & Statistiques",
+            "panier": "Projet Structures de Bâtiments",
             "matiere": "Projet Structures de Bâtiments",
             "heures_matiere": "42",
             "heures_panier_total": "42",
@@ -3482,8 +3517,9 @@
           "sections": [
             {
               "semestre": "Semestre-5",
-              "panier_col": 1,
+              "panier_col": 0,
               "matiere_col": 2,
+              "matiere_overflow_col": null,
               "heures_module_col": 6,
               "heures_total_col": 4,
               "ects_module_col": 8,
@@ -3493,8 +3529,9 @@
             },
             {
               "semestre": "Semestre-6",
-              "panier_col": 2,
+              "panier_col": 0,
               "matiere_col": 1,
+              "matiere_overflow_col": 2,
               "heures_module_col": 6,
               "heures_total_col": 4,
               "ects_module_col": 8,
@@ -3662,6 +3699,7 @@
               "semestre": "Semestre-1",
               "panier_col": 0,
               "matiere_col": 1,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 2,
               "ects_module_col": 5,
@@ -3803,6 +3841,7 @@
               "semestre": "Semestre-2",
               "panier_col": 0,
               "matiere_col": 1,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 2,
               "ects_module_col": 5,
@@ -3994,6 +4033,7 @@
               "semestre": "Semestre-1",
               "panier_col": 0,
               "matiere_col": 1,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 2,
               "ects_module_col": 5,
@@ -4005,6 +4045,7 @@
               "semestre": "Semestre-2",
               "panier_col": 1,
               "matiere_col": 0,
+              "matiere_overflow_col": null,
               "heures_module_col": 5,
               "heures_total_col": 2,
               "ects_module_col": null,
@@ -4027,7 +4068,7 @@
         "lignes": [
           {
             "semestre": "Semestre-7",
-            "panier": "Analyse Numérique",
+            "panier": "UE Méthodes de Résolution Numériques",
             "matiere": "Analyse Numérique",
             "heures_matiere": "42",
             "heures_panier_total": "93",
@@ -4037,7 +4078,7 @@
           },
           {
             "semestre": "Semestre-7",
-            "panier": "Analyse Numérique",
+            "panier": "UE Méthodes de Résolution Numériques",
             "matiere": "BE Calcul par Éléments Finis",
             "heures_matiere": "30",
             "heures_panier_total": null,
@@ -4047,7 +4088,7 @@
           },
           {
             "semestre": "Semestre-7",
-            "panier": "Analyse Numérique",
+            "panier": "UE Méthodes de Résolution Numériques",
             "matiere": "IOT",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -4057,7 +4098,7 @@
           },
           {
             "semestre": "Semestre-7",
-            "panier": "Analyse Numérique",
+            "panier": "UE Béton Précontraint",
             "matiere": "Béton Précontraint",
             "heures_matiere": "42",
             "heures_panier_total": "63",
@@ -4067,7 +4108,7 @@
           },
           {
             "semestre": "Semestre-7",
-            "panier": "Analyse Numérique",
+            "panier": "UE Béton Précontraint",
             "matiere": "BE Béton Précontraint",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -4077,7 +4118,7 @@
           },
           {
             "semestre": "Semestre-7",
-            "panier": "Analyse Numérique",
+            "panier": "UE Ouvrages d'Art",
             "matiere": "Ouvrages d'Art",
             "heures_matiere": "42",
             "heures_panier_total": "63",
@@ -4087,7 +4128,7 @@
           },
           {
             "semestre": "Semestre-7",
-            "panier": "Analyse Numérique",
+            "panier": "UE Ouvrages d'Art",
             "matiere": "BE Ouvrage d'Art",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -4097,7 +4138,7 @@
           },
           {
             "semestre": "Semestre-7",
-            "panier": "Analyse Numérique",
+            "panier": "UE Routes & procédées",
             "matiere": "Routes",
             "heures_matiere": "42",
             "heures_panier_total": "105",
@@ -4107,7 +4148,7 @@
           },
           {
             "semestre": "Semestre-7",
-            "panier": "Analyse Numérique",
+            "panier": "UE Routes & procédées",
             "matiere": "Hydrologie",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -4117,7 +4158,7 @@
           },
           {
             "semestre": "Semestre-7",
-            "panier": "Analyse Numérique",
+            "panier": "UE Routes & procédées",
             "matiere": "PGC : Procéées généraux de construction",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -4127,7 +4168,7 @@
           },
           {
             "semestre": "Semestre-7",
-            "panier": "Analyse Numérique",
+            "panier": "UE Routes & procédées",
             "matiere": "BE Routes",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -4137,7 +4178,7 @@
           },
           {
             "semestre": "Semestre-7",
-            "panier": "-",
+            "panier": "UE stages 2",
             "matiere": "Stage d’immersion en entreprise",
             "heures_matiere": "",
             "heures_panier_total": "",
@@ -4147,7 +4188,7 @@
           },
           {
             "semestre": "Semestre-7",
-            "panier": "-",
+            "panier": "UE Communication, Culture et Citoyenneté A4",
             "matiere": "CCC F4",
             "heures_matiere": "42",
             "heures_panier_total": "42",
@@ -4157,7 +4198,7 @@
           },
           {
             "semestre": "Semestre-8",
-            "panier": "Hydraulique Générale",
+            "panier": "UE Hydraulique",
             "matiere": "Hydraulique Générale",
             "heures_matiere": "15",
             "heures_panier_total": "72",
@@ -4167,7 +4208,7 @@
           },
           {
             "semestre": "Semestre-8",
-            "panier": "Hydraulique Générale",
+            "panier": "UE Hydraulique",
             "matiere": "Hydraulique Urbaine (Visite)",
             "heures_matiere": "42",
             "heures_panier_total": null,
@@ -4177,7 +4218,7 @@
           },
           {
             "semestre": "Semestre-8",
-            "panier": "Hydraulique Générale",
+            "panier": "UE Hydraulique",
             "matiere": "BE VRD",
             "heures_matiere": "15",
             "heures_panier_total": null,
@@ -4187,7 +4228,7 @@
           },
           {
             "semestre": "Semestre-8",
-            "panier": "Hydraulique Générale",
+            "panier": "UE Gestion des projets et impact environnemental",
             "matiere": "Gestion des projets de construction (Visite)",
             "heures_matiere": "30",
             "heures_panier_total": "45",
@@ -4197,7 +4238,7 @@
           },
           {
             "semestre": "Semestre-8",
-            "panier": "Hydraulique Générale",
+            "panier": "UE Gestion des projets et impact environnemental",
             "matiere": "Impact environnemental des constructions",
             "heures_matiere": "15",
             "heures_panier_total": null,
@@ -4207,7 +4248,7 @@
           },
           {
             "semestre": "Semestre-8",
-            "panier": "Hydraulique Générale",
+            "panier": "UE Management",
             "matiere": "Droit de la propriété intellectuelle",
             "heures_matiere": "9",
             "heures_panier_total": "51",
@@ -4217,7 +4258,7 @@
           },
           {
             "semestre": "Semestre-8",
-            "panier": "Hydraulique Générale",
+            "panier": "UE Management",
             "matiere": "Innovation et entrepreneuriat",
             "heures_matiere": "42",
             "heures_panier_total": null,
@@ -4227,7 +4268,27 @@
           },
           {
             "semestre": "Semestre-8",
-            "panier": "Hydraulique Générale",
+            "panier": "UE Optionnelle",
+            "matiere": "Dynamique des structures",
+            "heures_matiere": "",
+            "heures_panier_total": "105",
+            "periode": "Structure &\nOuvrages",
+            "ects_matiere": "",
+            "ects_panier_total": "1"
+          },
+          {
+            "semestre": "Semestre-8",
+            "panier": "UE Optionnelle",
+            "matiere": "Stabilité des Bâtiments",
+            "heures_matiere": "",
+            "heures_panier_total": null,
+            "periode": null,
+            "ects_matiere": "",
+            "ects_panier_total": "1"
+          },
+          {
+            "semestre": "Semestre-8",
+            "panier": "UE Optionnelle",
             "matiere": "Sols & Ouvrages",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -4237,7 +4298,7 @@
           },
           {
             "semestre": "Semestre-8",
-            "panier": "Hydraulique Générale",
+            "panier": "UE Optionnelle",
             "matiere": "Routes et échangeurs",
             "heures_matiere": "42",
             "heures_panier_total": null,
@@ -4247,7 +4308,7 @@
           },
           {
             "semestre": "Semestre-8",
-            "panier": "Hydraulique Générale",
+            "panier": "UE Optionnelle",
             "matiere": "Pathologie et maintenance des ponts & chaussées et sécurité routière Ponts et tunnels",
             "heures_matiere": "42\n21",
             "heures_panier_total": null,
@@ -4257,7 +4318,17 @@
           },
           {
             "semestre": "Semestre-8",
-            "panier": "Hydraulique Générale",
+            "panier": "UE Optionnelle",
+            "matiere": "Réglementation énergétique des bâtiments",
+            "heures_matiere": "",
+            "heures_panier_total": null,
+            "periode": "Ressources\nnaturelles et\nétudes\nénergétiques",
+            "ects_matiere": "",
+            "ects_panier_total": "1"
+          },
+          {
+            "semestre": "Semestre-8",
+            "panier": "UE Optionnelle",
             "matiere": "Écoconstruction",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -4267,7 +4338,17 @@
           },
           {
             "semestre": "Semestre-8",
-            "panier": "Hydraulique Générale",
+            "panier": "UE Optionnelle",
+            "matiere": "Natural ressources engineering",
+            "heures_matiere": "",
+            "heures_panier_total": null,
+            "periode": null,
+            "ects_matiere": "",
+            "ects_panier_total": "1"
+          },
+          {
+            "semestre": "Semestre-8",
+            "panier": "Projet Structures & Ouvrages",
             "matiere": "Projet Structures & Ouvrages",
             "heures_matiere": "42",
             "heures_panier_total": "42",
@@ -4277,7 +4358,7 @@
           },
           {
             "semestre": "Semestre-8",
-            "panier": "Hydraulique Générale",
+            "panier": "UE Communication, Culture et Citoyenneté F4",
             "matiere": "CCC A4",
             "heures_matiere": "42",
             "heures_panier_total": "42",
@@ -4290,8 +4371,9 @@
           "sections": [
             {
               "semestre": "Semestre-7",
-              "panier_col": 13,
+              "panier_col": 0,
               "matiere_col": 3,
+              "matiere_overflow_col": 4,
               "heures_module_col": 9,
               "heures_total_col": 6,
               "ects_module_col": 12,
@@ -4301,8 +4383,9 @@
             },
             {
               "semestre": "Semestre-8",
-              "panier_col": 4,
+              "panier_col": 0,
               "matiere_col": 3,
+              "matiere_overflow_col": 4,
               "heures_module_col": 9,
               "heures_total_col": 6,
               "ects_module_col": 12,
@@ -4338,7 +4421,7 @@
         "lignes": [
           {
             "semestre": "Semestre-8",
-            "panier": "QHSE",
+            "panier": "UE pathologie des constructions et risques de travail au GC",
             "matiere": "QHSE",
             "heures_matiere": "15",
             "heures_panier_total": "51",
@@ -4348,7 +4431,7 @@
           },
           {
             "semestre": "Semestre-8",
-            "panier": "QHSE",
+            "panier": "UE pathologie des constructions et risques de travail au GC",
             "matiere": "Sécurité BTP",
             "heures_matiere": "",
             "heures_panier_total": null,
@@ -4358,7 +4441,7 @@
           },
           {
             "semestre": "Semestre-8",
-            "panier": "QHSE",
+            "panier": "UE pathologie des constructions et risques de travail au GC",
             "matiere": "Pathologie, maintenance et réhabilitation des constructions",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -4368,7 +4451,7 @@
           },
           {
             "semestre": "Semestre-8",
-            "panier": "QHSE",
+            "panier": "UE Nouvelles Technologies",
             "matiere": "Technologie BIM",
             "heures_matiere": "30",
             "heures_panier_total": "51",
@@ -4378,7 +4461,7 @@
           },
           {
             "semestre": "Semestre-8",
-            "panier": "QHSE",
+            "panier": "UE Nouvelles Technologies",
             "matiere": "Projet Smart City",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -4388,7 +4471,7 @@
           },
           {
             "semestre": "Semestre-8",
-            "panier": "QHSE",
+            "panier": "UE Développement durable et efficacité energetique",
             "matiere": "Etude énergétique d'un bâtiment",
             "heures_matiere": "21",
             "heures_panier_total": "30",
@@ -4398,7 +4481,7 @@
           },
           {
             "semestre": "Semestre-8",
-            "panier": "QHSE",
+            "panier": "UE Développement durable et efficacité energetique",
             "matiere": "Professional Applications to Natural Ressources",
             "heures_matiere": "15",
             "heures_panier_total": null,
@@ -4408,7 +4491,7 @@
           },
           {
             "semestre": "Semestre-8",
-            "panier": "QHSE",
+            "panier": "UE Développement durable et efficacité energetique",
             "matiere": "SDGs (certificat)",
             "heures_matiere": "30",
             "heures_panier_total": null,
@@ -4418,7 +4501,7 @@
           },
           {
             "semestre": "Semestre-8",
-            "panier": "QHSE",
+            "panier": "UE Optionnelle (projet)",
             "matiere": "Pont et chaussées",
             "heures_matiere": "30",
             "heures_panier_total": "30",
@@ -4428,7 +4511,7 @@
           },
           {
             "semestre": "Semestre-8",
-            "panier": "QHSE",
+            "panier": "UE Optionnelle (projet)",
             "matiere": "Structures et ouvrages",
             "heures_matiere": null,
             "heures_panier_total": null,
@@ -4438,7 +4521,7 @@
           },
           {
             "semestre": "Semestre-8",
-            "panier": "QHSE",
+            "panier": "UE Droit et réglements",
             "matiere": "Droit de travail",
             "heures_matiere": "",
             "heures_panier_total": "15",
@@ -4448,7 +4531,7 @@
           },
           {
             "semestre": "Semestre-8",
-            "panier": "QHSE",
+            "panier": "UE Droit et réglements",
             "matiere": "Marché et règlements",
             "heures_matiere": "9",
             "heures_panier_total": null,
@@ -4458,7 +4541,7 @@
           },
           {
             "semestre": "Semestre-8",
-            "panier": "QHSE",
+            "panier": "UE Préparation à la vie professionnelle",
             "matiere": "PVP A",
             "heures_matiere": "",
             "heures_panier_total": "30",
@@ -4468,7 +4551,7 @@
           },
           {
             "semestre": "Semestre-8",
-            "panier": "QHSE",
+            "panier": "UE Préparation à la vie professionnelle",
             "matiere": "PVP F",
             "heures_matiere": "",
             "heures_panier_total": null,
@@ -4478,7 +4561,7 @@
           },
           {
             "semestre": "Semestre-8",
-            "panier": "QHSE",
+            "panier": "UE stages 3",
             "matiere": "Stage Ingénieur",
             "heures_matiere": "",
             "heures_panier_total": "",
@@ -4501,8 +4584,9 @@
           "sections": [
             {
               "semestre": "Semestre-8",
-              "panier_col": 2,
+              "panier_col": 0,
               "matiere_col": 1,
+              "matiere_overflow_col": 2,
               "heures_module_col": 7,
               "heures_total_col": 4,
               "ects_module_col": 13,
@@ -4514,6 +4598,7 @@
               "semestre": "Semestre-1",
               "panier_col": 2,
               "matiere_col": 0,
+              "matiere_overflow_col": null,
               "heures_module_col": 13,
               "heures_total_col": null,
               "ects_module_col": null,
@@ -4691,6 +4776,7 @@
               "semestre": "Semestre-7",
               "panier_col": 0,
               "matiere_col": 1,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 2,
               "ects_module_col": 5,
@@ -4842,6 +4928,7 @@
               "semestre": "Semestre-2",
               "panier_col": 0,
               "matiere_col": 1,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 2,
               "ects_module_col": 5,
@@ -5013,6 +5100,7 @@
               "semestre": "Semestre-1",
               "panier_col": 0,
               "matiere_col": 1,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 2,
               "ects_module_col": 5,
@@ -5240,6 +5328,7 @@
               "semestre": "Semestre-1",
               "panier_col": 0,
               "matiere_col": 2,
+              "matiere_overflow_col": null,
               "heures_module_col": 5,
               "heures_total_col": 3,
               "ects_module_col": 8,
@@ -5251,6 +5340,7 @@
               "semestre": "Semestre-2",
               "panier_col": 0,
               "matiere_col": 2,
+              "matiere_overflow_col": null,
               "heures_module_col": 5,
               "heures_total_col": 3,
               "ects_module_col": 8,
@@ -5468,6 +5558,7 @@
               "semestre": "Semestre-1",
               "panier_col": 0,
               "matiere_col": 2,
+              "matiere_overflow_col": null,
               "heures_module_col": 5,
               "heures_total_col": 3,
               "ects_module_col": 10,
@@ -5479,6 +5570,7 @@
               "semestre": "Semestre-2",
               "panier_col": 0,
               "matiere_col": 2,
+              "matiere_overflow_col": null,
               "heures_module_col": 5,
               "heures_total_col": 3,
               "ects_module_col": 10,
@@ -5511,7 +5603,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Harmonisation",
+            "panier": "Méthodes numériques pour l'ingénieur",
             "matiere": "Programmation linéaire",
             "heures_matiere": "30",
             "heures_panier_total": "93",
@@ -5521,7 +5613,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Harmonisation",
+            "panier": "Méthodes numériques pour l'ingénieur",
             "matiere": "Analyse numérique",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -5531,7 +5623,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Harmonisation",
+            "panier": "Méthodes numériques pour l'ingénieur",
             "matiere": "Mathématiques pour l'ingénieur",
             "heures_matiere": "42",
             "heures_panier_total": null,
@@ -5541,7 +5633,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Harmonisation",
+            "panier": "Dimensionnement des structures déformables",
             "matiere": "Mécanique des milieux continus",
             "heures_matiere": "21",
             "heures_panier_total": "63",
@@ -5551,7 +5643,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Harmonisation",
+            "panier": "Dimensionnement des structures déformables",
             "matiere": "Résistance mécanique des matériaux",
             "heures_matiere": null,
             "heures_panier_total": null,
@@ -5561,7 +5653,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Harmonisation",
+            "panier": "Dimensionnement des structures déformables",
             "matiere": "et structures",
             "heures_matiere": null,
             "heures_panier_total": null,
@@ -5571,7 +5663,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Harmonisation",
+            "panier": "Systèmes électriques 2",
             "matiere": "Electronique de puissance",
             "heures_matiere": "30",
             "heures_panier_total": "42",
@@ -5581,7 +5673,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Harmonisation",
+            "panier": "Systèmes électriques 2",
             "matiere": "Atelier Electronique de puissance",
             "heures_matiere": "12",
             "heures_panier_total": null,
@@ -5591,7 +5683,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Harmonisation",
+            "panier": "Management de l'entreprise",
             "matiere": "Analyse et décision financière",
             "heures_matiere": "21",
             "heures_panier_total": "42",
@@ -5601,7 +5693,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Harmonisation",
+            "panier": "Management de l'entreprise",
             "matiere": "Environnement et stratégie de",
             "heures_matiere": null,
             "heures_panier_total": null,
@@ -5611,7 +5703,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Harmonisation",
+            "panier": "Management de l'entreprise",
             "matiere": "l'entreprise",
             "heures_matiere": null,
             "heures_panier_total": null,
@@ -5621,7 +5713,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "CCC A3",
+            "panier": "Management de l'entreprise",
             "matiere": "CCC A3",
             "heures_matiere": "42",
             "heures_panier_total": "42",
@@ -5631,7 +5723,7 @@
           },
           {
             "semestre": "Semestre-2",
-            "panier": "Probabilité et statistiques",
+            "panier": "Mathématiques appliquées",
             "matiere": "Mathématiques appliquées",
             "heures_matiere": "",
             "heures_panier_total": "63",
@@ -5641,7 +5733,7 @@
           },
           {
             "semestre": "Semestre-2",
-            "panier": "Probabilité et statistiques",
+            "panier": "Electronique embarqué",
             "matiere": "Systèmes automatisés",
             "heures_matiere": "30",
             "heures_panier_total": "106",
@@ -5651,7 +5743,7 @@
           },
           {
             "semestre": "Semestre-2",
-            "panier": "Mécanique des fluides",
+            "panier": "Electronique embarqué",
             "matiere": "Ecoulement et transfert",
             "heures_matiere": "",
             "heures_panier_total": "51",
@@ -5661,7 +5753,7 @@
           },
           {
             "semestre": "Semestre-2",
-            "panier": "Mécanique des fluides",
+            "panier": "Procédés de formage et d'assemblage",
             "matiere": "Fabrication mécanique",
             "heures_matiere": "21",
             "heures_panier_total": "63",
@@ -5671,7 +5763,7 @@
           },
           {
             "semestre": "Semestre-2",
-            "panier": "Mécanique des fluides",
+            "panier": "Projet PCR2",
             "matiere": "Projet PCR2",
             "heures_matiere": "30",
             "heures_panier_total": "",
@@ -5681,7 +5773,7 @@
           },
           {
             "semestre": "Semestre-2",
-            "panier": "Mécanique des fluides",
+            "panier": "CCC F3",
             "matiere": "CCC F3",
             "heures_matiere": "42",
             "heures_panier_total": "",
@@ -5694,8 +5786,9 @@
           "sections": [
             {
               "semestre": "Semestre-1",
-              "panier_col": 1,
+              "panier_col": 0,
               "matiere_col": 4,
+              "matiere_overflow_col": null,
               "heures_module_col": 10,
               "heures_total_col": 6,
               "ects_module_col": 16,
@@ -5705,8 +5798,9 @@
             },
             {
               "semestre": "Semestre-2",
-              "panier_col": 4,
+              "panier_col": 3,
               "matiere_col": 0,
+              "matiere_overflow_col": null,
               "heures_module_col": 9,
               "heures_total_col": 6,
               "ects_module_col": 16,
@@ -5784,7 +5878,7 @@
         "lignes": [
           {
             "semestre": "Semestre-1",
-            "panier": "Automatisation des SI",
+            "panier": "Automatisme Industriel",
             "matiere": "Automatisation des SI",
             "heures_matiere": "21",
             "heures_panier_total": "108",
@@ -5794,7 +5888,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Automatisation des SI",
+            "panier": "Automatisme Industriel",
             "matiere": "Académie Siemens Advanced",
             "heures_matiere": "42",
             "heures_panier_total": null,
@@ -5804,7 +5898,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Automatisation des SI",
+            "panier": "Automatisme Industriel",
             "matiere": "Systèmes pneumatiques et hydrauliques",
             "heures_matiere": "30",
             "heures_panier_total": null,
@@ -5814,7 +5908,17 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Automatisation des SI",
+            "panier": "Automatisme Industriel",
+            "matiere": "Projet Systèmes automatisés",
+            "heures_matiere": "15",
+            "heures_panier_total": null,
+            "periode": "2",
+            "ects_matiere": "1",
+            "ects_panier_total": null
+          },
+          {
+            "semestre": "Semestre-1",
+            "panier": "Management et pilotage de projet",
             "matiere": "Gestion de projets",
             "heures_matiere": "21",
             "heures_panier_total": "51",
@@ -5824,7 +5928,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Automatisation des SI",
+            "panier": "Management et pilotage de projet",
             "matiere": "Innovation et entrepreneuriat_Ideation Camp",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -5834,7 +5938,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Automatisation des SI",
+            "panier": "Management et pilotage de projet",
             "matiere": "Droit de la propriété intellectuelle",
             "heures_matiere": "9",
             "heures_panier_total": null,
@@ -5844,7 +5948,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Automatisation des SI",
+            "panier": "Systèmes embarqués",
             "matiere": "Micro-informatique et temps réels",
             "heures_matiere": "21",
             "heures_panier_total": "72",
@@ -5854,7 +5958,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Automatisation des SI",
+            "panier": "Systèmes embarqués",
             "matiere": "Systèmes embarqués avancés",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -5864,7 +5968,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Automatisation des SI",
+            "panier": "Systèmes embarqués",
             "matiere": "FPGA",
             "heures_matiere": "30",
             "heures_panier_total": null,
@@ -5874,7 +5978,27 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Automatisation des SI",
+            "panier": "Automatique",
+            "matiere": "Automatique des systèmes échantillonnés",
+            "heures_matiere": "",
+            "heures_panier_total": "60",
+            "periode": "1-S2",
+            "ects_matiere": "2",
+            "ects_panier_total": null
+          },
+          {
+            "semestre": "Semestre-1",
+            "panier": "Automatique",
+            "matiere": "Systèmes multivariables",
+            "heures_matiere": "",
+            "heures_panier_total": null,
+            "periode": "2-S2",
+            "ects_matiere": "2",
+            "ects_panier_total": null
+          },
+          {
+            "semestre": "Semestre-1",
+            "panier": "CCC F4",
             "matiere": "CCC F4",
             "heures_matiere": "42",
             "heures_panier_total": "42",
@@ -5884,7 +6008,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Automatisation des SI",
+            "panier": "Projet CDIO",
             "matiere": "Projet CDIO",
             "heures_matiere": "21",
             "heures_panier_total": "21",
@@ -5894,7 +6018,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Automatisation des SI",
+            "panier": "Stage d'immersion en entreprise",
             "matiere": "Stage d'immersion en entreprise",
             "heures_matiere": "",
             "heures_panier_total": "",
@@ -5904,7 +6028,7 @@
           },
           {
             "semestre": "Semestre-2",
-            "panier": "Transmission de puissance",
+            "panier": "Modélisation des systèmes Mécaniques",
             "matiere": "Transmission de puissance",
             "heures_matiere": "30",
             "heures_panier_total": "84",
@@ -5914,7 +6038,7 @@
           },
           {
             "semestre": "Semestre-2",
-            "panier": "Transmission de puissance",
+            "panier": "Modélisation des systèmes Mécaniques",
             "matiere": "Vibration mécanique",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -5924,7 +6048,7 @@
           },
           {
             "semestre": "Semestre-2",
-            "panier": "Transmission de puissance",
+            "panier": "Modélisation des systèmes Mécaniques",
             "matiere": "Modélisation par éléments finis",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -5934,7 +6058,7 @@
           },
           {
             "semestre": "Semestre-2",
-            "panier": "Transmission de puissance",
+            "panier": "Modélisation des systèmes Mécaniques",
             "matiere": "Projet d'ingénierie simultanée",
             "heures_matiere": "12",
             "heures_panier_total": null,
@@ -5944,7 +6068,27 @@
           },
           {
             "semestre": "Semestre-2",
-            "panier": "Transmission de puissance",
+            "panier": "Systèmes électriques 3",
+            "matiere": "Machines électriques",
+            "heures_matiere": "",
+            "heures_panier_total": "54",
+            "periode": "1 et 2",
+            "ects_matiere": "",
+            "ects_panier_total": "2"
+          },
+          {
+            "semestre": "Semestre-2",
+            "panier": "Systèmes électriques 3",
+            "matiere": "Atelier Machines Electriques",
+            "heures_matiere": "",
+            "heures_panier_total": null,
+            "periode": "2",
+            "ects_matiere": "",
+            "ects_panier_total": "1"
+          },
+          {
+            "semestre": "Semestre-2",
+            "panier": "Maintenance responsable",
             "matiere": "DDRS",
             "heures_matiere": "30",
             "heures_panier_total": "102",
@@ -5954,7 +6098,7 @@
           },
           {
             "semestre": "Semestre-2",
-            "panier": "Transmission de puissance",
+            "panier": "Maintenance responsable",
             "matiere": "Contrôle de la qualité",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -5964,7 +6108,7 @@
           },
           {
             "semestre": "Semestre-2",
-            "panier": "Transmission de puissance",
+            "panier": "Maintenance responsable",
             "matiere": "Gestion de la maintenance industrielle",
             "heures_matiere": "30",
             "heures_panier_total": null,
@@ -5974,7 +6118,7 @@
           },
           {
             "semestre": "Semestre-2",
-            "panier": "Transmission de puissance",
+            "panier": "Maintenance responsable",
             "matiere": "Innovation et Entrepreuneuriat _ Atelier Créatif",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -5984,7 +6128,7 @@
           },
           {
             "semestre": "Semestre-2",
-            "panier": "Transmission de puissance",
+            "panier": "Environnement des systèmes robotisés",
             "matiere": "Robotique",
             "heures_matiere": "42",
             "heures_panier_total": "84",
@@ -5994,7 +6138,7 @@
           },
           {
             "semestre": "Semestre-2",
-            "panier": "Transmission de puissance",
+            "panier": "Environnement des systèmes robotisés",
             "matiere": "Traitement d'images",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -6004,7 +6148,17 @@
           },
           {
             "semestre": "Semestre-2",
-            "panier": "Transmission de puissance",
+            "panier": "Environnement des systèmes robotisés",
+            "matiere": "Machine learning 1",
+            "heures_matiere": "21",
+            "heures_panier_total": null,
+            "periode": "",
+            "ects_matiere": "2",
+            "ects_panier_total": null
+          },
+          {
+            "semestre": "Semestre-2",
+            "panier": "CCC A4",
             "matiere": "CCC A4",
             "heures_matiere": "42",
             "heures_panier_total": "",
@@ -6014,7 +6168,7 @@
           },
           {
             "semestre": "Semestre-2",
-            "panier": "Transmission de puissance",
+            "panier": "Projet CDIO",
             "matiere": "Projet CDIO",
             "heures_matiere": "21",
             "heures_panier_total": "",
@@ -6027,8 +6181,9 @@
           "sections": [
             {
               "semestre": "Semestre-1",
-              "panier_col": 3,
+              "panier_col": 0,
               "matiere_col": 2,
+              "matiere_overflow_col": 3,
               "heures_module_col": 8,
               "heures_total_col": 5,
               "ects_module_col": 14,
@@ -6038,8 +6193,9 @@
             },
             {
               "semestre": "Semestre-2",
-              "panier_col": 3,
+              "panier_col": 0,
               "matiere_col": 2,
+              "matiere_overflow_col": 3,
               "heures_module_col": 8,
               "heures_total_col": 5,
               "ects_module_col": 14,
@@ -6367,6 +6523,7 @@
               "semestre": "Semestre-1",
               "panier_col": 0,
               "matiere_col": 1,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 2,
               "ects_module_col": 5,
@@ -6378,6 +6535,7 @@
               "semestre": "Semestre-2",
               "panier_col": 0,
               "matiere_col": 1,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 2,
               "ects_module_col": 5,
@@ -6550,7 +6708,7 @@
           },
           {
             "semestre": "Semestre-8",
-            "panier": "Droit de la propriété Intellectuelle",
+            "panier": "Innovation et Entrepreunariat_Ideation_Camp",
             "matiere": "Droit de la propriété Intellectuelle",
             "heures_matiere": "12",
             "heures_panier_total": null,
@@ -6560,7 +6718,7 @@
           },
           {
             "semestre": "Semestre-8",
-            "panier": "Innovation et Entrepreunariat_Atelier Créatif",
+            "panier": "Innovation et Entrepreunariat_Ideation_Camp",
             "matiere": "Innovation et Entrepreunariat_Atelier Créatif",
             "heures_matiere": "21",
             "heures_panier_total": "21",
@@ -6570,7 +6728,7 @@
           },
           {
             "semestre": "Semestre-8",
-            "panier": "Administration des bases de données",
+            "panier": "Innovation et Entrepreunariat_Ideation_Camp",
             "matiere": "Administration des bases de données",
             "heures_matiere": "21",
             "heures_panier_total": "42",
@@ -6580,7 +6738,7 @@
           },
           {
             "semestre": "Semestre-8",
-            "panier": "Initiation application coté client",
+            "panier": "Innovation et Entrepreunariat_Ideation_Camp",
             "matiere": "Initiation application coté client",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -6590,7 +6748,7 @@
           },
           {
             "semestre": "Semestre-8",
-            "panier": "Deep Learning Fundamentals",
+            "panier": "Innovation et Entrepreunariat_Ideation_Camp",
             "matiere": "Deep Learning Fundamentals",
             "heures_matiere": "30",
             "heures_panier_total": "",
@@ -6600,7 +6758,7 @@
           },
           {
             "semestre": "Semestre-8",
-            "panier": "Advanced Big Data",
+            "panier": "Innovation et Entrepreunariat_Ideation_Camp",
             "matiere": "Advanced Big Data",
             "heures_matiere": "30",
             "heures_panier_total": null,
@@ -6610,7 +6768,7 @@
           },
           {
             "semestre": "Semestre-8",
-            "panier": "Communication, Culture et Citoyenneté A4",
+            "panier": "Innovation et Entrepreunariat_Ideation_Camp",
             "matiere": "Communication, Culture et Citoyenneté A4",
             "heures_matiere": "42",
             "heures_panier_total": "42",
@@ -6620,7 +6778,7 @@
           },
           {
             "semestre": "Semestre-8",
-            "panier": "Introduction au cloud",
+            "panier": "Innovation et Entrepreunariat_Ideation_Camp",
             "matiere": "Introduction au cloud",
             "heures_matiere": "21",
             "heures_panier_total": "63",
@@ -6630,7 +6788,7 @@
           },
           {
             "semestre": "Semestre-8",
-            "panier": "Architecture des SI II",
+            "panier": "Innovation et Entrepreunariat_Ideation_Camp",
             "matiere": "Architecture des SI II",
             "heures_matiere": "42",
             "heures_panier_total": null,
@@ -6640,7 +6798,7 @@
           },
           {
             "semestre": "Semestre-8",
-            "panier": "Projet Intégré",
+            "panier": "Innovation et Entrepreunariat_Ideation_Camp",
             "matiere": "Projet Intégré",
             "heures_matiere": "84",
             "heures_panier_total": "84",
@@ -6655,6 +6813,7 @@
               "semestre": "Semestre-7",
               "panier_col": 0,
               "matiere_col": 1,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 2,
               "ects_module_col": 5,
@@ -6664,8 +6823,9 @@
             },
             {
               "semestre": "Semestre-8",
-              "panier_col": 1,
+              "panier_col": null,
               "matiere_col": 1,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 2,
               "ects_module_col": 5,
@@ -6847,6 +7007,7 @@
               "semestre": "Semestre-9",
               "panier_col": 1,
               "matiere_col": 2,
+              "matiere_overflow_col": null,
               "heures_module_col": 4,
               "heures_total_col": 3,
               "ects_module_col": 6,
@@ -7019,7 +7180,7 @@
           },
           {
             "semestre": "Semestre-8",
-            "panier": "Droit de la propriété Intellectuelle",
+            "panier": "Innovation et Entrepreunariat_Ideation_Camp",
             "matiere": "Droit de la propriété Intellectuelle",
             "heures_matiere": "12",
             "heures_panier_total": null,
@@ -7029,7 +7190,7 @@
           },
           {
             "semestre": "Semestre-8",
-            "panier": "Innovation et Entrepreunariat_Atelier Créatif",
+            "panier": "Innovation et Entrepreunariat_Ideation_Camp",
             "matiere": "Innovation et Entrepreunariat_Atelier Créatif",
             "heures_matiere": "21",
             "heures_panier_total": "21",
@@ -7039,7 +7200,7 @@
           },
           {
             "semestre": "Semestre-8",
-            "panier": "Optimisation des Réseaux Mobiles",
+            "panier": "Innovation et Entrepreunariat_Ideation_Camp",
             "matiere": "Optimisation des Réseaux Mobiles",
             "heures_matiere": "21",
             "heures_panier_total": "42",
@@ -7049,7 +7210,7 @@
           },
           {
             "semestre": "Semestre-8",
-            "panier": "Cellular Networks 2",
+            "panier": "Innovation et Entrepreunariat_Ideation_Camp",
             "matiere": "Cellular Networks 2",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -7059,7 +7220,7 @@
           },
           {
             "semestre": "Semestre-8",
-            "panier": "Deep Learning Fundamentals",
+            "panier": "Innovation et Entrepreunariat_Ideation_Camp",
             "matiere": "Deep Learning Fundamentals",
             "heures_matiere": "30",
             "heures_panier_total": "",
@@ -7069,7 +7230,7 @@
           },
           {
             "semestre": "Semestre-8",
-            "panier": "Advanced Big Data",
+            "panier": "Innovation et Entrepreunariat_Ideation_Camp",
             "matiere": "Advanced Big Data",
             "heures_matiere": "30",
             "heures_panier_total": null,
@@ -7079,7 +7240,7 @@
           },
           {
             "semestre": "Semestre-8",
-            "panier": "Communication, Culture et Citoyenneté A4",
+            "panier": "Innovation et Entrepreunariat_Ideation_Camp",
             "matiere": "Communication, Culture et Citoyenneté A4",
             "heures_matiere": "42",
             "heures_panier_total": "42",
@@ -7089,7 +7250,7 @@
           },
           {
             "semestre": "Semestre-8",
-            "panier": "Introduction au cloud",
+            "panier": "Innovation et Entrepreunariat_Ideation_Camp",
             "matiere": "Introduction au cloud",
             "heures_matiere": "21",
             "heures_panier_total": "63",
@@ -7099,7 +7260,7 @@
           },
           {
             "semestre": "Semestre-8",
-            "panier": "Architecture des SI II",
+            "panier": "Innovation et Entrepreunariat_Ideation_Camp",
             "matiere": "Architecture des SI II",
             "heures_matiere": "42",
             "heures_panier_total": null,
@@ -7109,7 +7270,7 @@
           },
           {
             "semestre": "Semestre-8",
-            "panier": "Projet Intégré",
+            "panier": "Innovation et Entrepreunariat_Ideation_Camp",
             "matiere": "Projet Intégré",
             "heures_matiere": "84",
             "heures_panier_total": "84",
@@ -7124,6 +7285,7 @@
               "semestre": "Semestre-7",
               "panier_col": 0,
               "matiere_col": 1,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 2,
               "ects_module_col": 5,
@@ -7133,8 +7295,9 @@
             },
             {
               "semestre": "Semestre-8",
-              "panier_col": 1,
+              "panier_col": null,
               "matiere_col": 1,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 2,
               "ects_module_col": 5,
@@ -7326,6 +7489,7 @@
               "semestre": "Semestre-9",
               "panier_col": 1,
               "matiere_col": 2,
+              "matiere_overflow_col": null,
               "heures_module_col": 4,
               "heures_total_col": 3,
               "ects_module_col": 6,
@@ -7613,6 +7777,7 @@
               "semestre": "Semestre-1",
               "panier_col": 0,
               "matiere_col": 1,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 2,
               "ects_module_col": 5,
@@ -7624,6 +7789,7 @@
               "semestre": "Semestre-2",
               "panier_col": 0,
               "matiere_col": 1,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 2,
               "ects_module_col": 5,
@@ -7795,6 +7961,7 @@
               "semestre": "Semestre-3",
               "panier_col": 0,
               "matiere_col": 1,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 2,
               "ects_module_col": 5,
@@ -8092,6 +8259,7 @@
               "semestre": "Semestre-1",
               "panier_col": 0,
               "matiere_col": 1,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 2,
               "ects_module_col": 5,
@@ -8103,6 +8271,7 @@
               "semestre": "Semestre-2",
               "panier_col": 0,
               "matiere_col": 1,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 2,
               "ects_module_col": 5,
@@ -8119,7 +8288,7 @@
         "lignes": [
           {
             "semestre": "Semestre-1",
-            "panier": "Seminaires",
+            "panier": "S8->S10",
             "matiere": "Business et monétisation des jeux vidéo",
             "heures_matiere": "9",
             "heures_panier_total": "36",
@@ -8129,7 +8298,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Seminaires",
+            "panier": "S1->S3",
             "matiere": "Machine learning pour les jeux vidéo",
             "heures_matiere": "9",
             "heures_panier_total": null,
@@ -8139,7 +8308,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Seminaires",
+            "panier": "S1->S3",
             "matiere": "Veille technologique XR et jeux vidéo",
             "heures_matiere": "9",
             "heures_panier_total": null,
@@ -8149,7 +8318,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Seminaires",
+            "panier": "S8->S10",
             "matiere": "Psychologie dans le domaine des jeux vidéo",
             "heures_matiere": "9",
             "heures_panier_total": null,
@@ -8159,7 +8328,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "DevOps",
+            "panier": "S1->S7",
             "matiere": "Test et Validation Logiciel",
             "heures_matiere": "21",
             "heures_panier_total": "63",
@@ -8169,7 +8338,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "DevOps",
+            "panier": "S1->S7",
             "matiere": "DevOps",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -8179,7 +8348,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "DevOps",
+            "panier": "S4->S10",
             "matiere": "AWS",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -8189,7 +8358,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Développement gaming cross platform",
+            "panier": "S1->S10",
             "matiere": "Développement gaming cross platform",
             "heures_matiere": "30",
             "heures_panier_total": "30",
@@ -8199,7 +8368,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Moteur de jeu",
+            "panier": "S1->S10",
             "matiere": "Moteurs de jeux alternatifs",
             "heures_matiere": "30",
             "heures_panier_total": "81",
@@ -8209,7 +8378,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Moteur de jeu",
+            "panier": "S4->S10",
             "matiere": "Intelligence artificielle pour les jeux vidéo",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -8219,7 +8388,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Moteur de jeu",
+            "panier": "S1->S10",
             "matiere": "Moteur Physique",
             "heures_matiere": "30",
             "heures_panier_total": null,
@@ -8229,7 +8398,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Préparation à la vie professionnelle",
+            "panier": "S6->S10",
             "matiere": "compétences personnelles F",
             "heures_matiere": "15",
             "heures_panier_total": "30",
@@ -8239,7 +8408,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Préparation à la vie professionnelle",
+            "panier": "S1->S5",
             "matiere": "compétences personnelles A",
             "heures_matiere": "15",
             "heures_panier_total": null,
@@ -8249,7 +8418,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Développement durable",
+            "panier": "S6->S10",
             "matiere": "Certification SDG",
             "heures_matiere": "15",
             "heures_panier_total": "30",
@@ -8259,7 +8428,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Développement durable",
+            "panier": "S1->S5",
             "matiere": "Responsabilité Sociétale des Entreprises",
             "heures_matiere": "15",
             "heures_panier_total": null,
@@ -8269,7 +8438,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Stage",
+            "panier": "S1->S5",
             "matiere": "Stage ingénieur",
             "heures_matiere": "",
             "heures_panier_total": "",
@@ -8292,8 +8461,9 @@
           "sections": [
             {
               "semestre": "Semestre-1",
-              "panier_col": 0,
+              "panier_col": 7,
               "matiere_col": 1,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 2,
               "ects_module_col": 5,
@@ -8305,6 +8475,7 @@
               "semestre": "Semestre-2",
               "panier_col": 1,
               "matiere_col": 0,
+              "matiere_overflow_col": null,
               "heures_module_col": 2,
               "heures_total_col": 3,
               "ects_module_col": null,
@@ -8346,7 +8517,7 @@
     "fichier": "Plan_d'étude-1A.pdf",
     "classes": [
       {
-        "classe": "page1_tableau1",
+        "classe": "1A",
         "page": 1,
         "lignes": [
           {
@@ -8506,6 +8677,7 @@
               "semestre": null,
               "panier_col": 0,
               "matiere_col": 1,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 5,
               "ects_module_col": 2,
@@ -8517,6 +8689,7 @@
               "semestre": "S2",
               "panier_col": null,
               "matiere_col": null,
+              "matiere_overflow_col": null,
               "heures_module_col": null,
               "heures_total_col": null,
               "ects_module_col": null,
@@ -8528,6 +8701,7 @@
               "semestre": null,
               "panier_col": 0,
               "matiere_col": 1,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 4,
               "ects_module_col": 2,
@@ -8539,7 +8713,7 @@
         }
       },
       {
-        "classe": "page2_tableau2",
+        "classe": "1A",
         "page": 2,
         "lignes": [
           {
@@ -8699,6 +8873,7 @@
               "semestre": null,
               "panier_col": 0,
               "matiere_col": 1,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 5,
               "ects_module_col": 2,
@@ -8710,6 +8885,7 @@
               "semestre": null,
               "panier_col": null,
               "matiere_col": null,
+              "matiere_overflow_col": null,
               "heures_module_col": null,
               "heures_total_col": null,
               "ects_module_col": null,
@@ -8721,6 +8897,7 @@
               "semestre": null,
               "panier_col": 0,
               "matiere_col": 1,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 4,
               "ects_module_col": 2,
@@ -8732,7 +8909,7 @@
         }
       },
       {
-        "classe": "page3_tableau2",
+        "classe": "1A",
         "page": 3,
         "lignes": [
           {
@@ -8747,7 +8924,7 @@
           },
           {
             "semestre": null,
-            "panier": "Algorithmique 1",
+            "panier": "Programmation Procédurale 1",
             "matiere": "Algorithmique 1",
             "heures_matiere": "42",
             "heures_panier_total": "21",
@@ -8757,7 +8934,7 @@
           },
           {
             "semestre": null,
-            "panier": "Mathématiques de base 1",
+            "panier": "Programmation Procédurale 1",
             "matiere": "Mathématiques de base 1",
             "heures_matiere": "84",
             "heures_panier_total": "42",
@@ -8767,7 +8944,7 @@
           },
           {
             "semestre": null,
-            "panier": "Infographie et montage vidéo",
+            "panier": "Programmation Procédurale 1",
             "matiere": "Infographie et montage vidéo",
             "heures_matiere": "21",
             "heures_panier_total": "10,5",
@@ -8777,7 +8954,7 @@
           },
           {
             "semestre": null,
-            "panier": "Systèmes et Réseaux",
+            "panier": "Programmation Procédurale 1",
             "matiere": "Systèmes et Réseaux",
             "heures_matiere": "63",
             "heures_panier_total": "31,5",
@@ -8787,7 +8964,7 @@
           },
           {
             "semestre": null,
-            "panier": "yCeonmnmetuén Fic1ation, Culture et Citoyenneté F",
+            "panier": "Programmation Procédurale 1",
             "matiere": "yCeonmnmetuén Fic1ation, Culture et Citoyenneté F",
             "heures_matiere": "42",
             "heures_panier_total": "21",
@@ -8797,7 +8974,7 @@
           },
           {
             "semestre": null,
-            "panier": "APP0",
+            "panier": "Programmation Procédurale 1",
             "matiere": "APP0",
             "heures_matiere": "15",
             "heures_panier_total": "-",
@@ -8810,8 +8987,9 @@
           "sections": [
             {
               "semestre": null,
-              "panier_col": 1,
+              "panier_col": null,
               "matiere_col": 1,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 5,
               "ects_module_col": 2,
@@ -8823,7 +9001,7 @@
         }
       },
       {
-        "classe": "page3_tableau3",
+        "classe": "1A",
         "page": 3,
         "lignes": [
           {
@@ -8913,6 +9091,7 @@
               "semestre": null,
               "panier_col": null,
               "matiere_col": null,
+              "matiere_overflow_col": null,
               "heures_module_col": null,
               "heures_total_col": null,
               "ects_module_col": null,
@@ -8924,6 +9103,7 @@
               "semestre": null,
               "panier_col": 0,
               "matiere_col": 1,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 4,
               "ects_module_col": 2,
@@ -8954,7 +9134,7 @@
     "fichier": "Plan_d'étude-2A.pdf",
     "classes": [
       {
-        "classe": "S3",
+        "classe": "2A",
         "page": 1,
         "lignes": [
           {
@@ -9124,6 +9304,7 @@
               "semestre": "S3",
               "panier_col": 1,
               "matiere_col": 0,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 4,
               "ects_module_col": 2,
@@ -9135,6 +9316,7 @@
               "semestre": "S4",
               "panier_col": 0,
               "matiere_col": 1,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 4,
               "ects_module_col": 2,
@@ -9146,7 +9328,7 @@
         }
       },
       {
-        "classe": "S3",
+        "classe": "2A",
         "page": 2,
         "lignes": [
           {
@@ -9306,6 +9488,7 @@
               "semestre": "S3",
               "panier_col": 1,
               "matiere_col": 0,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 4,
               "ects_module_col": 2,
@@ -9317,6 +9500,7 @@
               "semestre": "S4",
               "panier_col": 0,
               "matiere_col": 1,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 4,
               "ects_module_col": 2,
@@ -9328,7 +9512,7 @@
         }
       },
       {
-        "classe": "S3",
+        "classe": "2A",
         "page": 3,
         "lignes": [
           {
@@ -9488,6 +9672,7 @@
               "semestre": "S3",
               "panier_col": 1,
               "matiere_col": 0,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 5,
               "ects_module_col": 2,
@@ -9499,6 +9684,7 @@
               "semestre": "S4",
               "panier_col": 0,
               "matiere_col": 1,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 5,
               "ects_module_col": 2,
@@ -9516,7 +9702,7 @@
     "fichier": "Plan_d'étude-2P.pdf",
     "classes": [
       {
-        "classe": "Semestre - 3",
+        "classe": "2P",
         "page": 1,
         "lignes": [
           {
@@ -9676,6 +9862,7 @@
               "semestre": "Semestre - 3",
               "panier_col": 1,
               "matiere_col": 0,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 4,
               "ects_module_col": 2,
@@ -9687,6 +9874,7 @@
               "semestre": "Semestre - 4",
               "panier_col": 1,
               "matiere_col": 0,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 4,
               "ects_module_col": 2,
@@ -9711,7 +9899,7 @@
     "fichier": "Plan_d'étude-3A.pdf",
     "classes": [
       {
-        "classe": "Semestre - 5",
+        "classe": "3A",
         "page": 1,
         "lignes": [
           {
@@ -9921,6 +10109,7 @@
               "semestre": "Semestre - 5",
               "panier_col": 0,
               "matiere_col": 1,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": null,
               "ects_module_col": 2,
@@ -9932,7 +10121,7 @@
         }
       },
       {
-        "classe": "page2_tableau1",
+        "classe": "3A",
         "page": 2,
         "lignes": [
           {
@@ -10132,6 +10321,7 @@
               "semestre": null,
               "panier_col": 0,
               "matiere_col": 1,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": null,
               "ects_module_col": 2,
@@ -10149,7 +10339,7 @@
     "fichier": "Plan_d'étude-3B.pdf",
     "classes": [
       {
-        "classe": "3B - 2025/2026 Semestre - 5",
+        "classe": "3B",
         "page": 1,
         "lignes": [
           {
@@ -10359,6 +10549,7 @@
               "semestre": "3B - 2025/2026 Semestre - 5",
               "panier_col": 0,
               "matiere_col": 1,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 5,
               "ects_module_col": 2,
@@ -10370,6 +10561,7 @@
               "semestre": "Semestre - 6",
               "panier_col": 0,
               "matiere_col": 1,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 5,
               "ects_module_col": 2,
@@ -10537,6 +10729,7 @@
               "semestre": "Semestre-1",
               "panier_col": 0,
               "matiere_col": 1,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 2,
               "ects_module_col": 5,
@@ -10563,7 +10756,7 @@
           },
           {
             "semestre": "Semestre-2",
-            "panier": "Gestion de Projet",
+            "panier": "Droit de la Propriété Intellectuelle",
             "matiere": "Gestion de Projet",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -10573,7 +10766,7 @@
           },
           {
             "semestre": "Semestre-2",
-            "panier": "Innovation et Entrepreneuriat _ Ideation Camp",
+            "panier": "Droit de la Propriété Intellectuelle",
             "matiere": "Innovation et Entrepreneuriat _ Ideation Camp",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -10583,7 +10776,7 @@
           },
           {
             "semestre": "Semestre-2",
-            "panier": "Graphes et applications",
+            "panier": "Droit de la Propriété Intellectuelle",
             "matiere": "Graphes et applications",
             "heures_matiere": "21",
             "heures_panier_total": "63",
@@ -10593,7 +10786,7 @@
           },
           {
             "semestre": "Semestre-2",
-            "panier": "Projets complexité",
+            "panier": "Droit de la Propriété Intellectuelle",
             "matiere": "Projets complexité",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -10603,7 +10796,7 @@
           },
           {
             "semestre": "Semestre-2",
-            "panier": "Programmation linéaire",
+            "panier": "Droit de la Propriété Intellectuelle",
             "matiere": "Programmation linéaire",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -10613,7 +10806,7 @@
           },
           {
             "semestre": "Semestre-2",
-            "panier": "Innovation et Entrepreneuriat _ Atelier Créatif",
+            "panier": "Droit de la Propriété Intellectuelle",
             "matiere": "Innovation et Entrepreneuriat _ Atelier Créatif",
             "heures_matiere": "21",
             "heures_panier_total": "21",
@@ -10623,7 +10816,7 @@
           },
           {
             "semestre": "Semestre-2",
-            "panier": "Communication, Culture et Citoyenneté A4",
+            "panier": "Droit de la Propriété Intellectuelle",
             "matiere": "Communication, Culture et Citoyenneté A4",
             "heures_matiere": "42",
             "heures_panier_total": "42",
@@ -10633,7 +10826,7 @@
           },
           {
             "semestre": "Semestre-2",
-            "panier": "Service et administration réseaux",
+            "panier": "Droit de la Propriété Intellectuelle",
             "matiere": "Service et administration réseaux",
             "heures_matiere": "21",
             "heures_panier_total": "",
@@ -10643,7 +10836,7 @@
           },
           {
             "semestre": "Semestre-2",
-            "panier": "Sécurité Informatique",
+            "panier": "Droit de la Propriété Intellectuelle",
             "matiere": "Sécurité Informatique",
             "heures_matiere": "21",
             "heures_panier_total": "42",
@@ -10653,7 +10846,7 @@
           },
           {
             "semestre": "Semestre-2",
-            "panier": "Machine learning",
+            "panier": "Droit de la Propriété Intellectuelle",
             "matiere": "Machine learning",
             "heures_matiere": "42",
             "heures_panier_total": "63",
@@ -10663,7 +10856,7 @@
           },
           {
             "semestre": "Semestre-2",
-            "panier": "techniques de conteunarisation",
+            "panier": "Droit de la Propriété Intellectuelle",
             "matiere": "techniques de conteunarisation",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -10673,7 +10866,7 @@
           },
           {
             "semestre": "Semestre-2",
-            "panier": "Application Pi (Projet)",
+            "panier": "Droit de la Propriété Intellectuelle",
             "matiere": "Application Pi (Projet)",
             "heures_matiere": "84",
             "heures_panier_total": "84",
@@ -10686,8 +10879,9 @@
           "sections": [
             {
               "semestre": "Semestre-2",
-              "panier_col": 1,
+              "panier_col": null,
               "matiere_col": 1,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 2,
               "ects_module_col": 5,
@@ -10859,6 +11053,7 @@
               "semestre": "Semestre-1",
               "panier_col": 0,
               "matiere_col": 1,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 2,
               "ects_module_col": 5,
@@ -10881,7 +11076,7 @@
         "lignes": [
           {
             "semestre": "Semestre-1",
-            "panier": "Architectures n-tiers",
+            "panier": "1",
             "matiere": "Architecture des SI I",
             "heures_matiere": "21h",
             "heures_panier_total": "126",
@@ -10891,7 +11086,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Architectures n-tiers",
+            "panier": "2",
             "matiere": "DevOps",
             "heures_matiere": "21h",
             "heures_panier_total": null,
@@ -10901,7 +11096,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Architectures n-tiers",
+            "panier": "2",
             "matiere": "Architecture Orientée Services (SOA)",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -10911,7 +11106,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Architectures n-tiers",
+            "panier": "1 & 2",
             "matiere": "Architecture des SI II",
             "heures_matiere": "42",
             "heures_panier_total": null,
@@ -10921,7 +11116,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Applications Web Avancé",
+            "panier": "2",
             "matiere": "Initiation application côté client",
             "heures_matiere": "21",
             "heures_panier_total": "21",
@@ -10931,7 +11126,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Applications Web Avancé",
+            "panier": "2",
             "matiere": "Droit de la proprièté intellectuelle",
             "heures_matiere": "12",
             "heures_panier_total": "33",
@@ -10941,7 +11136,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Management et pilotage de projets",
+            "panier": "1",
             "matiere": "Gestion de projet",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -10951,7 +11146,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Communication, Culture et Citoyenneté F4",
+            "panier": "1 & 2",
             "matiere": "Communication, Culture et Citoyenneté F4",
             "heures_matiere": "42",
             "heures_panier_total": "42",
@@ -10961,7 +11156,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Recherche opérationnelle",
+            "panier": "2",
             "matiere": "Graphes et applications",
             "heures_matiere": "21",
             "heures_panier_total": "63",
@@ -10971,7 +11166,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Recherche opérationnelle",
+            "panier": "1",
             "matiere": "Programmation linéaire",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -10981,7 +11176,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Recherche opérationnelle",
+            "panier": "1 & 2",
             "matiere": "Complexité appliquée à la RO",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -10991,7 +11186,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "stème d'information et Acquisition des donné",
+            "panier": "1&2",
             "matiere": "eAsd vanced Big Data",
             "heures_matiere": "42",
             "heures_panier_total": "42",
@@ -11001,7 +11196,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Stage d'immersion en entreprise",
+            "panier": "1&2",
             "matiere": "Stage d'immersion en entreprise",
             "heures_matiere": "",
             "heures_panier_total": "",
@@ -11134,8 +11329,9 @@
           "sections": [
             {
               "semestre": "Semestre-1",
-              "panier_col": 0,
+              "panier_col": 4,
               "matiere_col": 1,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 2,
               "ects_module_col": 5,
@@ -11147,6 +11343,7 @@
               "semestre": "Semestre-2",
               "panier_col": 4,
               "matiere_col": 1,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 2,
               "ects_module_col": 5,
@@ -11283,7 +11480,7 @@
           },
           {
             "semestre": "Semestre-2",
-            "panier": "1 & 2",
+            "panier": "Projet de Fin d'Etudes (PFE)",
             "matiere": "Projet de Fin d'Etudes (PFE)",
             "heures_matiere": "99",
             "heures_panier_total": "99",
@@ -11298,6 +11495,7 @@
               "semestre": "Semestre-1",
               "panier_col": 0,
               "matiere_col": 1,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 2,
               "ects_module_col": 5,
@@ -11307,8 +11505,9 @@
             },
             {
               "semestre": "Semestre-2",
-              "panier_col": 4,
+              "panier_col": 1,
               "matiere_col": 0,
+              "matiere_overflow_col": null,
               "heures_module_col": 2,
               "heures_total_col": 3,
               "ects_module_col": null,
@@ -11341,7 +11540,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Communication, Culture et Citoyenneté F4",
+            "panier": "Administration systèmes et réseaux",
             "matiere": "Administration des bases de données",
             "heures_matiere": "21",
             "heures_panier_total": "21",
@@ -11351,7 +11550,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Communication, Culture et Citoyenneté F4",
+            "panier": "Management et pilotage de projets",
             "matiere": "Droit de la propriété intellectuelle",
             "heures_matiere": "12",
             "heures_panier_total": "54",
@@ -11361,7 +11560,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Communication, Culture et Citoyenneté F4",
+            "panier": "Management et pilotage de projets",
             "matiere": "Gestion de projet",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -11371,7 +11570,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Communication, Culture et Citoyenneté F4",
+            "panier": "Management et pilotage de projets",
             "matiere": "Innovation et entreprenariat_ Ideation Camp",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -11381,7 +11580,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Communication, Culture et Citoyenneté F4",
+            "panier": "Innovation et entreprenariat _ Atelier Créatif",
             "matiere": "Innovation et entreprenariat _ Atelier Créatif",
             "heures_matiere": "21",
             "heures_panier_total": "21",
@@ -11391,7 +11590,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "1-ertse",
+            "panier": "Architectures n-tiers",
             "matiere": "Architecture orientée Service \"SOA\"",
             "heures_matiere": "21",
             "heures_panier_total": "63",
@@ -11401,7 +11600,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "1-ertse",
+            "panier": "Architectures n-tiers",
             "matiere": "Architecture des SI II (Spring)",
             "heures_matiere": "42",
             "heures_panier_total": null,
@@ -11411,7 +11610,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "meS",
+            "panier": "Développement multi-plateforme",
             "matiere": "Génie logiciel & atelier GL",
             "heures_matiere": "42",
             "heures_panier_total": "126",
@@ -11421,7 +11620,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "meS",
+            "panier": "Développement multi-plateforme",
             "matiere": "Framework PHP (Symfony)",
             "heures_matiere": "42",
             "heures_panier_total": null,
@@ -11431,7 +11630,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "meS",
+            "panier": "Développement multi-plateforme",
             "matiere": "Initiation application côté client (Angular)",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -11441,7 +11640,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "meS",
+            "panier": "Développement multi-plateforme",
             "matiere": "UX Design",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -11451,7 +11650,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "meS",
+            "panier": "Recherche opérationnelle",
             "matiere": "Complexité appliquée à la RO",
             "heures_matiere": "21",
             "heures_panier_total": "42",
@@ -11461,7 +11660,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "meS",
+            "panier": "Recherche opérationnelle",
             "matiere": "Graphes et applications",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -11471,7 +11670,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "meS",
+            "panier": "Stage d'immersion en entreprise",
             "matiere": "Stage d'immersion en entreprise",
             "heures_matiere": null,
             "heures_panier_total": null,
@@ -11491,7 +11690,7 @@
           },
           {
             "semestre": "Semestre-2",
-            "panier": "Communication, Culture et Citoyenneté A4",
+            "panier": "Recherche opérationnelle",
             "matiere": "Programmation linéaire",
             "heures_matiere": "21",
             "heures_panier_total": "21",
@@ -11501,7 +11700,7 @@
           },
           {
             "semestre": "Semestre-2",
-            "panier": "Communication, Culture et Citoyenneté A4",
+            "panier": "Administration systèmes et réseaux",
             "matiere": "Sécurité informatique",
             "heures_matiere": "21",
             "heures_panier_total": "63",
@@ -11511,7 +11710,7 @@
           },
           {
             "semestre": "Semestre-2",
-            "panier": "Communication, Culture et Citoyenneté A4",
+            "panier": "Administration systèmes et réseaux",
             "matiere": "Service et administration réseaux",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -11521,7 +11720,7 @@
           },
           {
             "semestre": "Semestre-2",
-            "panier": "Communication, Culture et Citoyenneté A4",
+            "panier": "Administration systèmes et réseaux",
             "matiere": "Systèmes d'exploitation avancés 1",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -11531,7 +11730,7 @@
           },
           {
             "semestre": "Semestre-2",
-            "panier": "2-ertse",
+            "panier": "Architectures n-tiers",
             "matiere": "Architecture des SI I (DotNet)",
             "heures_matiere": "21",
             "heures_panier_total": "42",
@@ -11541,7 +11740,7 @@
           },
           {
             "semestre": "Semestre-2",
-            "panier": "2-ertse",
+            "panier": "Architectures n-tiers",
             "matiere": "DevOps",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -11551,7 +11750,7 @@
           },
           {
             "semestre": "Semestre-2",
-            "panier": "meS",
+            "panier": "Systèmes et automates",
             "matiere": "Théorie des langages",
             "heures_matiere": "42",
             "heures_panier_total": "63",
@@ -11561,7 +11760,7 @@
           },
           {
             "semestre": "Semestre-2",
-            "panier": "meS",
+            "panier": "Systèmes et automates",
             "matiere": "Systèmes d'exploitation avancés 2",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -11571,7 +11770,7 @@
           },
           {
             "semestre": "Semestre-2",
-            "panier": "meS",
+            "panier": "Traitement Intelligent des Données",
             "matiere": "Big Data",
             "heures_matiere": "21",
             "heures_panier_total": "42",
@@ -11581,7 +11780,7 @@
           },
           {
             "semestre": "Semestre-2",
-            "panier": "meS",
+            "panier": "Traitement Intelligent des Données",
             "matiere": "Machine & Deep Learning Essentials",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -11591,7 +11790,7 @@
           },
           {
             "semestre": "Semestre-2",
-            "panier": "meS",
+            "panier": "Développement multi-plateforme",
             "matiere": "Programmation des terminaux mobiles",
             "heures_matiere": "21",
             "heures_panier_total": "21",
@@ -11601,7 +11800,7 @@
           },
           {
             "semestre": "Semestre-2",
-            "panier": "meS",
+            "panier": "Projet SE",
             "matiere": "Projet intégré de développement",
             "heures_matiere": "84",
             "heures_panier_total": "84",
@@ -11614,8 +11813,9 @@
           "sections": [
             {
               "semestre": "Semestre-1",
-              "panier_col": 0,
+              "panier_col": 1,
               "matiere_col": 2,
+              "matiere_overflow_col": null,
               "heures_module_col": 4,
               "heures_total_col": 3,
               "ects_module_col": 6,
@@ -11625,8 +11825,9 @@
             },
             {
               "semestre": "Semestre-2",
-              "panier_col": 0,
+              "panier_col": 1,
               "matiere_col": 2,
+              "matiere_overflow_col": null,
               "heures_module_col": 4,
               "heures_total_col": 3,
               "ects_module_col": 6,
@@ -11643,7 +11844,7 @@
         "lignes": [
           {
             "semestre": "Semestre-1",
-            "panier": "Initiation à l'informatique Décisionnelle",
+            "panier": "Manipulation des données",
             "matiere": "Initiation à l'informatique Décisionnelle",
             "heures_matiere": "21",
             "heures_panier_total": "63",
@@ -11653,7 +11854,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Initiation à l'informatique Décisionnelle",
+            "panier": "Manipulation des données",
             "matiere": "Intelligence artificielle et système expert",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -11663,7 +11864,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Initiation à l'informatique Décisionnelle",
+            "panier": "Manipulation des données",
             "matiere": "Big Data",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -11673,7 +11874,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Initiation à l'informatique Décisionnelle",
+            "panier": "Préparation à la vie professionnelle",
             "matiere": "Compétences personnelles A",
             "heures_matiere": "15",
             "heures_panier_total": "30",
@@ -11683,7 +11884,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "Initiation à l'informatique Décisionnelle",
+            "panier": "Préparation à la vie professionnelle",
             "matiere": "Compétences personnelles F",
             "heures_matiere": "15",
             "heures_panier_total": null,
@@ -11693,7 +11894,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "1-ertsemeS",
+            "panier": "Ingénierie des logiciels",
             "matiere": "Applications web distrubuées",
             "heures_matiere": "30",
             "heures_panier_total": "96",
@@ -11703,7 +11904,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "1-ertsemeS",
+            "panier": "Ingénierie des logiciels",
             "matiere": "DevOps",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -11713,7 +11914,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "1-ertsemeS",
+            "panier": "Ingénierie des logiciels",
             "matiere": "Architectures logicielles",
             "heures_matiere": "24",
             "heures_panier_total": null,
@@ -11723,7 +11924,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "1-ertsemeS",
+            "panier": "Ingénierie des logiciels",
             "matiere": "Test et validation de logiciels",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -11733,7 +11934,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "1-ertsemeS",
+            "panier": "Développement Durable",
             "matiere": "Certification SDG",
             "heures_matiere": "-",
             "heures_panier_total": "15",
@@ -11743,7 +11944,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "1-ertsemeS",
+            "panier": "Développement Durable",
             "matiere": "Responsabilité Sociétale des Entreprises (RSE)",
             "heures_matiere": "15",
             "heures_panier_total": null,
@@ -11753,7 +11954,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "1-ertsemeS",
+            "panier": "Séminaires",
             "matiere": "AWS Fundamentals",
             "heures_matiere": "21",
             "heures_panier_total": "36",
@@ -11763,7 +11964,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "1-ertsemeS",
+            "panier": "Séminaires",
             "matiere": "BlockChain",
             "heures_matiere": "15",
             "heures_panier_total": null,
@@ -11773,7 +11974,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "1-ertsemeS",
+            "panier": "Stage Ingénieur",
             "matiere": "Stage Ingénieur",
             "heures_matiere": "30",
             "heures_panier_total": "-",
@@ -11783,7 +11984,7 @@
           },
           {
             "semestre": "Semestre-2",
-            "panier": "-",
+            "panier": "Projet de Fin d'Etudes (PFE)",
             "matiere": "ertsemeS",
             "heures_matiere": "99",
             "heures_panier_total": "99",
@@ -11796,8 +11997,9 @@
           "sections": [
             {
               "semestre": "Semestre-1",
-              "panier_col": 0,
+              "panier_col": 1,
               "matiere_col": 2,
+              "matiere_overflow_col": null,
               "heures_module_col": 4,
               "heures_total_col": 3,
               "ects_module_col": 6,
@@ -11807,8 +12009,9 @@
             },
             {
               "semestre": "Semestre-2",
-              "panier_col": 5,
+              "panier_col": 1,
               "matiere_col": 0,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 4,
               "ects_module_col": null,
@@ -11831,7 +12034,7 @@
         "lignes": [
           {
             "semestre": "Semestre-1",
-            "panier": "42",
+            "panier": "Communication, Culture et Citoyenneté F4",
             "matiere": "Communication, Culture et Citoyenneté F4",
             "heures_matiere": "42",
             "heures_panier_total": null,
@@ -11841,7 +12044,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "84",
+            "panier": "Architecture n-tiers",
             "matiere": "Architecture des SI II",
             "heures_matiere": "42",
             "heures_panier_total": null,
@@ -11851,7 +12054,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "84",
+            "panier": "Architecture n-tiers",
             "matiere": "DevOps",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -11861,7 +12064,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "84",
+            "panier": "Architecture n-tiers",
             "matiere": "SOA",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -11871,7 +12074,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "p 21",
+            "panier": "Mangement et Pilotage de projet",
             "matiere": "Innovation et entreprenariat_ Ideation Cam",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -11881,7 +12084,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "tif 21",
+            "panier": "Innovation et Entrepreuneuriat _ Atelier Cré",
             "matiere": "aItnifnIovation et Entrepreneuriat _ Atelier Créa",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -11891,7 +12094,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "21",
+            "panier": "Recherche opérationnelle",
             "matiere": "Programmation linéaire",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -11901,7 +12104,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "42",
+            "panier": "Administration systèmes et réseaux",
             "matiere": "Systèmes d'exploitation avancés 1",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -11911,7 +12114,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "42",
+            "panier": "Administration systèmes et réseaux",
             "matiere": "Administration des bases de données",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -11921,7 +12124,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "84",
+            "panier": "Développement Front end",
             "matiere": "Applications côté client 1(CSA1)",
             "heures_matiere": "42",
             "heures_panier_total": null,
@@ -11931,7 +12134,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "84",
+            "panier": "Développement Front end",
             "matiere": "UX Design",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -11941,7 +12144,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "84",
+            "panier": "Développement Front end",
             "matiere": "Integration Web",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -11951,7 +12154,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "21",
+            "panier": "Développement Back End",
             "matiere": "Javascript Coté Serveur",
             "heures_matiere": "21",
             "heures_panier_total": null,
@@ -11961,7 +12164,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "42",
+            "panier": "Analyse des données",
             "matiere": "Advanced Big Data",
             "heures_matiere": "42",
             "heures_panier_total": null,
@@ -11971,7 +12174,7 @@
           },
           {
             "semestre": "Semestre-1",
-            "panier": "42",
+            "panier": "Stage d'immersion en entreprise",
             "matiere": "Stage d'immersion en entreprise",
             "heures_matiere": "",
             "heures_panier_total": null,
@@ -12114,8 +12317,9 @@
           "sections": [
             {
               "semestre": "Semestre-1",
-              "panier_col": 2,
+              "panier_col": 0,
               "matiere_col": 1,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": null,
               "ects_module_col": 5,
@@ -12127,6 +12331,7 @@
               "semestre": "Semestre-2",
               "panier_col": 0,
               "matiere_col": 1,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 2,
               "ects_module_col": 5,
@@ -12268,6 +12473,7 @@
               "semestre": "Semestre-1",
               "panier_col": 0,
               "matiere_col": 1,
+              "matiere_overflow_col": null,
               "heures_module_col": 3,
               "heures_total_col": 2,
               "ects_module_col": 5,
@@ -12279,6 +12485,7 @@
               "semestre": "Semestre-2",
               "panier_col": 1,
               "matiere_col": 0,
+              "matiere_overflow_col": null,
               "heures_module_col": 2,
               "heures_total_col": 3,
               "ects_module_col": null,

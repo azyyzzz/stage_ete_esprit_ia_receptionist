@@ -184,8 +184,28 @@ def _classify_columns(data_rows: list[list], n_cols: int) -> dict:
     # deux (cas UE a un seul module).
     texte_cols = [c for c, r in roles.items() if r == "texte"]
     texte_cols.sort(key=lambda c: next(s["fill_ratio"] for s in col_stats if s["col"] == c), reverse=True)
-    panier_col = texte_cols[-1] if texte_cols else None
     matiere_col = texte_cols[0] if texte_cols else None
+
+    # Certaines matieres trop longues pour la colonne matiere sont renvoyees
+    # par pdfplumber dans une colonne voisine (avec une chaine VIDE -- pas
+    # None -- dans matiere_col sur cette meme ligne) : une 3e colonne texte
+    # apparait alors, purement pour ce repli, a ne pas confondre avec le
+    # panier (sinon celui-ci est ignore -- son role de panier passe alors
+    # inapercu -- ET les lignes concernees sont perdues, leur "matiere"
+    # semblant vide).
+    matiere_overflow_col = None
+    panier_col = None
+    for col in texte_cols[1:]:
+        rows_with_col = [row for row in data_rows if col < len(row) and row[col] not in (None, "")]
+        if not rows_with_col:
+            continue
+        is_overflow = matiere_col is not None and all(
+            matiere_col < len(row) and row[matiere_col] == "" for row in rows_with_col
+        )
+        if is_overflow and matiere_overflow_col is None:
+            matiere_overflow_col = col
+        elif panier_col is None:
+            panier_col = col
 
     # Parmi les colonnes "heures"/"ects", celle qui est remplie a (quasi)
     # chaque ligne = valeur PAR MATIERE ; celle qui n'apparait que par
@@ -207,6 +227,7 @@ def _classify_columns(data_rows: list[list], n_cols: int) -> dict:
     return {
         "panier_col": panier_col,
         "matiere_col": matiere_col,
+        "matiere_overflow_col": matiere_overflow_col,
         "heures_module_col": heures_module_col,
         "heures_total_col": heures_total_col,
         "ects_module_col": ects_module_col,
@@ -235,6 +256,8 @@ def _extract_section_rows(section_rows: list[list], cols: dict, semestre_label: 
         if not row or _is_header_continuation_row(row):
             continue
         matiere = _cell(row, cols["matiere_col"])
+        if not matiere and cols.get("matiere_overflow_col") is not None:
+            matiere = _cell(row, cols["matiere_overflow_col"])
         if _normalize(matiere) in SUMMARY_ROW_MARKERS or not matiere:
             continue
         panier_cell = _cell(row, cols["panier_col"])
@@ -332,6 +355,25 @@ def _find_classe_label(table: list[list], header_idx: int) -> str | None:
     return None
 
 
+_JUNK_CLASSE_LABEL_PATTERN = re.compile(r"^(page\d+_tableau\d+|s\d+|semestre.*)$", re.IGNORECASE)
+
+_FILENAME_CLASSE_PATTERN = re.compile(r"plan_d.?etude-?([a-z0-9]+)", re.IGNORECASE)
+
+
+def _filename_classe_fallback(path: Path) -> str | None:
+    """Certains PDF ("Plan_d'étude-3A.pdf", "Plan_d'étude-2P.pdf"...) n'ont
+    aucun libelle de classe exploitable dans le tableau lui-meme (mise en
+    page differente des autres fichiers) -- mais le nom de fichier encode
+    deja la classe sans ambiguite, une par fichier. Utilise seulement en
+    filet de secours (voir process_pdf) quand la detection en-tableau a
+    echoue ou n'a trouve qu'un libelle "poubelle" (semestre/page-tableau)
+    pour TOUT le fichier -- si le fichier contient plusieurs classes
+    distinctes deja bien detectees (ex. SLEAM.pdf -- "4 SLEAM"/"5 SLEAM"),
+    ce filet ne s'applique pas (on ne devine pas laquelle des deux)."""
+    match = _FILENAME_CLASSE_PATTERN.search(_normalize(path.stem))
+    return match.group(1).upper() if match else None
+
+
 def process_pdf(path: Path) -> dict:
     result = {"fichier": path.name, "classes": [], "tables_non_parsees": []}
     with pdfplumber.open(str(path)) as pdf:
@@ -363,6 +405,17 @@ def process_pdf(path: Path) -> dict:
                         "diagnostic": {k: v for k, v in diag.items() if k not in ("erreur", "last_cols")},
                     }
                 )
+
+    filename_classe = _filename_classe_fallback(path)
+    if filename_classe:
+        distinct_valid = {
+            group["classe"] for group in result["classes"]
+            if not _JUNK_CLASSE_LABEL_PATTERN.match(group["classe"].strip())
+        }
+        if len(distinct_valid) <= 1:
+            for group in result["classes"]:
+                group["classe"] = filename_classe
+
     return result
 
 

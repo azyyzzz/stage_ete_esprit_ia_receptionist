@@ -77,7 +77,15 @@ def answer_question(question: str, allow_clarification: bool = True) -> dict:
 
     best_score = chunks[0].score if chunks else 0.0
 
-    if not chunks or best_score < SCORE_THRESHOLD:
+    # Le seuil de score ne s'applique pas quand list_all est actif : la
+    # classe a deja ete identifiee de facon sure et symbolique (nom de
+    # classe reconnu, pas une similarite floue), donc les fiches recuperees
+    # sont pertinentes par construction. Une question de comparaison/liste
+    # ("quel panier a le plus d'ECTS ?") ne "ressemble" a aucune fiche en
+    # particulier -- chaque fiche individuelle score alors normalement en
+    # dessous du seuil (constate : ~0.43 vs seuil 0.45) sans que ce ne soit
+    # un signe de hors-sujet, contrairement au cas general.
+    if not chunks or (not list_all and best_score < SCORE_THRESHOLD):
         return {
             "answer": get_fallback_message(question),
             "sources": [],

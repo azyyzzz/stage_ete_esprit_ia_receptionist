@@ -1077,6 +1077,145 @@ programme d'étude (pas seulement ``ERP-BI''), et de façon indépendante de la
 formulation exacte de la question.
 \end{statutfait}
 
+\section{Signalement utilisateur : classes de 1ère à 3ème année sans réponse}
+
+\textbf{Constat} : peu après la mise en service du NLU, l'utilisateur signale
+que les questions sur les matières de 3ème année (classes ``3A''/``3B'')
+restent sans réponse correcte, et qu'il rencontre par ailleurs des erreurs de
+connexion. Deux causes distinctes, sans lien entre elles, ont été trouvées.
+
+\textbf{Cause 1 -- étiquette de classe jamais extraite pour 6 fichiers}.
+Contrairement aux \textasciitilde50 autres PDF de programme d'étude (qui
+placent le nom de la classe explicitement dans le tableau, ex. ``Classe 4DS
+Actuariat''), les fichiers \texttt{Plan\_d'étude-1A/2A/2P/3A/3B.pdf} et
+\texttt{plan\_d'étudeSLEAM2526.pdf} utilisent une mise en page différente où
+cette information n'apparaît nulle part dans le tableau lui-même.
+\texttt{\_find\_classe\_label} retombait alors sur un libellé sans rapport
+(``S3'', ``Semestre - 5'', ``page2\_tableau1''...), rendant ces classes
+invisibles pour le NLU (filtrées comme ``poubelle'', voir
+\texttt{JUNK\_CLASSE\_PATTERN}) et leur contenu noyé dans la recherche globale
+sans étiquette fiable -- exactement le symptôme rapporté (aucune classe
+détectée $\Rightarrow$ pas de filtre $\Rightarrow$ réponse tirée de la mauvaise
+année).
+
+\textbf{Corrigé} : ajout d'un filet de secours
+(\texttt{\_filename\_classe\_fallback} dans
+\texttt{extract\_programmes\_etude.py}) qui dérive le nom de classe du nom de
+fichier (ex. ``Plan\_d'étude-3A.pdf'' $\to$ ``3A''), appliqué \textbf{uniquement}
+si le fichier ne contient pas déjà plusieurs classes distinctes correctement
+détectées dans le tableau -- condition qui exclut à raison
+\texttt{plan\_d'étudeSLEAM2526.pdf} (2 classes réelles, ``4 SLEAM'' et
+``5 SLEAM'', déjà bien détectées pour 16 de ses 30 fiches ; les 14 restantes
+gardent un libellé indéterminé, limite connue non résolue faute de moyen fiable
+de les rattacher à l'une ou l'autre sans deviner).
+
+\textbf{Cause 2 -- cache local du modèle d'embedding incomplet sur le disque D}.
+Sans rapport avec le NLU : le dossier \texttt{HF\_HOME} redirigé vers le disque
+D (lors de la migration décrite en
+``Migration du disque C vers le disque D'') contient un téléchargement
+\textbf{inachevé} du modèle d'embedding (fichier \texttt{model.safetensors}
+absent, blob \texttt{.incomplete} de 536 Mo) -- le cache d'origine sur le
+disque C, lui, est complet. Selon le contexte (accès réseau autorisé ou non),
+ce cache cassé provoquait soit un blocage de plusieurs minutes (tentative de
+re-téléchargement sur un réseau lent), soit une erreur serveur immédiate --
+correspondant au ``problème de connexion'' signalé.
+
+\textbf{Corrigé} : redémarrage du serveur \textbf{sans} la variable
+\texttt{HF\_HOME} pointant vers le disque D (le cache par défaut sur le disque
+C, complet, est utilisé), avec \texttt{HF\_HUB\_OFFLINE=1} pour garantir qu'aucun
+appel réseau n'est tenté au chargement du modèle.
+
+\begin{statutfait}
+Base ré-extraite (1038 lignes, identique), ré-indexée (1089 fiches) et
+questions retestées en direct pour les 4 classes concernées :
+\begin{itemize}
+    \item ``1A'' -- 25 sources, toutes étiquetées ``1A''.
+    \item ``2A'' -- 26 sources, toutes étiquetées ``2A''.
+    \item ``3A'' -- 28 sources, toutes étiquetées ``3A''.
+    \item ``3B'' -- 17 sources, toutes étiquetées ``3B'', réponse listant
+    correctement les 14 paniers.
+\end{itemize}
+Chaque classe répond désormais correctement, filtrée sur elle-même, sans
+contamination d'une autre année. Le serveur démarre et répond sans blocage
+réseau.
+\end{statutfait}
+
+\section{Signalement utilisateur : question ECTS sur ``4MécaT'' sans réponse}
+
+\textbf{Constat} : l'utilisateur signale qu'une question sur le panier ayant
+le plus d'ECTS en ``4MécaT'' obtient le message de repli (``je n'ai pas
+d'information précise''), et suppose que la casse/les accents de ``MécaT''
+en sont la cause. Trois causes distinctes ont en réalité été trouvées, dont
+aucune n'est liée à la casse.
+
+\textbf{Vérification de la casse/accents} : \texttt{nlu.\_normalize()} passe
+déjà le texte en minuscules puis retire les accents (décomposition NFKD +
+suppression des marques combinantes) avant toute comparaison -- \emph{avant}
+même ce signalement. Testé en direct : ``4mecat'' et ``4MécaT'' résolvent
+tous deux exactement à la même classe (\texttt{detect\_classe\_mention}), et
+les deux formulations produisent les 13 mêmes fiches en source. Ce n'était
+donc pas la cause -- mais deux bugs bien réels expliquaient le symptôme.
+
+\textbf{Cause 1 -- 3e colonne texte non gérée (perte de données + paniers
+fusionnés à tort)}. Le fichier \texttt{PE-4MécaT.pdf} (et dans une moindre
+mesure \texttt{PE~1GC.pdf}/\texttt{PE~4GC.pdf}) renvoie parfois le nom d'une
+matière trop longue dans la colonne voisine plutôt que dans la colonne
+``matière'' habituelle (cellule vide, pas \texttt{None}, dans cette dernière
+sur ces lignes-là). \texttt{\_classify\_columns} ne prévoyait que 2 colonnes
+de texte (matière + panier) et prenait à tort cette 3e colonne pour le
+panier : le vrai panier (colonne 0, ex. ``Automatisme Industriel'',
+``Systèmes embarqués''...) était ignoré, et les lignes dont la matière
+n'apparaissait QUE dans cette colonne de repli étaient silencieusement
+rejetées (\texttt{matière} vide $\Rightarrow$ ligne ignorée). Résultat pour
+``4MécaT'' : 13 paniers réels réduits à 2 fiches fourre-tout, 6 matières sur
+30 perdues.
+
+\textbf{Corrigé} : une colonne de texte supplémentaire n'est traitée comme
+panier que si son remplissage ne coïncide PAS systématiquement avec une
+matière vide sur les mêmes lignes -- sinon elle est reconnue comme un simple
+repli de la colonne matière et fusionnée dedans
+(\texttt{matiere\_overflow\_col}). Ré-extraction : 1038 $\to$ 1049 lignes
+matière au total (+11, dont +6 pour ``4MécaT'' seul), panier correctement
+attribué aux 13 groupes réels de ``4MécaT''.
+
+\textbf{Cause 2 -- questions de comparaison non reconnues comme ``liste
+tout''}. ``Quel panier a le plus d'ECTS'' ne contient aucun des mots-clés de
+\texttt{is\_list\_all\_intent} : la recherche restait donc limitée à
+\texttt{TOP\_K=5} fiches par similarité, et aucune fiche individuelle ne
+``ressemble'' sémantiquement à une question de comparaison (aucun texte de
+fiche ne dit ``je suis le panier avec le plus d'ECTS'') -- score maximal
+observé 0,435, sous le seuil de réponse.
+
+\textbf{Corrigé} : ajout de motifs superlatifs (``le plus élevé'', ``le plus
+haut'', ``le maximum''...) à \texttt{is\_list\_all\_intent}, qui déclenchent
+désormais le même \texttt{retrieve\_all} que pour une liste exhaustive --
+logique, une comparaison exige aussi de voir tous les paniers.
+
+\textbf{Cause 3 -- seuil de score inadapté au chemin ``liste tout''}. Même
+après correction de la cause 2, le score de la meilleure fiche parmi les 13
+restait sous le seuil \texttt{SCORE\_THRESHOLD=0,45} (aucune fiche isolée ne
+``ressemble'' à une question de comparaison), déclenchant quand même le
+repli. Or la classe a déjà été identifiée de façon sûre et symbolique (nom de
+classe reconnu, pas une similarité floue) -- le seuil de score, pensé pour
+détecter un sujet hors-base, n'a pas de sens dans ce cas.
+
+\textbf{Corrigé} : le seuil de score est désormais ignoré quand
+\texttt{list\_all} est actif (\texttt{pipeline.py}).
+
+\begin{statutfait}
+Les trois corrections combinées permettent enfin une réponse correcte,
+testée avec les deux formulations (``4mecat'' et ``4MécaT'') : les 13 fiches
+de la classe sont récupérées dans les deux cas, avec les mêmes sources et
+scores. Limite résiduelle observée et assumée : le LLM local (qwen2.5:7b)
+fait parfois une erreur de calcul en comparant les ECTS de 13 paniers dans le
+contexte (une réponse a cité ``Projet CDIO'' à 8 ECTS comme le plus élevé,
+une autre a conclu à tort ``Systèmes embarqués'' à 6 ECTS après avoir listé
+``Projet CDIO'' à 8 -- incohérence de raisonnement du modèle, pas un problème
+de récupération : les fiches sources sont identiques et correctes dans les
+deux cas). Amélioration possible mais non retenue pour l'instant : demander
+explicitement au modèle de comparer chiffre par chiffre avant de conclure.
+\end{statutfait}
+
 \section{Garde-fous obligatoires avant sauvegarde}
 
 Deux vérifications s'appliquent à toute fiche candidate, quelle que soit sa source,
@@ -1138,6 +1277,29 @@ concernées à ré-extraire une fois une copie saine disponible : les 4 sections
 base (\texttt{admission\_docx\_faq\_admission\_cours\_du\_soir\_01/02/03/05}) et la
 section manquante détectée (\texttt{04}), et potentiellement d'autres fichiers du dossier
 \texttt{data/raw\_data/Admission/} non encore vérifiés un par un.
+\end{statutlimite}
+
+\section{Limites connues de l'extraction des programmes d'étude}
+\begin{statutlimite}
+\begin{itemize}
+    \item \texttt{Plan d'étude IoSyS 2526.pdf} ne contient \textbf{aucun texte
+    extractible} : pdfplumber détecte bien la grille du tableau (lignes
+    vectorielles) mais chaque cellule est vide, sur les 3 pages -- signe d'un
+    export où le texte a été converti en tracés (outlines) ou d'une image
+    aplatie, pas d'un vrai texte encodé. Aucune méthode de lecture de texte ne
+    peut y remédier ; il faudrait soit une copie du fichier avec un texte
+    natif, soit de l'OCR (non implémenté, fiabilité incertaine sur un tableau
+    dense). Décision : laissé de côté pour l'instant -- le modèle répond
+    honnêtement qu'il n'a pas l'information plutôt que d'inventer.
+    \item Les classes de Génie Civil (\texttt{PE 1/2/3/4/5GC.pdf}) n'ont pas
+    de colonne ECTS du tout dans leurs tableaux sources -- champ laissé vide
+    plutôt que fiche rejetée (voir \texttt{\_find\_header\_row\_indices}).
+    \item \texttt{plan\_d'étudeSLEAM2526.pdf} regroupe 2 classes réelles
+    (``4 SLEAM''/``5 SLEAM'') dans un seul fichier ; \textasciitilde13 lignes
+    matière dont la classe n'a pas pu être détectée dans le tableau restent
+    sans étiquette fiable (non rattachées par filet de secours nom-de-fichier,
+    car ce fichier contient plusieurs classes -- voir section précédente).
+\end{itemize}
 \end{statutlimite}
 
 \section{Limites assumées}
