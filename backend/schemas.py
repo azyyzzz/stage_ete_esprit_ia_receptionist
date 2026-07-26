@@ -9,6 +9,7 @@ from pydantic import BaseModel, Field
 
 class AskRequest(BaseModel):
     question: str = Field(..., min_length=1, examples=["Quels sont les frais de scolarité ?"])
+    structured: bool = Field(False, description="If true, return a structured list of modules/paniers in the response")
 
 
 class Source(BaseModel):
@@ -22,6 +23,16 @@ class AskResponse(BaseModel):
     sources: list[Source]
     used_fallback: bool
     needs_clarification: bool
+
+
+class ModuleGroup(BaseModel):
+    panier: str
+    matieres: list[str]
+
+
+class AskResponseStructured(AskResponse):
+    # Optional structured representation: list of pansiers and their matieres
+    modules: list[ModuleGroup] = Field(default_factory=list)
 
 
 class TranscribeResponse(BaseModel):

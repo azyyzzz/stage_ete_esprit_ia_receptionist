@@ -10,6 +10,7 @@ from modules.rag.config import PROGRAMME_AMBIGUITY_MARGIN, SCORE_THRESHOLD
 from modules.rag.fallback import get_fallback_message
 from modules.rag.generator import generate_answer
 from modules.rag.nlu import detect_classe_mention, is_list_all_intent
+from modules.rag.nlu import is_count_intent
 from modules.rag.programmes import mentioned_programme, programme_label
 from modules.rag.retriever import retrieve, retrieve_all
 
@@ -45,7 +46,7 @@ def _ambiguous_programmes(chunks: list) -> set[str]:
     return labels
 
 
-def answer_question(question: str, allow_clarification: bool = True) -> dict:
+def answer_question(question: str, allow_clarification: bool = True, structured: bool = False) -> dict:
     """
     allow_clarification=False : ne renvoie jamais de demande de precision --
     utilise pour les canaux a un seul aller-retour (ex. /api/converse en
@@ -61,7 +62,12 @@ def answer_question(question: str, allow_clarification: bool = True) -> dict:
     # sinon comportement inchange (pas de clarification demandee).
     classe = detect_classe_mention(question)
     list_all = False
+    count_intent = is_count_intent(question)
     if classe and is_list_all_intent(question):
+        list_all = True
+        chunks = retrieve_all(question, where={"classe": classe})
+    elif classe and count_intent:
+        # For counting, retrieve all fiches for the class to compute an accurate total
         list_all = True
         chunks = retrieve_all(question, where={"classe": classe})
     elif classe:
@@ -109,7 +115,56 @@ def answer_question(question: str, allow_clarification: bool = True) -> dict:
         }
 
     answer = generate_answer(question, chunks, ambiguous_programme=is_ambiguous, list_all=list_all)
-    return {
+    # If the user asked for a count only (no explicit 'list' intent), compute a conservative unique-module count
+    if count_intent:
+        import re
+        modules = set()
+
+        for c in chunks:
+            text = c.content
+            # remove parenthesis content to avoid splitting inside (21h, ...)
+            text_no_paren = re.sub(r"\([^)]*\)", "", text)
+
+            # try to extract the list area between known markers
+            m = re.search(r"comprend(?: les)?(?: unit[eéi]s d'enseignement| les matieres suivantes)[:\s]*(.*?)(?:Total ECTS|Total ECTS de ce panier|Total ECTS|$)", text_no_paren, flags=re.IGNORECASE | re.DOTALL)
+            if m:
+                part = m.group(1)
+            else:
+                # fallback: take after first ':' if present, but strip trailing phrases
+                parts = text_no_paren.split(':', 1)
+                part = parts[1] if len(parts) > 1 else text_no_paren
+                part = re.sub(r"Total ECTS.*$", "", part, flags=re.IGNORECASE)
+
+            # split by semicolon first (primary separator), then by line breaks
+            items = re.split(r";|\n", part)
+            for it in items:
+                # further split by ' - ' or ' / ' or ', ' but avoid splitting short phrases
+                subitems = re.split(r",\s+|/| - ", it)
+                for si in subitems:
+                    item = si.strip()
+                    # remove leftover connectors like 'et' at the start/end
+                    item = re.sub(r"^et\s+|\s+et$", "", item, flags=re.IGNORECASE).strip()
+                    if len(item) > 2 and not re.search(r"^Total ECTS|ECTS$|^Total$", item, flags=re.IGNORECASE):
+                        # normalize internal whitespace
+                        item = re.sub(r"\s+", " ", item)
+                        modules.add(item)
+
+        count = len(modules)
+        if count == 0:
+            count = len(chunks)
+
+        # If the user only asked for the count (no list intent), return concise answer
+        if not is_list_all_intent(question):
+            return {
+                "answer": f"Il y a {count} matières dans le programme {classe}.",
+                "sources": [
+                    {"titre": c.metadata.get("titre", ""), "source": c.metadata.get("source", ""), "score": round(c.score, 3)}
+                    for c in chunks
+                ],
+                "used_fallback": False,
+                "needs_clarification": False,
+            }
+    result = {
         "answer": answer,
         "sources": [
             {"titre": c.metadata.get("titre", ""), "source": c.metadata.get("source", ""), "score": round(c.score, 3)}
@@ -118,3 +173,45 @@ def answer_question(question: str, allow_clarification: bool = True) -> dict:
         "used_fallback": False,
         "needs_clarification": False,
     }
+
+    # If structured output requested and we retrieved multiple chunks, build modules grouped by panier
+    if structured and chunks:
+        import re
+
+        modules_by_panier = []
+        seen_panier = set()
+        for c in chunks:
+            # derive panier label from metadata titre (last part after '—')
+            titre = c.metadata.get("titre", "")
+            panier = titre.split("—")[-1].strip() if "—" in titre else titre
+            if panier in seen_panier:
+                continue
+            seen_panier.add(panier)
+
+            text = c.content
+            text_no_paren = re.sub(r"\([^)]*\)", "", text)
+            m = re.search(r"comprend(?: les)?(?: unit[eéi]s d'enseignement| les matieres suivantes)[:\s]*(.*?)(?:Total ECTS|Total ECTS de ce panier|Total ECTS|$)", text_no_paren, flags=re.IGNORECASE | re.DOTALL)
+            if m:
+                part = m.group(1)
+            else:
+                parts = text_no_paren.split(':', 1)
+                part = parts[1] if len(parts) > 1 else text_no_paren
+                part = re.sub(r"Total ECTS.*$", "", part, flags=re.IGNORECASE)
+
+            items = re.split(r";|\n", part)
+            matieres = []
+            for it in items:
+                subitems = re.split(r",\s+|/| - ", it)
+                for si in subitems:
+                    item = si.strip()
+                    item = re.sub(r"^et\s+|\s+et$", "", item, flags=re.IGNORECASE).strip()
+                    if len(item) > 2 and not re.search(r"^Total ECTS|ECTS$|^Total$", item, flags=re.IGNORECASE):
+                        item = re.sub(r"\s+", " ", item)
+                        if item not in matieres:
+                            matieres.append(item)
+
+            modules_by_panier.append({"panier": panier or titre, "matieres": matieres})
+
+        result["modules"] = modules_by_panier
+
+    return result
