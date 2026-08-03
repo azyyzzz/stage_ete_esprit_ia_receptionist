@@ -25,7 +25,7 @@ param(
 )
 
 Set-StrictMode -Version Latest
-cd (Split-Path -Parent $MyInvocation.MyCommand.Path)\.. | Out-Null
+Set-Location (Join-Path (Split-Path -Parent $MyInvocation.MyCommand.Path) '..')
 $Root = (Get-Location).ProviderPath
 
 $Python = Join-Path $Root '.venv\Scripts\python.exe'

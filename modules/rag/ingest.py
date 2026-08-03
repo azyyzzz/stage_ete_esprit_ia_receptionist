@@ -15,7 +15,8 @@ import json
 
 from modules.rag.config import KNOWLEDGE_BASE_PATH
 from modules.rag.embeddings import embed
-from modules.rag.nlu import TITRE_CLASSE_PATTERN
+from modules.rag.nlu import TITRE_CLASSE_PATTERN, TITRE_OPTION_SPECIALITE_PATTERN
+from modules.rag.programmes import CAMPUS_LABELS, programme_label
 from modules.rag.vectorstore import add_records, reset_collection
 from pathlib import Path
 
@@ -39,6 +40,32 @@ def record_to_classe(record: dict) -> str:
     if record.get("categorie") != "Programme d'étude":
         return ""
     match = TITRE_CLASSE_PATTERN.match(record.get("titre", ""))
+    return match.group(1) if match else ""
+
+
+def record_to_campus(record: dict) -> str:
+    """Campus/programme d'ingénieur ESPRIT concerné (Tunis/Monastir/Prépa),
+    pour les fiches de spécialités (catégorie "Programmes") -- utilisé comme
+    métadonnée filtrable pour répondre de façon exhaustive à "quelles
+    spécialités propose ESPRIT <campus> ?" (voir pipeline.py) sans dépendre
+    du TOP_K de la recherche par similarité. Vide pour toute autre
+    catégorie ou si la source ne correspond à aucun des 3 campus."""
+    if record.get("categorie") != "Programmes":
+        return ""
+    label = programme_label(record.get("source", ""))
+    return label if label in CAMPUS_LABELS else ""
+
+
+def record_to_option_specialite(record: dict) -> str:
+    """Spécialité ESPRIT Tunis concernée, pour les fiches d'options de
+    spécialisation (catégorie "Options", voir data/scripts/scrape_esprit_
+    tunis_options.py) -- utilisé comme métadonnée filtrable pour répondre de
+    façon exhaustive à "quelles sont les options de <spécialité> ?" (voir
+    pipeline.py) sans dépendre du TOP_K de la recherche par similarité. Vide
+    pour toute autre catégorie."""
+    if record.get("categorie") != "Options":
+        return ""
+    match = TITRE_OPTION_SPECIALITE_PATTERN.match(record.get("titre", ""))
     return match.group(1) if match else ""
 
 
@@ -134,6 +161,8 @@ def main() -> None:
                 "titre": r.get("titre", ""),
                 "source": r.get("source", ""),
                 "classe": record_to_classe(r),
+                "campus": record_to_campus(r),
+                "option_specialite": record_to_option_specialite(r),
             }
             for r in batch
         ]

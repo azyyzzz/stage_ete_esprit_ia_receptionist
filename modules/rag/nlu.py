@@ -36,6 +36,75 @@ EXTRA_PROGRAMMES_PATH = Path(__file__).resolve().parents[2] / "data" / "processe
 
 TITRE_CLASSE_PATTERN = re.compile(r"^Programme d'étude — (.+?) — ")
 
+# Titre des fiches "Options" (voir data/scripts/scrape_esprit_tunis_options.py) :
+# "Option {nom} — {specialite} — ESPRIT Tunis" -- capture la specialite pour
+# la metadonnee filtrable "option_specialite" (voir ingest.py, pipeline.py).
+TITRE_OPTION_SPECIALITE_PATTERN = re.compile(r"^Option .+ — (.+) — ESPRIT Tunis$")
+
+# Mots-cles reconnaissant une specialite ESPRIT Tunis (celles qui ont des
+# "Options" scrapees), independamment de la casse/accents (compares apres
+# _normalize). Valeur = nom EXACT de specialite tel que stocke en metadonnee
+# (voir data/raw_data/esprit_tunis_options.json).
+SPECIALITE_TUNIS_KEYWORDS: dict[str, list[str]] = {
+    "Ingénieur en Génie informatique": ["informatique"],
+    "Ingénieur en Génie des Télécommunications": ["telecom", "télécom"],
+    "Ingénieur en Génie Civil": ["civil"],
+    "Ingénieur en Génie Electromécanique": ["electromecanique", "électromécanique"],
+}
+
+
+def detect_specialite_tunis_mention(question: str) -> str | None:
+    """Renvoie le nom EXACT (valeur de metadonnee) de la specialite ESPRIT
+    Tunis mentionnee dans la question si une SEULE correspond -- sinon None."""
+    q_norm = _normalize(question)
+    matches = [
+        specialite
+        for specialite, keywords in SPECIALITE_TUNIS_KEYWORDS.items()
+        if any(_normalize(kw) in q_norm for kw in keywords)
+    ]
+    return matches[0] if len(matches) == 1 else None
+
+
+@lru_cache(maxsize=1)
+def _load_known_options() -> tuple[tuple[str, str], ...]:
+    """(nom d'option, specialite exacte) pour chaque fiche categorie
+    "Options" -- utilise quand la question ne precise PAS la specialite
+    (ex. "score minimum pour l'option Data Analytics and Science ?") mais
+    nomme l'option elle-meme, qui peut exister dans PLUSIEURS specialites
+    a la fois (ex. "Data Analytics & Science" existe en Informatique ET en
+    Telecommunications, sous des ids differents)."""
+    records = json.loads(KNOWLEDGE_BASE_PATH.read_text(encoding="utf-8"))
+    result: list[tuple[str, str]] = []
+    for r in records:
+        if r.get("categorie") != "Options":
+            continue
+        match = TITRE_OPTION_SPECIALITE_PATTERN.match(r.get("titre", ""))
+        if not match:
+            continue
+        specialite = match.group(1)
+        titre = r.get("titre", "")
+        nom = titre.split("—")[0].strip()
+        if nom.lower().startswith("option "):
+            nom = nom[len("option "):].strip()
+        result.append((nom, specialite))
+    return tuple(result)
+
+
+def detect_option_mention(question: str) -> list[str]:
+    """Renvoie la liste des specialites (valeurs EXACTES de metadonnee)
+    dont au moins une option correspond au nom mentionne dans la question --
+    compare par PRESENCE DE TOUS LES MOTS significatifs (pas une sous-chaine
+    exacte) pour tolerer les variantes ("and" vs "&", accents...). Peut
+    renvoyer PLUSIEURS specialites si le meme nom d'option existe dans
+    plusieurs d'entre elles (voir _load_known_options)."""
+    q_tokens = set(_normalize(question).split())
+    matches: list[str] = []
+    for nom, specialite in _load_known_options():
+        nom_tokens = [t for t in _normalize(nom).split() if len(t) > 2]
+        if nom_tokens and all(t in q_tokens for t in nom_tokens) and specialite not in matches:
+            matches.append(specialite)
+    return matches
+
 # Noms de classe qui sont en realite des artefacts d'extraction (page/tableau
 # non identifie, marqueur de semestre isole...) -- jamais proposes comme
 # filtre, une question ne les mentionnera jamais tels quels.
@@ -128,7 +197,8 @@ def detect_classe_mention(question: str) -> str | None:
     sans ambiguite -- sinon None (soit aucune classe mentionnee, soit
     plusieurs candidates possibles)."""
     q_norm = _normalize(question)
-    matches = []
+    exact_matches: list[str] = []
+    heuristic_matches: list[str] = []
     for classe_nom in _load_known_classes():
         core = _classe_core(classe_nom)
         if not core:
@@ -136,7 +206,7 @@ def detect_classe_mention(question: str) -> str | None:
 
         # exact core phrase match
         if re.search(rf"\b{re.escape(core)}\b", q_norm):
-            matches.append(classe_nom)
+            exact_matches.append(classe_nom)
             continue
 
         # token-overlap heuristic: require the numeric part (e.g. '4') and at
@@ -152,10 +222,20 @@ def detect_classe_mention(question: str) -> str | None:
             if any(nt in q_tokens for nt in numeric_tokens):
                 # check for at least one additional non-numeric token overlap
                 if any(t in q_tokens for t in core_tokens if t not in numeric_tokens):
-                    matches.append(classe_nom)
+                    heuristic_matches.append(classe_nom)
                     continue
-    if len(matches) == 1:
-        return matches[0]
+
+    # A unique exact match always wins over looser heuristics.
+    if len(exact_matches) == 1:
+        return exact_matches[0]
+    if len(exact_matches) > 1:
+        return None
+
+    # If the heuristic already identifies a single class, trust it before
+    # falling back to broader alias matching. This keeps short forms like
+    # "4 BI" working without letting ambiguous aliases override them.
+    if len(heuristic_matches) == 1:
+        return heuristic_matches[0]
 
     # consult alias map for common abbreviated forms (e.g. '4bi', '4 erpbi')
     alias_map = _build_alias_map()
@@ -174,7 +254,7 @@ def detect_classe_mention(question: str) -> str | None:
     if len(alias_matches) == 1:
         return alias_matches[0]
 
-    all_matches = list({*matches, *alias_matches})
+    all_matches = list(dict.fromkeys([*exact_matches, *heuristic_matches, *alias_matches]))
     if len(all_matches) == 1:
         return all_matches[0]
 
@@ -221,7 +301,7 @@ def _build_alias_map() -> dict[str, str]:
 
         # also add single-token aliases (avoid pure numbers)
         for o in others:
-            if len(o) > 1:
+            if len(o) > 3:
                 amap[o] = classe_nom
 
         # initials (e.g. 'erp bi' -> 'eb') and short-prefix concatenations
@@ -298,7 +378,58 @@ def is_list_all_intent(question: str) -> bool:
     if re.search(r"\bquelles? sont\b", q_norm) and re.search(r"\b(matieres?|modules?)\b", q_norm):
         return True
 
+    # phrasing: "quels sont les paniers ..." or "quels paniers ..."
+    if re.search(r"\bquels? sont\b", q_norm) and re.search(r"\b(paniers?|matieres?|modules?)\b", q_norm):
+        return True
+    if re.search(r"\bquels? paniers?\b", q_norm):
+        return True
+
+    if (
+        re.search(r"\b(c\s*est\s*quoi|qu\s*est\s*ce\s*que|quest\s*ce\s*que)\b", q_norm)
+        and ("mati" in q_norm or "module" in q_norm or "panier" in q_norm)
+    ):
+        return True
+    if re.search(r"\b(jetudie|etudie)\b", q_norm) and ("mati" in q_norm or "module" in q_norm or "panier" in q_norm):
+        return True
+
     return False
+
+
+def is_list_specialites_intent(question: str) -> bool:
+    """True si la question demande la liste des spécialités d'un campus
+    ESPRIT (Tunis/Monastir/Prépa) plutôt qu'un fait précis sur une
+    spécialité en particulier -- détermine si la recherche doit récupérer
+    TOUTES les fiches "Programmes" de ce campus (voir pipeline.py, filtre
+    metadonnee "campus") plutôt que se limiter à TOP_K, qui en omettrait
+    mécaniquement une partie (ex. ESPRIT Monastir a 4 spécialités
+    d'ingénieur, TOP_K=5 les noie parmi des fiches non pertinentes)."""
+    q_norm = _normalize(question)
+    if "specialite" not in q_norm:
+        return False
+    return _has_list_wording(q_norm)
+
+
+def _has_list_wording(q_norm: str) -> bool:
+    """Formulation "liste tout" -- se base sur le NOMBRE du pronom
+    interrogatif, pas sur le verbe qui suit : "quels"/"quelles" (pluriel)
+    signale une liste ("quelles specialites PROPOSE...", "quelles sont
+    les options...") quel que soit le verbe, alors que "quel"/"quelle"
+    (singulier, ex. "quel EST le score minimum") signale un fait precis --
+    a ne surtout pas confondre en imposant un verbe specifique comme
+    "sont" (exclurait a tort "quelles ... propose")."""
+    return bool(re.search(r"\bquel(s|les)\b", q_norm) or re.search(r"\b(liste|toutes|tous)\b", q_norm))
+
+
+def is_list_options_intent(question: str) -> bool:
+    """True si la question demande la liste des options de specialisation
+    d'une specialite ESPRIT Tunis (voir data/scripts/scrape_esprit_tunis_
+    options.py) plutot qu'un fait precis sur une option en particulier --
+    meme logique que is_list_specialites_intent, un niveau en dessous
+    (options au sein d'une specialite plutot que specialites d'un campus)."""
+    q_norm = _normalize(question)
+    if "option" not in q_norm:
+        return False
+    return _has_list_wording(q_norm)
 
 
 def is_count_intent(question: str) -> bool:

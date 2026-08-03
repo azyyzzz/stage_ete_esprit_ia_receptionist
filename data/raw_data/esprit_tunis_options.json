@@ -1,0 +1,132 @@
+[
+  {
+    "specialite": "Ingénieur en Génie informatique",
+    "url": "https://www.esprit.tn/nos-programmes/programmes-dingenieur/esprit-tunis/ingenieur-en-genie-informatique/",
+    "option": "Fintech",
+    "description": "Un ingénieur en informatique spécialisé dans les systèmes financiers, maîtrisant les méthodes quantitatives et l’analyse des données financières. Il conçoit des solutions robustes et évolutives adaptées aux environnements de la banque, de l’assurance et des marchés financiers, en intégrant les enjeux de modélisation, de gestion des risques, de conformité réglementaire et de performance.",
+    "objectifs": "Former des ingénieurs capables de développer des applications informatiques pour les secteurs de la banque, de l’assurance et de la finance, ainsi qu’à la conception et à la mise en œuvre de systèmes d’information financiers et bancaire.",
+    "modules_4eme_annee": "Probabilités / Analytical finance / Processus stochastique / EDP pour la finance / Monte-Carlo / Projet informatique Finance",
+    "modules_5eme_annee": "Modèles continus en finance et assurance / Théorie et mesure du risque / Marchés financiers / Gestion du risque de taux / Calcul actuariel / Projet informatique Finance / Projet Math et assurance",
+    "debouches": "Ingénieur en développement de solutions pour la finance et l’assurance​ / Consultant en systèmes ​d’information financiers ou bancaire​ / Analyste financier​ / Ingénieur financier​"
+  },
+  {
+    "specialite": "Ingénieur en Génie informatique",
+    "url": "https://www.esprit.tn/nos-programmes/programmes-dingenieur/esprit-tunis/ingenieur-en-genie-informatique/",
+    "option": "IoT & Embedded Technologies",
+    "description": "L’option Cybersecurity & Cloud Engineering – Informatique est spécialisée dans la formation d’ingénieurs capables de sécuriser et piloter des infrastructures numériques modernes. Elle combine une expertise en cybersécurité (défense, gestion des accès, supervision, réponse aux incidents) avec des compétences avancées en cloud engineering (architectures cloud-native, Infrastructure as Code, conteneurisation, DevSecOps). Elle permet aux étudiants de maîtriser des environnements hybrides et multi-cloud, tout en garantissant performance, scalabilité et sécurité.",
+    "objectifs": "Former des ingénieurs capables de concevoir, déployer, automatiser et sécuriser des systèmes d’information complexes, en intégrant les meilleures pratiques de cybersécurité et de cloud computing, afin de répondre efficacement aux enjeux actuels de transformation digitale et de résilience des organisations.",
+    "modules_4eme_annee": "Plateformes et Applications IoT (MIOT : 21 / Développement Mobile : 21 / Technique de conteneurisation : 12) / Ingénierie des objets connectés (OS of Connected Things : 21 / Calculateurs embarqués : 21 / Bus de communication : 21)",
+    "modules_5eme_annee": "Systèmes Embarqués Temps Réel (RTOS : 21 / Conception logicielle/matérielle de systèmes embarqués temps réel : 21 / IoT Networks & Protocols : 21) / Intelligence Artificielle et Technologies Portables (Wearable Technologies : 21 / Vision and M-Vision : 15 / IA for Embedded System : 30)",
+    "debouches": "Cybersecurity Engineer / Cloud Engineer / DevSecOps Engineer / Cloud Architect / Infrastructure Automation Engineer / SOC Analyst"
+  },
+  {
+    "specialite": "Ingénieur en Génie informatique",
+    "url": "https://www.esprit.tn/nos-programmes/programmes-dingenieur/esprit-tunis/ingenieur-en-genie-informatique/",
+    "option": "Cloud & Cybersecurity Engineering",
+    "description": "L’option Cybersecurity & Cloud Engineering – Informatique est spécialisée dans la formation d’ingénieurs capables de sécuriser et piloter des infrastructures numériques modernes. Elle combine une expertise en cybersécurité (défense, gestion des accès, supervision, réponse aux incidents) avec des compétences avancées en cloud engineering (architectures cloud-native, Infrastructure as Code, conteneurisation, DevSecOps). Elle permet aux étudiants de maîtriser des environnements hybrides et multi-cloud, tout en garantissant performance, scalabilité et sécurité.",
+    "objectifs": "Former des ingénieurs capables de concevoir, déployer, automatiser et sécuriser des systèmes d’information complexes, en intégrant les meilleures pratiques de cybersécurité et de cloud computing, afin de répondre efficacement aux enjeux actuels de transformation digitale et de résilience des organisations.",
+    "modules_4eme_annee": "Securing Systems and Infrastructures (Access Control & Identity Management : 21 / Cyber défense – Systems & Networks : 21 / Sécurité opérationnelle avancée : 21 / Certification CCNA Security : 9) / Administration et automatisation des infrastructures Cloud (Advanced Cloud Infrastructure : 12 / Orchestration of Containerized Environments : 30 / Initiation à l’automatisation : 12 / Administration des serveurs Linux : 30)",
+    "modules_5eme_annee": "Cloud Infrastructure, Security and Resilience (Advanced Cloud Security Architecture (New) : 30 / Projet Data Center : 15 / Distributed Cloud Storage & Data Resilience : 21) / Security for Emerging Technologies (DevSecOps : 15 / Préparation aux certifications opérationnelles – CEH : 30 / IA Security and Gen IA Risks : 15)",
+    "debouches": "Cybersecurity Engineer / Cloud Engineer / DevSecOps Engineer / Cloud Architect / Infrastructure Automation Engineer / SOC Analyst"
+  },
+  {
+    "specialite": "Ingénieur en Génie informatique",
+    "url": "https://www.esprit.tn/nos-programmes/programmes-dingenieur/esprit-tunis/ingenieur-en-genie-informatique/",
+    "option": "Data Analytics & Science",
+    "description": "Un ingénieur en informatique spécialisé en ingénierie des données et en intelligence artificielle, maîtrisant l’ensemble de la chaîne de valeur de la donnée, de son acquisition à la mise en production de solutions intelligentes, en passant par son stockage, son traitement et son analyse avancée.en informatique qui maîtrise les pratiques avancées de conception, de qualité et d’industrialisation du logiciel. Il est capable de structurer des applications complexes, d’assurer leur maintenabilité, leur testabilité et leur évolutivité, tout en orchestrant efficacement les processus de développement dans des environnements collaboratifs et à grande échelle.",
+    "objectifs": "Former des ingénieurs spécialisés en Data Engineering, IA, Big Data",
+    "modules_4eme_annee": "Deep learning 2 ​/ Statistiques ​/ Séries temporelles​ / Informatique décisionnelle​ / Probabilités",
+    "modules_5eme_annee": "Advanced learning​ / Big data analytics​ / Advanced data visualisation / Data governance​ / Connectivity for intelligent systems​ / Initiation aux ERP & CRM / Optimsiation pour le ML",
+    "debouches": "Ingénieur Data​ / Data Scientist​ / Data Analyst​ / Ingénieur MLOps​"
+  },
+  {
+    "specialite": "Ingénieur en Génie informatique",
+    "url": "https://www.esprit.tn/nos-programmes/programmes-dingenieur/esprit-tunis/ingenieur-en-genie-informatique/",
+    "option": "Software Systems Architecture",
+    "description": "Un ingénieur en informatique qui maîtrise les pratiques avancées de conception, de qualité et d’industrialisation du logiciel. Il est capable de structurer des applications complexes, d’assurer leur maintenabilité, leur testabilité et leur évolutivité, tout en orchestrant efficacement les processus de développement dans des environnements collaboratifs et à grande échelle.",
+    "objectifs": "Former des ingénieurs capables de concevoir, développer et déployer des systèmes logiciels modernes, en s’appuyant sur les principes de l’architecture logicielle, le développement Full-Stack, l’ingénierie Cloud-Native et l’intelligence artificielle appliquée.",
+    "modules_4eme_annee": "Développement Cross-plateform​ / XR​ / UI/UX Design​ / IA for software engineering​ / Architecture côté client avancée ​",
+    "modules_5eme_annee": "LLM Engineering & RAG Architecture​ / Agentic AI & Multi-Agent Systems​ / Data Engineering & Streaming pour le Web​ / Ingénierie de l’Évaluation",
+    "debouches": "Architecte Solutions​ / Ingénieur DevOps / Ingénieur logiciel (Backend / FullStack) ​/ Consultant IT / Digital Transformation"
+  },
+  {
+    "specialite": "Ingénieur en Génie des Télécommunications",
+    "url": "https://www.esprit.tn/nos-programmes/programmes-dingenieur/esprit-tunis/ingenieur-en-genie-des-telecommunications/",
+    "option": "IoT & Embedded Technologies",
+    "description": "L’option IoT & Embedded Technologies – Télécom est spécialisée dans la conception et le développement de systèmes communicants et de solutions interconnectées. Elle couvre l’ensemble de la chaîne de valeur de l’IoT, incluant les objets connectés, les réseaux de communication et le développement de services. Cette formation intègre également des compétences en intelligence artificielle appliquée aux systèmes embarqués et aux télécommunications.",
+    "objectifs": "Former un ingénieur capable de concevoir, développer, intégrer et piloter des systèmes et des solutions interconnectés, basés sur des objets connectés et des architectures distribuées (cloud). Il dispose également de compétences pour développer des solutions IoT de bout en bout (objets connectés, réseaux, développement applicatif), intégrant des modèles d’intelligence artificielle afin de créer des solutions à forte valeur ajoutée.",
+    "modules_4eme_annee": "Engineering of Connected Objects (OS of Connected Things : 21 / IoT Networks & Protocols : 21 / Calculateurs embarqués : 21) / Instrumentation et Interfaces de Communication (Instrumentation : 21 / Bus de communication : 21) / Technique de conteneurisation (Technique de conteneurisation : 12 / Initiation application côté client : 21) / Track & Trace (RFID : 21)",
+    "modules_5eme_annee": "Intelligence artificielle avancée 2 (Advanced Learning : 30 / Big Data Analytics : 30 / Optimisation pour le ML : 21) / Advanced Data Science Project (Advanced Data Science Project : 21) / Réseaux & Sécurité (Certification HCIA-DataCom : 21 / Next-Generation Networks : 21 / CCNA Security : 30)",
+    "debouches": "Ingénieur IoT / Développeur de Systèmes Embarqués / Ingénieur Réseaux / Project manager AI and IoT / Chef de Projet IoT / Full stack / micro-sercices IoT platform manager"
+  },
+  {
+    "specialite": "Ingénieur en Génie des Télécommunications",
+    "url": "https://www.esprit.tn/nos-programmes/programmes-dingenieur/esprit-tunis/ingenieur-en-genie-des-telecommunications/",
+    "option": "Data Analytics & Science Télécom",
+    "description": "L’option -Data Analytics & Science TELECOM- est spécialisée en ingénierie des données et en intelligence artificielle couvrant l’ensemble de la chaîne de valeur de la donnée : acquisition, stockage, traitement, analyse avancée et déploiement de solutions intelligentes. Elle est appliquée notamment aux infrastructures de télécommunications et aux réseaux de nouvelle génération (5G/6G, IoT), afin d’optimiser la performance, la qualité de service et la gestion intelligente des systèmes connectés.",
+    "objectifs": "Former un ingénieur capable de mobiliser de solides compétences en science des données et en intelligence artificielle afin d’analyser et d’exploiter de grands volumes de données, d’optimiser des modèles d’apprentissage automatique et de développer des services numériques intelligents.",
+    "modules_4eme_annee": "Modélisation pour la data science (Probabilité : 42 / Statistiques : 21 / Séries temporelles : 21) / Systèmes décisionnels et intelligents connectés (Informatique décisionnelle : 42 / Connectivity for Intelligent Systems : 21) / Intelligence artificielle avancée 1 (Advanced Deep Learning : 21)",
+    "modules_5eme_annee": "Intelligence artificielle avancée 2 (Advanced Learning : 30 / Big Data Analytics : 30 / Optimisation pour le ML : 21) / Advanced Data Science Project (Advanced Data Science Project : 21) / Réseaux & Sécurité (Certification HCIA-DataCom : 21 / Next-Generation Networks : 21 / CCNA Security : 30)",
+    "debouches": "Data Engineer / ML/MLOps Engineer / Data Scientist / Ingénieur SON (Self-Organizing Networks) / Ingénieur optimisation réseau (RAN/Core) / Ingénieur 5G / Réseaux intelligents."
+  },
+  {
+    "specialite": "Ingénieur en Génie Civil",
+    "url": "https://www.esprit.tn/nos-programmes/programmes-dingenieur/esprit-tunis/ingenieur-en-genie-civil/",
+    "option": "SO : Structures et ouvrages",
+    "description": "",
+    "objectifs": "",
+    "modules_4eme_annee": "",
+    "modules_5eme_annee": "",
+    "debouches": "Ingénieur conseil / Ingénieur chef projet / Pilotage des chantiers"
+  },
+  {
+    "specialite": "Ingénieur en Génie Civil",
+    "url": "https://www.esprit.tn/nos-programmes/programmes-dingenieur/esprit-tunis/ingenieur-en-genie-civil/",
+    "option": "PC : Ponts et chaussées",
+    "description": "",
+    "objectifs": "",
+    "modules_4eme_annee": "",
+    "modules_5eme_annee": "",
+    "debouches": ""
+  },
+  {
+    "specialite": "Ingénieur en Génie Civil",
+    "url": "https://www.esprit.tn/nos-programmes/programmes-dingenieur/esprit-tunis/ingenieur-en-genie-civil/",
+    "option": "RN2E : Ressources naturelles & études énergétiques",
+    "description": "",
+    "objectifs": "",
+    "modules_4eme_annee": "",
+    "modules_5eme_annee": "",
+    "debouches": "Ingénieur qualité / Chef de production / Ingénieur petrolier / Pilotage des chantiers / Ingénieur conseil / chef projet / Audit énergitique"
+  },
+  {
+    "specialite": "Ingénieur en Génie Electromécanique",
+    "url": "https://www.esprit.tn/nos-programmes/programmes-dingenieur/esprit-tunis/ingenieur-en-genie-electromecanique/",
+    "option": "Mécatronique",
+    "description": "La Mécatronique (MECAT créée en 2015-2016) rassemble étroitement la mécanique, l’électronique, l’automatique et l’informatique temps réel, pour la conception et la fabrication de nouveaux systèmes automatiques complexes. Ce domaine pluridisciplinaire permet à l’ingénieur électromécanicien de proposer des solutions innovantes et d’intervenir à tous les niveaux d’un système de production (du traditionnel à l’usine du future). Les débouchés Ingénieur de conception / Ingénieur d’application / Ingénieur de développement / Ingénieur de support technique / Ingénieur conseil Formule de calcul du score Score = (40%*MG) + (20%*MNI) +(20%*SA+10%*SE2) + (5%* CCCA3 + 5%*CCCF3); MG : Moyenne générale, MNI : Méthodes numériques pour l’ingénieur, SA : Systèmes automatisés, SE2 : Systèmes électriques, CCCA3 : Anglais, CCCF3 : Français",
+    "objectifs": "",
+    "modules_4eme_annee": "",
+    "modules_5eme_annee": "",
+    "debouches": "Ingénieur de conception / Ingénieur d’application / Ingénieur de développement / Ingénieur de support technique / Ingénieur conseil"
+  },
+  {
+    "specialite": "Ingénieur en Génie Electromécanique",
+    "url": "https://www.esprit.tn/nos-programmes/programmes-dingenieur/esprit-tunis/ingenieur-en-genie-electromecanique/",
+    "option": "AIR : Artificial Intelligence & Robotics",
+    "description": "Créée en 2025-2026, l’option Artificial Intelligence & Robotics explore la synergie entre l’IA et la robotique, un duo révolutionnaire qui transforme en profondeur l’industrie et notre quotidien. Positionnée au cœur de l’industrie 4.0, elle s’appuie sur des technologies clés comme la vision par ordinateur, le machine learning, l’IoT, les systèmes embarqués, l’Edge Computing et ROS pour répondre à des défis réels allant de l’automatisation intelligente aux véhicules autonomes Les débouchés Ingénieur en robotique / Ingénieur en automatisation / Spécialiste en maintenance prédictive / Ingénieur R&D / Ingénieur Méthodes Formule de calcul du score Score = (MG*0,4) + (SA*0,15) + (MNI*0,15) + (SE2*0,1) + (MA*0,1) + (CCCF3*0,05) + (CCCA3*0,05); MG : Moyenne générale, SA : Systèmes automatisés, MNI : Méthodes numériques pour l’ingénieur, SE2 : Systèmes électriques 2, MA : Mathématiques appliquées, CCCA3 : Anglais, CCCF3 : Français",
+    "objectifs": "",
+    "modules_4eme_annee": "",
+    "modules_5eme_annee": "",
+    "debouches": "Ingénieur en robotique / Ingénieur en automatisation / Spécialiste en maintenance prédictive / Ingénieur R&D / Ingénieur Méthodes"
+  },
+  {
+    "specialite": "Ingénieur en Génie Electromécanique",
+    "url": "https://www.esprit.tn/nos-programmes/programmes-dingenieur/esprit-tunis/ingenieur-en-genie-electromecanique/",
+    "option": "OGI : Organisation et gestion industrielles",
+    "description": "Créée en 2015-2016, l’option Organisation et Gestion Industrielle (OGI) prépare un ingénieur ayant des compétences techniques et managériales pour résoudre en groupe des problèmes complexes dans divers secteurs industriels, d’études, de consulting, de recherche et développement, etc. Capable d’utiliser et de concevoir divers systèmes intelligents (l’intelligence artificielle, l’informatique décisionnelle, etc.), un ingénieur EM-OGI est orienté objectif tout en gardant une vision d’optimisation des diverses ressources, d’évaluation d’indicateurs de performance (les KPIs: Key Performance Indicators) et d’amélioration permanente des processus et des organisations à l’échelle nationales et internationales. Les débouchés Ingénieur amélioration continue / Ingénieur qualité / Ingénieur maintenance / Ingénieur supply chain management / Ingénieur méthode / Ingénieur approvisionnements / ingénieur consultant SAP, etc. dans tous les secteurs industriels (automobile, aéronautique, chimique, mécanique, électrique, agro-alimentaire, etc.) ou de services (consulting, etc.) Formule de calcul du score Score = (MG*0,4) + (MNI*0,15) + (ME*0,2) + (MA*0,15) + (CCCF3*0,05) + (CCCA3*0,05); Moyenne générale, MNI : Méthodes numériques pour l’ingénieur, ME : Management de l’Entreprise, MA : Mathématiques Appliquées, CCCA3 : Anglais, CCCF3 : Français",
+    "objectifs": "",
+    "modules_4eme_annee": "",
+    "modules_5eme_annee": "",
+    "debouches": "Ingénieur amélioration continue / Ingénieur qualité / Ingénieur maintenance / Ingénieur supply chain management / Ingénieur méthode / Ingénieur approvisionnements / ingénieur consultant SAP, etc. dans tous les secteurs industriels (automobile, aéronautique, chimique, mécanique, électrique, agro-alimentaire, etc.) ou de services (consulting, etc.)"
+  }
+]

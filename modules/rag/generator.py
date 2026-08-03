@@ -31,11 +31,17 @@ def _build_context(chunks: list[RetrievedChunk]) -> str:
 
 
 AMBIGUOUS_PROGRAMME_NOTE = (
-    "\n\nNote : la question ne précise pas de quel programme il s'agit, et le "
-    "contexte ci-dessus couvre plusieurs programmes différents. Ne demande "
-    "pas de précision (l'appelant ne peut pas te répondre) : donne une "
-    "réponse utile qui couvre les principaux cas, en mentionnant brièvement "
-    "que ça varie selon le programme si les montants ou modalités diffèrent."
+    "\n\nNote : la question ne précise pas de quel programme/campus il "
+    "s'agit, et le contexte ci-dessus couvre plusieurs programmes "
+    "différents (regarde bien le nom du campus/programme indiqué dans le "
+    "titre de chaque extrait -- ne le confonds pas avec un autre). Ne "
+    "demande pas de précision (l'appelant ne peut pas te répondre) : "
+    "réponds séparément pour CHAQUE programme/campus concerné, en le "
+    "nommant explicitement à chaque fois (ex. \"À ESPRIT Tunis, ... ; à "
+    "ESPRIT Monastir, ...\"). N'attribue jamais une information à un "
+    "programme/campus si l'extrait correspondant ne le mentionne pas "
+    "explicitement -- si un extrait ne concerne qu'un seul campus, ne "
+    "dis rien sur les autres pour ce point précis plutôt que de deviner."
 )
 
 

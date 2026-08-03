@@ -21,6 +21,15 @@ PROGRAMME_LABELS: dict[str, str] = {
     "formation-en-alternance": "Formation en alternance",
     "esprit-prepa": "Classe préparatoire (PREPA)",
     "esprit-monastir": "Campus Monastir",
+    "esprit-monastir-esprim": "Campus Monastir",
+    # Page racine des specialites d'ingenieur ESPRIT Tunis (nos-programmes/
+    # programmes-dingenieur/) -- doit rester un label DISTINCT de "Campus
+    # Monastir" et "Classe preparatoire (PREPA)" pour que _ambiguous_programmes
+    # (pipeline.py) detecte bien une question sur une specialite qui existe
+    # sous des noms proches dans plusieurs ecoles (ex. "informatique" =
+    # Specialite Informatique a Tunis vs Genie Informatique a Monastir) et
+    # demande une precision au lieu de melanger les deux campus.
+    "programmes-dingenieur": "ESPRIT Tunis",
     "bac5-master": "ESPRIT School of Business - Master",
     "bac3-bachelor-esb": "ESPRIT School of Business - Bachelor",
     "classe-internationale-2": "Classe internationale",
@@ -47,7 +56,8 @@ PROGRAMME_KEYWORDS: dict[str, list[str]] = {
     "Cours du soir": ["soir"],
     "EMBA / Executive": ["emba", "executive"],
     "Formation en alternance": ["alternance"],
-    "Campus Monastir": ["monastir"],
+    "Campus Monastir": ["monastir", "esprim"],
+    "ESPRIT Tunis": ["tunis"],
     "ESPRIT School of Business - Master": ["master", "bac+5", "bac 5"],
     "ESPRIT School of Business - Bachelor": ["bachelor", "bac+3", "bac 3"],
     "Classe internationale": ["classe internationale"],
@@ -65,3 +75,13 @@ def mentioned_programme(question: str, candidates: set[str]) -> str | None:
         if any(keyword in q for keyword in PROGRAMME_KEYWORDS.get(label, []))
     ]
     return matches[0] if len(matches) == 1 else None
+
+
+# Les 3 "campus"/programmes d'ingenieur ESPRIT ayant chacun leurs propres
+# specialites -- utilise par ingest.py (metadonnee "campus" filtrable) et
+# pipeline.py (question "quelles specialites propose ESPRIT <campus> ?") pour
+# recuperer TOUTES les fiches de specialites du campus mentionne plutot que de
+# se limiter a TOP_K, qui en omettrait mecaniquement une partie.
+CAMPUS_LABELS: frozenset[str] = frozenset(
+    {"ESPRIT Tunis", "Campus Monastir", "Classe préparatoire (PREPA)"}
+)

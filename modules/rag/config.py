@@ -33,7 +33,12 @@ SCORE_THRESHOLD = 0.45
 # marge sont considerees aussi pertinentes que la meilleure (et non filtrees
 # par un seuil absolu), pour detecter correctement quand plusieurs
 # programmes se disputent la meilleure reponse.
-PROGRAMME_AMBIGUITY_MARGIN = 0.08
+# Elargie de 0.08 a 0.10 : un cas reel a montre une fiche correcte (ecart de
+# 0.083 avec le meilleur score, hors-sujet) exclue de justesse du calcul
+# d'ambiguite, laissant le LLM halluciner un mauvais campus pour une
+# specialite (ex. "Genie civil" attribue a Monastir au lieu de Tunis) sans
+# jamais demander de precision.
+PROGRAMME_AMBIGUITY_MARGIN = 0.10
 
 # Modèle LLM local (via Ollama) utilisé pour générer la réponse finale à
 # partir du contexte récupéré. Solution 100% gratuite : aucune clé API,
