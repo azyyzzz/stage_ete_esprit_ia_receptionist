@@ -7,11 +7,12 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 
 from extraction_app.auth import require_login
-from extraction_app.config import APP_ROOT
+from extraction_app.config import APP_ROOT, STATIC_VERSION
 from extraction_app.services.kb_merge import get_history
 
 router = APIRouter(tags=["history"])
 templates = Jinja2Templates(directory=str(APP_ROOT / "templates"))
+templates.env.globals["static_version"] = STATIC_VERSION
 
 
 @router.get("/history", response_class=HTMLResponse)

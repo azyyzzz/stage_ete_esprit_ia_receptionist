@@ -21,7 +21,7 @@ from extraction_app.auth import register_auth_exception_handler
 from extraction_app.auth import router as auth_router
 from extraction_app.bootstrap_credentials import ensure_credentials
 from extraction_app.config import APP_ROOT
-from extraction_app.routers import extraction, history
+from extraction_app.routers import extraction, history, validation
 from extraction_app.scheduler import start_scheduler, stop_scheduler
 
 
@@ -46,3 +46,4 @@ app.mount("/static", StaticFiles(directory=str(APP_ROOT / "static")), name="stat
 app.include_router(auth_router)
 app.include_router(extraction.router)
 app.include_router(history.router)
+app.include_router(validation.router)

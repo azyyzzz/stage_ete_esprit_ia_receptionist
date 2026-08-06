@@ -22,27 +22,13 @@ from pathlib import Path
 import pytesseract
 from PIL import Image
 
-from extraction_app.config import MIN_OCR_CHARS
-from extraction_app.services.pdf_extractor import _slugify, _split_by_article, _split_long_section
-
-# Caracteres consideres "propres" : lettres (accentuees incluses), chiffres,
-# espaces et ponctuation courante. Un OCR de mauvaise qualite produit
-# beaucoup de symboles hors de cet ensemble.
-_CLEAN_CHAR_PATTERN = re.compile(r"[a-zA-ZÀ-ÿ0-9\s.,;:!?()\-'\"%€]")
-MIN_CLEAN_RATIO = 0.85
-
-
-def _quality_ok(text: str) -> tuple[bool, str]:
-    stripped = text.strip()
-    if len(stripped) < MIN_OCR_CHARS:
-        return False, f"texte reconnu trop court ({len(stripped)} caracteres, minimum {MIN_OCR_CHARS})"
-
-    clean_chars = len(_CLEAN_CHAR_PATTERN.findall(stripped))
-    ratio = clean_chars / len(stripped) if stripped else 0.0
-    if ratio < MIN_CLEAN_RATIO:
-        return False, f"trop de caracteres non reconnus ({ratio:.0%} de caracteres propres, minimum {MIN_CLEAN_RATIO:.0%})"
-
-    return True, ""
+from extraction_app.services.pdf_extractor import (
+    _ensure_tesseract_configured,
+    _quality_ok,
+    _slugify,
+    _split_by_article,
+    _split_long_section,
+)
 
 
 def extract_image(image_path: Path, categorie: str, source: str, id_slug: str | None = None) -> tuple[list[dict], dict | None]:
@@ -50,7 +36,9 @@ def extract_image(image_path: Path, categorie: str, source: str, id_slug: str | 
     est de qualite suffisante ; sinon les fiches sont vides et l'item
     decrit ce qui a ete rejete (pour data/a_verifier.json).
     Voir pdf_extractor.extract_pdf pour le role de id_slug."""
-    raw_text = pytesseract.image_to_string(Image.open(image_path), lang="fra")
+    tessdata_dir = _ensure_tesseract_configured()
+    config = f"--tessdata-dir {tessdata_dir}" if tessdata_dir else ""  # pas de guillemets, voir pdf_extractor.py
+    raw_text = pytesseract.image_to_string(Image.open(image_path), lang="fra", config=config)
     text = re.sub(r"\s+", " ", raw_text).strip()
 
     ok, reason = _quality_ok(text)

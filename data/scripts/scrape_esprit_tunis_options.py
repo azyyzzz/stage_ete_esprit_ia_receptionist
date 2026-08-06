@@ -20,10 +20,21 @@ data/scripts/merge_programmes_etude.py) : relancer ce script remplace
 proprement les anciennes fiches d'options par les nouvelles, sans jamais
 toucher aux autres fiches de la base.
 
+Deux points d'entrée pour ce module :
+- Lancement manuel en CLI (ci-dessous, `main()`) : écrit directement dans la
+  base -- un humain a lui-même déclenché la commande et peut inspecter le
+  résultat, comme les autres scripts de data/scripts/.
+- Import par extraction_app/scheduler.py (job planifié mensuel, 1er du
+  mois) : réutilise uniquement `scrape_all()`/`to_kb_record()` (le parsing
+  HTML), PAS `merge_into_kb()` -- le résultat est déposé dans la file
+  d'attente de validation (extraction_app/data/a_valider.json) et n'entre
+  dans la base que si un admin l'approuve sur /a-valider. Voir
+  extraction_app/services/kb_merge.py::queue_for_validation.
+
 Installation :
     pip install requests beautifulsoup4
 
-Lancement (depuis la racine du projet) :
+Lancement manuel (depuis la racine du projet) :
     python data/scripts/scrape_esprit_tunis_options.py
 """
 

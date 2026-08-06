@@ -1,12 +1,15 @@
 <#
 .SYNOPSIS
-    Start the backend API and extraction app for day-to-day use.
+    Start the backend API, extraction app and frontend for day-to-day use.
 
 .DESCRIPTION
     - Resolves the project root from this script's location.
     - Starts Ollama if it is installed and not already listening.
-    - Launches backend and extraction_app in separate PowerShell windows.
+    - Launches backend, extraction_app and the frontend (dashboard/) in
+      separate PowerShell windows.
     - Does not reinstall dependencies, pull models, or rebuild the index.
+    - Skips the frontend if dashboard/node_modules is missing (run
+      `npm install` in dashboard/ once beforehand).
 #>
 
 Set-StrictMode -Version Latest
@@ -42,4 +45,13 @@ $extractionCmd = "& '$python' -m uvicorn extraction_app.main:app --reload --port
 Start-Process -FilePath powershell -ArgumentList '-NoExit','-Command',$backendCmd -WindowStyle Normal
 Start-Process -FilePath powershell -ArgumentList '-NoExit','-Command',$extractionCmd -WindowStyle Normal
 
-Write-Host "Started backend -> http://127.0.0.1:8000 and extraction app -> http://127.0.0.1:8001"
+$dashboardDir = Join-Path $Root 'dashboard'
+$dashboardNodeModules = Join-Path $dashboardDir 'node_modules'
+if (Test-Path $dashboardNodeModules) {
+    $frontendCmd = "Set-Location '$dashboardDir'; npm run dev"
+    Start-Process -FilePath powershell -ArgumentList '-NoExit','-Command',$frontendCmd -WindowStyle Normal
+    Write-Host "Started backend -> http://127.0.0.1:8000, extraction app -> http://127.0.0.1:8001, frontend -> http://127.0.0.1:5173"
+} else {
+    Write-Warning "dashboard/node_modules absent -- lance 'npm install' dans dashboard/ une premiere fois. Frontend non demarre."
+    Write-Host "Started backend -> http://127.0.0.1:8000 and extraction app -> http://127.0.0.1:8001"
+}

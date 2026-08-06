@@ -19,7 +19,8 @@ modules/
   text_to_speech/           Synthèse vocale -- voir plus bas
 
 backend/                  API REST reliant les modules -- voir plus bas
-dashboard/                Interface CRUD documents + statistiques -- à venir
+extraction_app/           App admin d'ingestion de la base de connaissances (port 8001)
+dashboard/                Frontend (React) : démo publique + point d'entrée admin -- voir plus bas
 docker/                   Conteneurisation des services -- à venir
 tests/                    Scripts de test manuels
 ```
@@ -110,3 +111,20 @@ l'installation de la voix et les limites connues (français uniquement).
 Cycle vocal complet (question à l'oral -> réponse RAG -> audio de la
 réponse) via l'endpoint `POST /api/converse` -- voir
 [backend/README.md](backend/README.md).
+
+## Frontend (démo publique + espace admin)
+
+Interface React qui permet de tester l'assistant (texte et voix) comme le
+ferait un futur étudiant, et sert de point d'entrée vers l'espace admin
+(`extraction_app`, sans dupliquer son authentification). Voir
+[dashboard/README.md](dashboard/README.md) pour le détail.
+
+```
+cd dashboard
+npm install
+npm run dev
+```
+
+Ouvre http://localhost:5173 -- nécessite `backend` (port 8000) lancé pour
+que la démo réponde. `scripts/start_services.ps1` lance les trois services
+(`backend`, `extraction_app`, `dashboard`) en une seule commande.

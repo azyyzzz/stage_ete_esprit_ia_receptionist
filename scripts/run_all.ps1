@@ -8,11 +8,14 @@
     - Optionally pulls the Ollama model `qwen2.5:7b-instruct`.
     - Starts Ollama server if not already listening on port 11434.
     - Runs the RAG ingest (indexer).
-    - Launches the backend and extraction_app in separate PowerShell windows.
+    - Optionally runs `npm install` for the frontend (dashboard/).
+    - Launches the backend, extraction_app and frontend in separate
+      PowerShell windows (frontend skipped if dashboard/node_modules is
+      missing and -InstallFrontend wasn't passed).
 
 .EXAMPLE
-    # Create venv, install deps, pull model, then start everything
-    .\scripts\run_all.ps1 -InstallDeps -PullModel
+    # Create venv, install deps (Python + frontend), pull model, then start everything
+    .\scripts\run_all.ps1 -InstallDeps -InstallFrontend -PullModel
 
     # Just start servers (assumes deps + Ollama already ok)
     .\scripts\run_all.ps1
@@ -20,6 +23,7 @@
 
 param(
     [switch]$InstallDeps,
+    [switch]$InstallFrontend,
     [switch]$PullModel,
     [string]$OllamaPath
 )
@@ -72,7 +76,20 @@ if (-not $OllamaPath) {
 Write-Host "Running RAG ingest (index building)..."
 & $Python -m modules.rag.ingest
 
-Write-Host "Launching backend and extraction_app in separate PowerShell windows..."
+$DashboardDir = Join-Path $Root 'dashboard'
+$DashboardNodeModules = Join-Path $DashboardDir 'node_modules'
+if ($InstallFrontend -or -not (Test-Path $DashboardNodeModules)) {
+    if (Get-Command npm -ErrorAction SilentlyContinue) {
+        Write-Host "Installing frontend dependencies (dashboard/)..."
+        Push-Location $DashboardDir
+        npm install
+        Pop-Location
+    } else {
+        Write-Warning "npm introuvable -- installe Node.js (https://nodejs.org) pour lancer le frontend."
+    }
+}
+
+Write-Host "Launching backend, extraction_app and frontend in separate PowerShell windows..."
 
 $backendCmd = "& '$Python' -m uvicorn backend.main:app --reload"
 Start-Process -FilePath powershell -ArgumentList '-NoExit','-Command',$backendCmd -WindowStyle Normal
@@ -80,4 +97,10 @@ Start-Process -FilePath powershell -ArgumentList '-NoExit','-Command',$backendCm
 $extractionCmd = "& '$Python' -m uvicorn extraction_app.main:app --reload --port 8001"
 Start-Process -FilePath powershell -ArgumentList '-NoExit','-Command',$extractionCmd -WindowStyle Normal
 
-Write-Host "Done. Backend -> http://127.0.0.1:8000  Extraction -> http://127.0.0.1:8001"
+if (Test-Path $DashboardNodeModules) {
+    $frontendCmd = "Set-Location '$DashboardDir'; npm run dev"
+    Start-Process -FilePath powershell -ArgumentList '-NoExit','-Command',$frontendCmd -WindowStyle Normal
+    Write-Host "Done. Backend -> http://127.0.0.1:8000  Extraction -> http://127.0.0.1:8001  Frontend -> http://127.0.0.1:5173"
+} else {
+    Write-Host "Done. Backend -> http://127.0.0.1:8000  Extraction -> http://127.0.0.1:8001 (frontend non demarre)"
+}

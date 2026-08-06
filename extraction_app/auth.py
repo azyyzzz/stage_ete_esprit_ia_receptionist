@@ -16,10 +16,11 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 
 from extraction_app.bootstrap_credentials import verify_password
-from extraction_app.config import APP_ROOT, SESSION_COOKIE_NAME
+from extraction_app.config import APP_ROOT, SESSION_COOKIE_NAME, STATIC_VERSION
 
 router = APIRouter(tags=["auth"])
 templates = Jinja2Templates(directory=str(APP_ROOT / "templates"))
+templates.env.globals["static_version"] = STATIC_VERSION
 
 # token de session -> nom d'utilisateur
 _ACTIVE_SESSIONS: dict[str, str] = {}

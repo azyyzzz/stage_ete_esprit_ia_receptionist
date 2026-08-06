@@ -40,26 +40,10 @@
     <p class="error">{{ result.error }}</p>
   {% elif result.manual_review %}
     <p class="warning">Contenu extrait mais qualité insuffisante (OCR) — mis de côté pour vérification manuelle, rien n'a été fusionné automatiquement. Voir <a href="/history">l'historique</a>.</p>
-  {% elif result.summary %}
-    <ul class="summary">
-      <li>Fiches ajoutées : <strong>{{ result.summary.added|length }}</strong></li>
-      <li>Rejetées (hors sujet) : {{ result.summary.rejected_relevance_count }}</li>
-      <li>Rejetées (déjà présentes) : {{ result.summary.rejected_duplicate_count }}</li>
-      <li>Rejetées (id déjà existant) : {{ result.summary.rejected_id_count }}</li>
-    </ul>
-    {% if result.summary.rejected_duplicate_details %}
-    <details>
-      <summary>Détail des doublons détectés</summary>
-      <ul>
-        {% for d in result.summary.rejected_duplicate_details %}
-        <li>« {{ d.titre_candidat }} » ~ déjà présente sous « {{ d.titre_existant }} » (score {{ d.score }})</li>
-        {% endfor %}
-      </ul>
-    </details>
-    {% endif %}
   {% endif %}
 </section>
 {% endif %}
+<p><em>Une extraction réussie ne modifie jamais la base directement : les fiches extraites sont déposées en attente sur <a href="/a-valider">/a-valider</a>, où tu choisis d'approuver ou de rejeter chacune.</em></p>
 
 <script>
 var ACCEPT_BY_TYPE = {

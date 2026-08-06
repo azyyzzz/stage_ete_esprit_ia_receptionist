@@ -11,6 +11,10 @@ vector_store/
 # ne doivent pas etre versionnes (fichiers binaires volumineux).
 voice_models/
 
+# Pack de langue francaise Tesseract OCR (extraction_app) -- retelechargeable
+# via scripts/install_tesseract.ps1, ne doit pas etre versionne (14 Mo).
+tessdata/
+
 # Fichiers auxiliaires de compilation LaTeX (rapport/) : regenerees a
 # chaque compilation, seul le .tex (source) et le .pdf (livrable) comptent.
 rapport/*.aux
@@ -28,3 +32,4 @@ extraction_app/data/config_local.json
 extraction_app/data/historique.json
 extraction_app/data/url_sources.json
 extraction_app/data/a_verifier.json
+extraction_app/data/a_valider.json

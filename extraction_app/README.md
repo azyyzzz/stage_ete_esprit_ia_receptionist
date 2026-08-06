@@ -72,19 +72,23 @@ par « ? ») a l'interieur de chaque section. Logique reprise de
 
 ## Ou vont les nouvelles fiches -- point d'attention important
 
-Cette appli **ecrit uniquement dans `data/processed/site_esprit.json`**
-(le fichier "brut" du pipeline existant), **jamais** dans
-`site_esprit_clean.json` (celui que le RAG ingere reellement via
-`modules/rag/ingest.py`). C'est une decision deliberee, pour ne jamais
-court-circuiter le nettoyage/dedup exact-match existant
-(`data/scripts/clean_knowledgebase`).
+Une extraction (upload manuel, scraping planifie) n'ecrit **jamais**
+directement dans la base : les fiches candidates sont deposees en attente
+sur `/a-valider`, et un admin doit cliquer **Approuver** fiche par fiche
+(voir `services/kb_merge.py::queue_for_validation`/`approve_fiche`).
 
-Pour que le RAG voie les nouvelles fiches, il faut donc, apres une session
-d'extraction :
-```bash
-python data/scripts/clean_knowledgebase   # site_esprit.json -> site_esprit_clean.json
-python -m modules.rag.ingest              # reconstruit l'index vectoriel
-```
+Seule une fiche **approuvee** est ecrite -- et elle l'est alors directement
+dans `data/processed/site_esprit_clean.json` (celui que le RAG ingere
+reellement via `modules/rag/ingest.py`), les deux garde-fous (pertinence +
+dedup semantique) ayant deja ete verifies au moment de l'approbation.
+`site_esprit.json` (fichier "brut" historique) est mis a jour en miroir
+pour rester coherent avec les autres scripts du projet, mais n'est plus
+la source de verite pour la dedup.
+
+Un `python -m modules.rag.ingest` reste necessaire apres une session de
+validation pour que le contenu approuve devienne cherchable par
+l'assistant (reconstruction de l'index vectoriel ChromaDB, jamais fait
+automatiquement par extraction_app).
 
 ## Planificateur
 

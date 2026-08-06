@@ -13,11 +13,22 @@ APP_ROOT = Path(__file__).resolve().parent
 PROJECT_ROOT = APP_ROOT.parent
 
 # -----------------------------------------------------------------------
-# Base de connaissances -- extraction_app ecrit UNIQUEMENT dans le fichier
-# brut. site_esprit_clean.json (celui que le RAG ingere) n'est jamais
-# modifie ici : voir README.md, section "Rappel important".
+# Base de connaissances. Une fiche n'atteint l'un ou l'autre de ces
+# fichiers QUE via kb_merge.merge_candidates() -- appele uniquement apres
+# approbation explicite d'un admin sur /a-valider (voir services/kb_merge.py
+# ::approve_fiche/approve_batch) : les deux garde-fous (pertinence + dedup
+# semantique) sont deja passes a ce moment-la, donc la fiche est ecrite
+# directement dans CLEAN_KB_PATH (celui que le RAG ingere reellement via
+# modules/rag/ingest.py, voir modules/rag/config.py::KNOWLEDGE_BASE_PATH)
+# -- pas seulement dans le fichier "brut" de staging, qui reste ecrit en
+# parallele pour rester coherent avec les autres scripts du projet
+# (data/scripts/merge_programmes_etude.py, scrape_esprit_tunis_options.py)
+# qui ecrivent aussi dans les deux. Un `python -m modules.rag.ingest` reste
+# necessaire pour que le contenu approuve devienne cherchable par
+# l'assistant (reconstruction de l'index vectoriel, pas fait ici).
 # -----------------------------------------------------------------------
 KB_PATH = PROJECT_ROOT / "data" / "processed" / "site_esprit.json"
+CLEAN_KB_PATH = PROJECT_ROOT / "data" / "processed" / "site_esprit_clean.json"
 
 # -----------------------------------------------------------------------
 # Donnees propres a extraction_app (journal, registre des sources web,
@@ -30,7 +41,33 @@ URL_SOURCES_PATH = DATA_DIR / "url_sources.json"
 A_VERIFIER_PATH = DATA_DIR / "a_verifier.json"
 CONFIG_LOCAL_PATH = DATA_DIR / "config_local.json"
 
+# File d'attente des lots issus d'un scraping NON supervise (ex. scraping
+# mensuel planifie des options ESPRIT Tunis, voir scheduler.py) -- distinct
+# de A_VERIFIER_PATH (qualite OCR douteuse) : ici le contenu est fiable,
+# mais la politique du projet exige une validation humaine explicite avant
+# toute ecriture dans la base pour les sources sans supervision directe.
+# Un lot n'est fusionne dans site_esprit.json (via merge_candidates, memes
+# garde-fous que toutes les autres sources) que si l'admin clique
+# "Approuver" sur /a-valider -- voir services/kb_merge.py.
+A_VALIDER_PATH = DATA_DIR / "a_valider.json"
+
 UPLOADS_DIR = APP_ROOT / "uploads"
+
+# -----------------------------------------------------------------------
+# Cache-busting pour static/style.css : le navigateur peut mettre en cache
+# le CSS agressivement (pas de Cache-Control explicite envoye par
+# StaticFiles) et ne pas detecter une modification sans rechargement forme.
+# En suffixant le lien vers le CSS par ?v=<horodatage du fichier> (voir
+# templates/base.html, login.html), l'URL change des que le fichier change
+# -> le navigateur le retelecharge automatiquement, sans jamais avoir a
+# faire de Ctrl+F5 manuel.
+# -----------------------------------------------------------------------
+def _compute_static_version() -> str:
+    style_path = APP_ROOT / "static" / "style.css"
+    return str(int(style_path.stat().st_mtime)) if style_path.exists() else "0"
+
+
+STATIC_VERSION = _compute_static_version()
 
 # -----------------------------------------------------------------------
 # Seuil de similarite semantique (TF-IDF + cosinus) au-dessus duquel une

@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block title %}À valider - Extraction KB ESPRIT{% endblock %}
+{% block content %}
+<h1>Lots en attente de validation</h1>
+<p>
+  Contenu issu d'un scraping <strong>automatique planifié</strong> (1er de
+  chaque mois, 4h — <code>extraction_app/scheduler.py</code>, tant que le
+  serveur tourne en continu ce jour-là). Rien n'est écrit dans la base tant
+  qu'une fiche n'est pas explicitement approuvée ci-dessous, fiche par
+  fiche — approuver n'écrit QUE la fiche concernée.
+</p>
+
+<div class="result reindex-banner">
+  {% if index_stale %}
+    <p><span class="warning">⚠️ Des fiches approuvées ne sont peut-être pas encore cherchables par l'assistant</span><br>
+    <small>La base de connaissances (<code>site_esprit_clean.json</code>) a changé depuis la dernière reconstruction de l'index vectoriel.</small></p>
+  {% else %}
+    <p><span class="ok">✅ Index à jour</span><br>
+    <small>Toutes les fiches approuvées sont déjà cherchables par l'assistant.</small></p>
+  {% endif %}
+
+  {% if last_reindex %}
+  <p>
+    <small>
+      Dernière réindexation lancée depuis cette page :
+      {% if last_reindex.success %}<span class="ok">succès</span>{% else %}<span class="error">échec</span>{% endif %}
+      — {{ last_reindex.date }}
+    </small>
+    {% if not last_reindex.success %}
+    <details><summary>détail de l'erreur</summary><pre class="reindex-output">{{ last_reindex.output }}</pre></details>
+    {% endif %}
+  </p>
+  {% endif %}
+
+  <form action="/a-valider/reindexer" method="post" class="inline-form" onsubmit="return startReindex(this)">
+    <button type="submit" id="reindex-btn">Réindexer maintenant</button>
+  </form>
+  <p><small>Reconstruit l'index en entier — peut prendre environ une minute selon la taille de la base. La page reste chargée jusqu'à la fin.</small></p>
+</div>
+
+<script>
+function startReindex(form) {
+  var btn = form.querySelector('button');
+  btn.disabled = true;
+  btn.textContent = 'Réindexation en cours… (jusqu\'à une minute)';
+  return true;
+}
+</script>
+
+{% if not batches %}
+<p>Aucun lot en attente pour l'instant.</p>
+{% else %}
+{% for batch in batches %}
+<div class="result">
+  <p>
+    <strong>{{ batch.source }}</strong> — {{ batch.categorie }}
+    <br>Origine : {{ batch.origine }} · Déposé le {{ batch.date }}
+    <br>{{ batch.candidates | length }} fiche(s) en attente dans ce lot
+  </p>
+
+  <form action="/a-valider/{{ batch.id }}/approuver-tout" method="post" class="inline-form">
+    <button type="submit">Tout approuver ({{ batch.candidates | length }})</button>
+  </form>
+  <form action="/a-valider/{{ batch.id }}/rejeter-tout" method="post" class="inline-form">
+    <button type="submit" class="button-danger">Tout rejeter</button>
+  </form>
+
+  <table class="history-table validation-table">
+    <thead>
+      <tr>
+        <th>Titre</th>
+        <th>Contenu intégral</th>
+        <th>Par rapport à la base actuelle</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for c in batch.candidates %}
+      <tr>
+        <td>{{ c.titre }}</td>
+        <td class="contenu-cell">{{ c.contenu }}</td>
+        <td>
+          {% if c._preview.statut == "nouveau" %}
+            <span class="ok">Nouveau contenu</span>
+            {% if c._preview.score is not none %}<br><small>(similarité max avec l'existant : {{ c._preview.score }})</small>{% endif %}
+          {% elif c._preview.statut == "doublon" %}
+            <span class="warning">Ressemble déjà à une fiche existante</span>
+            <br><small>« {{ c._preview.titre_existant }} » (score {{ c._preview.score }})</small>
+          {% elif c._preview.statut == "hors_sujet" %}
+            <span class="error">Serait rejeté (hors-sujet)</span>
+          {% endif %}
+        </td>
+        <td>
+          <form action="/a-valider/{{ batch.id }}/fiche/{{ c.id }}/approuver" method="post" class="inline-form">
+            <button type="submit">Approuver</button>
+          </form>
+          <form action="/a-valider/{{ batch.id }}/fiche/{{ c.id }}/rejeter" method="post" class="inline-form">
+            <button type="submit" class="button-danger">Rejeter</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endfor %}
+{% endif %}
+{% endblock %}
