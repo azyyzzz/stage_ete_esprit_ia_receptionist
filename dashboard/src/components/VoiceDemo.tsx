@@ -102,7 +102,7 @@ export default function VoiceDemo() {
           </div>
           <div className="rounded-xl border border-volt-500/20 bg-volt-500/[0.06] px-4 py-3">
             <p className="font-mono text-[11px] uppercase tracking-wide text-volt-400">Réponse</p>
-            <p className="mt-1 text-sm text-mist-100">{result.answer}</p>
+            <p className="mt-1 whitespace-pre-line text-sm text-mist-100">{result.answer}</p>
           </div>
         </div>
       )}

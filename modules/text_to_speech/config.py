@@ -15,6 +15,12 @@ VOICE_MODELS_DIR = PROJECT_ROOT / "voice_models"
 VOICE_MODEL_NAME = "fr_FR-siwis-medium"
 VOICE_MODEL_PATH = VOICE_MODELS_DIR / f"{VOICE_MODEL_NAME}.onnx"
 
+# Voix arabe (arabe standard jordanien -- aucune voix tunisienne
+# disponible chez Piper, voir README.md). Utilisee quand le texte a
+# synthetiser est majoritairement en arabe (voir synthesize.py).
+VOICE_MODEL_NAME_AR = "ar_JO-kareem-medium"
+VOICE_MODEL_PATH_AR = VOICE_MODELS_DIR / f"{VOICE_MODEL_NAME_AR}.onnx"
+
 # Multiplicateur de duree de la parole : 1.0 = vitesse par defaut du modele,
 # plus eleve = plus lent. Augmente car la voix par defaut parlait trop vite
 # pour un appelant au telephone.

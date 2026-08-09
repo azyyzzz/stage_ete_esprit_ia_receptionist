@@ -1,10 +1,11 @@
 """
-Planificateur : relance chaque jour l'extraction pour les sources de type
-"site web" deja enregistrees (jamais pour PDF/Excel/image uploades
-manuellement -- ceux-ci ne sont pas re-executables sans le fichier original).
+Planificateur : relance une fois par mois (1er du mois) l'extraction pour
+les sources de type "site web" deja enregistrees (jamais pour PDF/Excel/
+image uploades manuellement -- ceux-ci ne sont pas re-executables sans le
+fichier original).
 
-Lance aussi, une fois par mois, le scraping des options de specialisation
-ESPRIT Tunis (data/scripts/scrape_esprit_tunis_options.py).
+Lance aussi, le meme jour a une heure differente, le scraping des options
+de specialisation ESPRIT Tunis (data/scripts/scrape_esprit_tunis_options.py).
 
 AUCUN de ces jobs ne fusionne directement dans site_esprit.json : les
 fiches candidates sont toujours deposees dans la file d'attente de
@@ -26,9 +27,9 @@ from apscheduler.triggers.cron import CronTrigger
 from extraction_app.config import URL_SOURCES_PATH
 from extraction_app.services import kb_merge
 
-DAILY_HOUR = 3  # 03h00, heure creuse
+URL_RESCRAPE_HOUR = 3  # 03h00, heure creuse
 MONTHLY_DAY = 1  # 1er du mois
-MONTHLY_HOUR = 4  # 04h00, heure creuse (decalee du re-scraping quotidien)
+OPTIONS_SCRAPE_HOUR = 4  # 04h00, heure creuse (decalee du re-scraping des URLs)
 
 _scheduler: BackgroundScheduler | None = None
 
@@ -48,7 +49,7 @@ def _write_sources(sources: list[dict]) -> None:
 
 def register_url_source(url: str, categorie: str) -> None:
     """Enregistre (ou met a jour) une source URL pour la re-extraction
-    quotidienne. Idempotent -- une meme URL n'est jamais dupliquee."""
+    mensuelle. Idempotent -- une meme URL n'est jamais dupliquee."""
     sources = _load_sources()
     for source in sources:
         if source["url"] == url:
@@ -66,7 +67,7 @@ def register_url_source(url: str, categorie: str) -> None:
     _write_sources(sources)
 
 
-def run_daily_rescrape() -> None:
+def run_monthly_url_rescrape() -> None:
     """Rejoue extraction -> filtres -> depot en attente pour chaque source
     web enregistree -- AUCUNE fusion directe (voir docstring du module).
     Import differe de web_extractor pour eviter tout cout au demarrage de
@@ -143,10 +144,14 @@ def run_monthly_options_scrape() -> None:
 def start_scheduler() -> BackgroundScheduler:
     global _scheduler
     _scheduler = BackgroundScheduler()
-    _scheduler.add_job(run_daily_rescrape, CronTrigger(hour=DAILY_HOUR, minute=0), id="daily_rescrape")
+    _scheduler.add_job(
+        run_monthly_url_rescrape,
+        CronTrigger(day=MONTHLY_DAY, hour=URL_RESCRAPE_HOUR, minute=0),
+        id="monthly_url_rescrape",
+    )
     _scheduler.add_job(
         run_monthly_options_scrape,
-        CronTrigger(day=MONTHLY_DAY, hour=MONTHLY_HOUR, minute=0),
+        CronTrigger(day=MONTHLY_DAY, hour=OPTIONS_SCRAPE_HOUR, minute=0),
         id="monthly_options_scrape",
     )
     _scheduler.start()

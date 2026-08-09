@@ -21,9 +21,24 @@ from modules.speech_to_text.model import get_model
 
 
 def detect_language(audio_path: Path | str) -> dict:
-    """Retourne {"language": str, "probability": float}."""
+    """Retourne {"language": str, "probability": float}, RESTREINT a
+    francais ou arabe -- un appelant d'ESPRIT n'utilise que l'une de ces
+    deux langues, ou un melange des deux (dialecte tunisien), jamais une
+    autre langue (voir modules/rag/generator.py).
+
+    Whisper detecte nativement parmi ~99 langues : sur un echantillon court
+    ou bruite, la langue avec le score global le plus eleve peut etre une
+    langue totalement hors sujet plutot que fr/ar (constate en usage reel).
+    On recupere donc les probabilites de TOUTES les langues et on ne
+    compare que fr vs ar entre elles, en ignorant le reste."""
     model = get_model()
     audio = decode_audio(str(audio_path), sampling_rate=SAMPLE_RATE)
-    language, probability, _all_probabilities = model.detect_language(audio)
+    _, _, all_probabilities = model.detect_language(audio)
 
-    return {"language": language, "probability": probability}
+    probs = dict(all_probabilities)
+    prob_fr = probs.get("fr", 0.0)
+    prob_ar = probs.get("ar", 0.0)
+
+    if prob_fr >= prob_ar:
+        return {"language": "fr", "probability": prob_fr}
+    return {"language": "ar", "probability": prob_ar}

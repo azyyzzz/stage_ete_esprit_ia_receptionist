@@ -31,3 +31,11 @@ Enregistre quelques secondes au micro et affiche la transcription.
 La qualité de transcription est nettement meilleure en français qu'en
 arabe tunisien (dialecte peu représenté dans les données d'entraînement de
 Whisper). À réévaluer une fois testé en conditions réelles.
+
+Le dialecte tunisien mélange souvent arabe et français DANS LA MEME phrase
+(code-switching) -- `INITIAL_PROMPT` (config.py) contient maintenant, en
+plus du lexique du domaine, quelques phrases d'exemple qui melangent les
+deux langues, pour orienter Whisper vers ce style plutot que de forcer
+toute la phrase dans une seule langue. Aucun audio de test melange n'etait
+disponible pour verifier l'effet reel -- a tester en conditions reelles via
+`python -m tests.test_stt_pipeline` (parler une phrase melangee au micro).

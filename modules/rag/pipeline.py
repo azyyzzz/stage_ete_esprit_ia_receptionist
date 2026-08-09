@@ -13,6 +13,7 @@ from modules.rag.nlu import detect_classe_mention, detect_option_mention, detect
 from modules.rag.nlu import is_count_intent, is_list_options_intent, is_list_specialites_intent
 from modules.rag.programmes import CAMPUS_LABELS, mentioned_programme, programme_label
 from modules.rag.retriever import retrieve, retrieve_all
+from modules.rag.translate import contains_arabic, translate_to_french
 
 
 TOP_N_FOR_CONSENSUS = 3
@@ -172,6 +173,18 @@ def answer_question(question: str, allow_clarification: bool = True, structured:
     clarification. Le LLM synthetise alors une reponse couvrant les
     principaux programmes a partir du meme contexte recupere.
     """
+    # Question contenant de l'arabe : traduite en francais AVANT toute
+    # recherche/detection d'intention -- la base et les motifs de
+    # nlu.py/programmes.py sont presque entierement en francais, donc une
+    # question en arabe pur ou melangee matche nettement moins bien qu'une
+    # question equivalente en francais (voir modules/rag/translate.py).
+    # `question` (traduite) sert a TOUTE la logique interne ci-dessous ;
+    # `original_question` (jamais modifiee) est celle transmise au LLM pour
+    # qu'il reponde dans la langue effectivement utilisee par l'appelant.
+    original_question = question
+    if contains_arabic(question):
+        question = translate_to_french(question)
+
     # Question "quelles sont les options de <specialite> ?" : meme logique
     # que la liste des specialites par campus (ci-dessous), un niveau en
     # dessous -- recupere TOUTES les fiches "Options" de la specialite
@@ -214,7 +227,7 @@ def answer_question(question: str, allow_clarification: bool = True, structured:
         if len(candidates) == 1:
             option_chunks = retrieve(question, where={"option_specialite": candidates[0]})
             if option_chunks:
-                answer = generate_answer(question, option_chunks)
+                answer = generate_answer(original_question, option_chunks)
                 return {
                     "answer": answer,
                     "sources": [
@@ -233,7 +246,7 @@ def answer_question(question: str, allow_clarification: bool = True, structured:
                 c for cand in candidates for c in retrieve(question, where={"option_specialite": cand})
             ]
             if combined_chunks:
-                answer = generate_answer(question, combined_chunks, ambiguous_programme=True)
+                answer = generate_answer(original_question, combined_chunks, ambiguous_programme=True)
                 return {
                     "answer": answer,
                     "sources": [
@@ -406,7 +419,7 @@ def answer_question(question: str, allow_clarification: bool = True, structured:
             "needs_clarification": False,
         }
 
-    answer = generate_answer(question, chunks, ambiguous_programme=is_ambiguous, list_all=list_all)
+    answer = generate_answer(original_question, chunks, ambiguous_programme=is_ambiguous, list_all=list_all)
     result = {
         "answer": answer,
         "sources": [

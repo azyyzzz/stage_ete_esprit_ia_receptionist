@@ -51,6 +51,13 @@ CONFIG_LOCAL_PATH = DATA_DIR / "config_local.json"
 # "Approuver" sur /a-valider -- voir services/kb_merge.py.
 A_VALIDER_PATH = DATA_DIR / "a_valider.json"
 
+# Resultats du test qualite (scripts/run_quality_test.py, voir /qualite) --
+# une ligne JSON par question testee (numero x langue), ecrite au fur et a
+# mesure pendant le test (peut durer plusieurs heures). Annotations
+# correct/incorrect ajoutees depuis /qualite persistees dans ce meme
+# fichier (voir services/quality_test.py).
+QUALITY_TEST_RESULTS_PATH = DATA_DIR / "quality_test_results.jsonl"
+
 UPLOADS_DIR = APP_ROOT / "uploads"
 
 # -----------------------------------------------------------------------
@@ -70,12 +77,20 @@ def _compute_static_version() -> str:
 STATIC_VERSION = _compute_static_version()
 
 # -----------------------------------------------------------------------
-# Seuil de similarite semantique (TF-IDF + cosinus) au-dessus duquel une
-# fiche candidate est consideree comme deja presente dans la base et donc
-# rejetee. Volontairement isole ici, en haut du fichier, pour rester
-# facile a re-calibrer sans devoir fouiller le code du service.
+# Seuil de similarite semantique (embeddings multilingues + cosinus, voir
+# services/semantic_dedup.py) au-dessus duquel une fiche candidate est
+# consideree comme deja presente dans la base et donc rejetee. Volontairement
+# isole ici, en haut du fichier, pour rester facile a re-calibrer sans devoir
+# fouiller le code du service.
+#
+# Calibre empiriquement sur la base reelle (site_esprit_clean.json, ~780
+# fiches) : des paires de fiches SANS AUCUN rapport atteignent deja jusqu'a
+# ~0.85 de similarite d'embedding (le sujet commun "ESPRIT" suffit a faire
+# monter le score), alors qu'une meme fiche re-scrapee avec du bruit de
+# mise en forme (espaces, ponctuation) ou legerement reformulee reste
+# au-dessus de 0.99. 0.92 laisse une marge large des deux cotes.
 # -----------------------------------------------------------------------
-SIMILARITY_THRESHOLD = 0.85
+SIMILARITY_THRESHOLD = 0.92
 
 # -----------------------------------------------------------------------
 # Filtrage de pertinence : une fiche candidate doit contenir au moins un

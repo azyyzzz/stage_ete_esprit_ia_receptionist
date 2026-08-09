@@ -1,0 +1,93 @@
+1.Comment se déroule le concours d'entrée ?
+2.Quelle est la date limite pour déposer un dossier de candidature ?
+3.Est-ce qu'il y a un concours écrit ou juste un entretien ?
+4.Est-ce que je peux intégrer directement en 3ème année avec un BTS ?
+5.Quels documents faut-il fournir pour l'inscription ?
+6.Est-ce qu'il y a des frais de dossier pour candidater ?
+7.Peut-on s'inscrire en ligne ou faut-il se déplacer ?
+8.Est-ce que les élèves de terminale à l'étranger peuvent postuler ?
+9.après avoir  effectuer la soutenance du 5eme comment faire pour obtenir mon diplôme?
+10.Je suis étudiant à ESPRIT et je voudrais connaître les conditions pour bénéficier de la mobilité internationale
+11.comment partir en mobilité à l'étranger depuis ESPRIT ?
+12.Quelles sont les réductions disponibles lors de l'inscription à ESPRIT et quelles sont les conditions pour en bénéficier
+13.Quand ont lieu les conseils de classe ?
+14.Les examens commencent généralement quel mois à ESPRIT?
+15.C'est quoi les dates des examens de la session principale et la session de rattrapage?
+16.Quand commence la session de contrôle ?
+17.Quelle est la procédure pour obtenir une attestation de présence à ESPRIT ?
+18.C'est quoi les specialites qu'ESPRIT propose ?	
+19.Quelle est la différence entre la classe 3A et la classe 3B à ESPRIT ?
+20.C'est quoi la classe 3AI à ESPRIT ?
+21.Comment se fait l'orientation en 3ème année à ESPRIT ?
+22.Est-ce que l'orientation se fait par moyenne ou par choix ?
+23.Quelles sont les options disponibles en génie informatique à ESPRIT tunis?
+24.Comment intégrer la classe 3AI dès le début ?
+25.Quelles sont les spécialités proposées à ESPRIM?
+
+26/Y a-t-il une classe préparatoire à ESPRIM ?
+
+27/comment calculer mon score pour l'option cybersecurity and cloud ?
+28/quel est le score min et max pour l'option fintech?
+29/Quelles sont les options de la spécialité informatique à ESPRIT ?
+
+30/Je suis étudiant en 3B6 à ESPRIT, quels sont les paniers et quelles matières contient chaque panier?
+31/Comment est calculé le score pour loption IOT ? 
+
+33/c'est quoi les matières qui forme le module Réseau IP et communication ?"
+34/Avec quelles entreprises ESPRIT travaille en Tunisie et à l'international pour les stages ?
+35/Quels sont les clubs disponibles à ESPRIT ?
+36/Comment rejoindre le club IEEE à ESPRIT ?
+37/Comment rejoindre un club à ESPRIT ?
+38/C'est quoi le club Engineers Spark ?
+39/C'est quoi le club You Robot ?
+40.Est-ce qu'ESPRIM propose le Génie Industriel ?
+41/Est-ce qu'ESPRIT prépare au CCNA ?
+42/C'est quoi la certification AWS à ESPRIT ?
+43/Quelles certifications obtient-on en 5ème année ?
+44/Est-ce qu'il faut le niveau B2 pour avoir le diplôme ?
+45/C'est quoi l'Atelier Créatif Innovation à ESPRIT ?
+46/Quels événements ESPRIT organise-t-elle pendant l'année ?
+47/C'est quoi le Marateck ?
+48.Quelles sont les compétitions organisées par les clubs ESPRIT ?
+49/ESPRIT organise-t-elle des hackathons ?
+50/Y a-t-il un forum de recrutement à ESPRIT ?
+51/C'est quoi le concours CPC d'ESPRIT ?
+52.Combien d'années dure la formation d'ingénieur ?
+53.Quelles sont les options disponibles en Génie Informatique ?
+54.Est-ce que je peux changer de spécialité en cours de route ?
+55.Est-ce que le diplôme est reconnu à l'international ?
+56.Est-ce qu'il y a un cycle préparatoire intégré ?
+57.Quelle est la différence entre MP et MPI en prépa ?
+58.Est-ce qu'il y a une spécialité Data Science ?
+59.Quel est le prix de la scolarité par année ?
+60.Le tarif est-il le même pour toutes les spécialités ?
+61.Est-ce qu'il y a une réduction pour les frères et sœurs inscrits ensemble ?
+62.Est-ce que les frais incluent les livres et le matériel ?
+63.Comment puis-je payer les frais de scolarité depuis l'étranger ?
+64.Le prix augmente-t-il chaque année d'études ?
+65.Y a-t-il un partenariat avec des banques pour un crédit étudiant ?
+66.Y a-t-il une salle de sport à l'école ?
+67.Quel est le nombre de redoublements autorisés ?
+68.Combien d'absences sont tolérées avant sanction ?
+69.Est-ce que les notes de stage comptent dans la moyenne générale ?
+70.Y a-t-il des cours de rattrapage en cas de difficulté dans une matière ?
+71.Y a-t-il des accords avec des entreprises pour l'embauche après le diplôme ?
+72.Est-ce qu'il y a un forum entreprises organisé par l'école ?
+73.Quelles entreprises recrutent le plus les diplômés d'ESPRIT ?
+74.Est-ce que l'école informe les parents des résultats de leur enfant ?
+75.Est-ce que l'école organise des réunions avec les parents ?
+76.Comment se passe le suivi des absences, êtes-vous prévenus en tant que parent ?
+
+
+
+
+
+
+
+
+
+
+
+
+
+

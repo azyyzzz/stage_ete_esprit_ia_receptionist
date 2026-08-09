@@ -15,7 +15,7 @@ from fastapi.templating import Jinja2Templates
 from extraction_app.auth import require_login
 from extraction_app.config import APP_ROOT, STATIC_VERSION
 from extraction_app.services import kb_merge, reindex
-from extraction_app.services.semantic_dedup import SemanticDeduplicator
+from extraction_app.services.semantic_dedup import get_cached_kb_deduper
 
 router = APIRouter(tags=["validation"])
 templates = Jinja2Templates(directory=str(APP_ROOT / "templates"))
@@ -27,15 +27,36 @@ def a_valider_page(request: Request, username: str = Depends(require_login)):
     batches = kb_merge.get_pending_batches()
 
     # Un seul deduper, construit une fois sur la base actuelle, reutilise
-    # pour previsualiser TOUTES les fiches de TOUS les lots affiches --
-    # evite de refitter le TF-IDF a chaque fiche (cout inutile).
-    deduper = SemanticDeduplicator(kb_merge.load_kb())
+    # pour previsualiser TOUTES les fiches de TOUS les lots affiches -- mis
+    # en cache tant que la base n'a pas change (voir get_cached_kb_deduper),
+    # sinon reembedder ~800 fiches a chaque chargement de page prend ~65s.
+    deduper = get_cached_kb_deduper(kb_merge.load_kb())
+
+    # Un seul appel BATCHE au modele d'embeddings pour TOUTES les fiches de
+    # TOUS les lots (au lieu d'un appel par fiche) -- avec un appel
+    # individuel par fiche, charger cette page avec plusieurs centaines de
+    # fiches en attente prenait plus d'une minute (mesure : ~95s). Batche,
+    # la meme charge prend quelques secondes.
+    all_candidates = [c for batch in batches for c in batch["candidates"]]
+    previews = kb_merge.preview_batch_status(all_candidates, deduper)
+    for candidate, preview in zip(all_candidates, previews):
+        candidate["_preview"] = preview
+
+    visible_batches = []
     for batch in batches:
-        for candidate in batch["candidates"]:
-            candidate["_preview"] = kb_merge.preview_fiche_status(candidate, deduper)
+        # Similarite maximale = 1 : doublon exact confirme avec une fiche
+        # deja dans la base -- ne sert a rien de l'afficher, ca ne fait
+        # qu'alourdir une liste deja tres longue pour un lot mensuel.
+        # Reste approuvable/rejetable via "Tout approuver/rejeter" (le
+        # filtre est uniquement d'affichage, rien n'est retire du lot).
+        visible_candidates = [c for c in batch["candidates"] if c["_preview"]["score"] != 1]
+        if not visible_candidates:
+            continue
+        batch["candidates"] = visible_candidates
+        visible_batches.append(batch)
 
     context = {
-        "batches": batches,
+        "batches": visible_batches,
         "index_stale": reindex.is_index_stale(),
         "last_reindex": reindex.get_last_result(),
     }

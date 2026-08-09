@@ -77,7 +77,7 @@ export default function ChatDemo() {
                   </p>
                 ) : t.answer ? (
                   <>
-                    <p className="rounded-2xl rounded-tl-sm bg-ink-800 px-4 py-2.5 text-sm leading-relaxed text-mist-100">{t.answer}</p>
+                    <p className="whitespace-pre-line rounded-2xl rounded-tl-sm bg-ink-800 px-4 py-2.5 text-sm leading-relaxed text-mist-100">{t.answer}</p>
                     {t.sources && t.sources.length > 0 && (
                       <div className="flex flex-wrap gap-1.5 pl-1">
                         {t.sources.slice(0, 4).map((s, j) => (

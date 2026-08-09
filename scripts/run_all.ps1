@@ -91,10 +91,16 @@ if ($InstallFrontend -or -not (Test-Path $DashboardNodeModules)) {
 
 Write-Host "Launching backend, extraction_app and frontend in separate PowerShell windows..."
 
-$backendCmd = "& '$Python' -m uvicorn backend.main:app --reload"
+# PYTHONUTF8 : Windows demarre Python avec l'encodage console cp1252 par
+# defaut, incapable d'encoder l'arabe -- deja fixe de facon permanente via
+# `setx PYTHONUTF8 1` (variable utilisateur Windows), repete ici en
+# defense car le rechargement --reload d'uvicorn ne propage pas toujours
+# fidelement les variables d'environnement a son processus de travail sur
+# cette machine (constate en usage reel, voir modules/rag/translate.py).
+$backendCmd = "`$env:PYTHONUTF8='1'; & '$Python' -m uvicorn backend.main:app --reload"
 Start-Process -FilePath powershell -ArgumentList '-NoExit','-Command',$backendCmd -WindowStyle Normal
 
-$extractionCmd = "& '$Python' -m uvicorn extraction_app.main:app --reload --port 8001"
+$extractionCmd = "`$env:PYTHONUTF8='1'; & '$Python' -m uvicorn extraction_app.main:app --reload --port 8001"
 Start-Process -FilePath powershell -ArgumentList '-NoExit','-Command',$extractionCmd -WindowStyle Normal
 
 if (Test-Path $DashboardNodeModules) {

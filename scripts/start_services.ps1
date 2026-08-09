@@ -39,8 +39,17 @@ if ($OllamaPath) {
 }
 
 $python = Join-Path $Root '.venv\Scripts\python.exe'
-$backendCmd = "& '$python' -m uvicorn backend.main:app --reload"
-$extractionCmd = "& '$python' -m uvicorn extraction_app.main:app --reload --port 8001"
+# PYTHONUTF8 : Windows demarre Python avec l'encodage console cp1252 par
+# defaut, incapable d'encoder l'arabe -- ca fait planter silencieusement
+# (UnicodeEncodeError rattrapee par un except large) tout code qui traite
+# du texte arabe (ex. modules/rag/translate.py). Deja fixe de facon
+# permanente via `setx PYTHONUTF8 1` (variable utilisateur Windows), mais
+# repete ici en defense : le rechargement --reload d'uvicorn ne propage pas
+# toujours fidelement les variables d'environnement a son processus de
+# travail sur cette machine (constate en usage reel).
+$env:PYTHONUTF8 = "1"
+$backendCmd = "`$env:PYTHONUTF8='1'; & '$python' -m uvicorn backend.main:app --reload"
+$extractionCmd = "`$env:PYTHONUTF8='1'; & '$python' -m uvicorn extraction_app.main:app --reload --port 8001"
 
 Start-Process -FilePath powershell -ArgumentList '-NoExit','-Command',$backendCmd -WindowStyle Normal
 Start-Process -FilePath powershell -ArgumentList '-NoExit','-Command',$extractionCmd -WindowStyle Normal

@@ -149,8 +149,8 @@
   {
     "id": "admissions_cours_du_jour_tunisiens_013",
     "categorie": "Admissions",
-    "titre": "Pièces à fournir en ligne",
-    "contenu": "Photo d’identité Copie CIN ou passeport Attestation d’inscription (à Esprit ou à Esprit prépa) Contrat de location Bloc 1 signé (Esprit) Contrat de location Bloc 2 signé (résidence garçons uniquement) Certificat médical attestant de la capacité à vivre dans le foyer Coupon à détacher à la fin du règlement intérieur après l’avoir soigneusement lu et signé",
+    "titre": "Documents à fournir pour l'inscription (étudiants tunisiens)",
+    "contenu": "Pour l'inscription définitive, les étudiants tunisiens doivent fournir les documents suivants. Une copie de la Carte d'Identité Nationale (CIN). Une copie du diplôme du Baccalauréat. Les copies certifiées conformes des diplômes et justificatifs de niveau supérieur obtenus (Licence, Prépa, BTS, etc.). Les relevés de notes de toutes les années d'études supérieures. 1 à 3 photos d'identité récentes, avec le nom écrit au verso. Le règlement intérieur d'ESPRIT dûment signé. Le document relatif aux frais de scolarité, signé. Le reçu ou bordereau de paiement des frais de scolarité. Pour les étudiants qui logent au foyer universitaire, il faut fournir en plus : le contrat de location Bloc 1 signé (Esprit), le contrat de location Bloc 2 signé (résidence garçons uniquement), et un certificat médical attestant de la capacité à vivre dans le foyer.",
     "source": "https://www.esprit.tn/admissions/informations-pratiques/"
   },
   {
@@ -324,15 +324,8 @@
   {
     "id": "admissions_cours_du_jour_internationaux_005",
     "categorie": "Admissions",
-    "titre": "Pièces à fournir en ligne avant le départ",
-    "contenu": "2 photographies d’identité 3 formulaires de visa remis par le Consulat tunisien Photocopie des 3 premières pages du passeport Photocopie de l’attestation de pré-inscription délivrée par l’université",
-    "source": "https://www.esprit.tn/admissions/cours-du-jour/cours-du-jour-internationaux/"
-  },
-  {
-    "id": "admissions_cours_du_jour_internationaux_006",
-    "categorie": "Admissions",
-    "titre": "Pièces à fournir en ligne à l’arrivée",
-    "contenu": "Le certificat d’inscription à l’université ainsi que le reçu de paiement de vos frais de scolarité Le contrat de location ou dans le cas où vous logez en foyer : une attestation de résidence 2 photos d’identité 2 timbres fiscaux à acquérir auprès de la Recette des Finances Un justificatif des ressources en Banque et/ou une attestation de prise en charge Un justificatif d’assurance maladie et accident",
+    "titre": "Documents à fournir pour l'inscription (étudiants internationaux)",
+    "contenu": "Pour l'inscription, en plus du dossier académique, les étudiants internationaux doivent fournir les documents suivants. Une copie du passeport (les 3 premières pages). 3 formulaires de visa remis par le Consulat tunisien du pays d'origine. Une copie de l'attestation de pré-inscription délivrée par ESPRIT. Une copie certifiée conforme du Baccalauréat, ou diplôme équivalent, légalisée par les autorités du pays d'origine. Les diplômes supérieurs et relevés de notes, traduits en français ou en arabe si nécessaire. Une attestation de prise en charge financière signée par le garant, ou un justificatif de ressources bancaires. Le carnet ou état vaccinal, demandé par l'école à l'arrivée. 2 à 3 photos d'identité. Le règlement intérieur d'ESPRIT signé. L'engagement financier relatif aux frais de scolarité pour étudiants internationaux, signé. À l'arrivée en Tunisie, il faut aussi fournir : le certificat d'inscription à l'université et le reçu de paiement des frais de scolarité, le contrat de location ou une attestation de résidence si vous logez en foyer, 2 timbres fiscaux à acquérir auprès de la Recette des Finances, et un justificatif d'assurance maladie et accident.",
     "source": "https://www.esprit.tn/admissions/cours-du-jour/cours-du-jour-internationaux/"
   },
   {
@@ -345,7 +338,7 @@
   {
     "id": "admissions_cours_du_jour_internationaux_011",
     "categorie": "Admissions",
-    "titre": "1 050€",
+    "titre": "Modalités de paiement et caution du foyer universitaire (étudiants internationaux)",
     "contenu": "Modalités de paiement Ces frais couvrent les prestations suivantes : logement en chambre double, un réfrigérateur par binôme, un chauffage central, accès à l’internet haut débit, … Une caution doit être versée en même temps que le premier versement. Elle est restituée à la fin de l’année scolaire si aucun dégât n’a été causé par le résident concerné",
     "source": "https://www.esprit.tn/admissions/cours-du-jour/cours-du-jour-internationaux/"
   },
@@ -389,13 +382,6 @@
     "categorie": "Admissions",
     "titre": "Quels sont les frais de scolarité pour les étudiants internationaux ?",
     "contenu": "Formation en cours du jour : 3 000 € TTC. Ces frais doivent être réglés en une seule tranche lors de l’inscription.",
-    "source": "https://www.esprit.tn/admissions/cours-du-jour/cours-du-jour-internationaux/"
-  },
-  {
-    "id": "admissions_cours_du_jour_internationaux_027",
-    "categorie": "Admissions",
-    "titre": "Quels sont les documents nécessaires pour postuler ?",
-    "contenu": "Les documents requis incluent votre diplôme (ou équivalent) ainsi que votre relevé de notes. Vous recevrez une attestation de préinscription une fois votre candidature acceptée.",
     "source": "https://www.esprit.tn/admissions/cours-du-jour/cours-du-jour-internationaux/"
   },
   {
@@ -1374,7 +1360,7 @@
   {
     "id": "programmes_emba_esprit_tunis_002",
     "categorie": "Programmes",
-    "titre": "20,000 DT TTC",
+    "titre": "Modalités de paiement des frais de l'EMBA à ESPRIT (tranches)",
     "contenu": "1ère tranche : 7000 dt 2ème tranche 7000 dt 3ème tranche 6000 dt Lieu de la formation Prochaine rentrée",
     "source": "https://www.esprit.tn/nos-programmes/programme-executive-2/emba-esprit-tunis/"
   },
@@ -1514,7 +1500,7 @@
   {
     "id": "programmes_emba_esprit_tunis_024",
     "categorie": "Programmes",
-    "titre": "Quel est le coût total de la formation ?",
+    "titre": "Quel est le coût total de la formation EMBA à ESPRIT ?",
     "contenu": "Le coût total de la formation (2023-2025) est de 20,000 DT TTC (1ère tranche : 7000 dt / 2ème tranche 7000 dt / 3ème tranche 6000 dt).",
     "source": "https://www.esprit.tn/nos-programmes/programme-executive-2/emba-esprit-tunis/"
   },
@@ -1528,7 +1514,7 @@
   {
     "id": "programmes_emba_esprit_tunis_026",
     "categorie": "Programmes",
-    "titre": "Comment puis-je payer ?",
+    "titre": "Comment puis-je payer les frais de l'EMBA à ESPRIT ?",
     "contenu": "Le paiement est fractionné en 3 tranches sur la durée de la formation : Le coût total de la formation (2023-2025) est de 20,000 DT TTC (1ère tranche : 7000 dt / 2ème tranche 7000 dt / 3ème tranche 6000 dt). Vous pouvez aussi bénéficier de facilités de paiement (en 3-5 fois).",
     "source": "https://www.esprit.tn/nos-programmes/programme-executive-2/emba-esprit-tunis/"
   },
@@ -2998,30 +2984,16 @@
   {
     "id": "grilles_foyer_tunisiens_001",
     "categorie": "Admissions",
-    "titre": "Grille tarifaire du foyer 2024-2025 (étudiants tunisiens)",
-    "contenu": "Pour l'année 2024-2025, les tarifs du foyer universitaire pour les étudiants tunisiens sont : chambre double 3 000 TND/an (2 tranches de 1 500 TND) ; appartement 4 personnes (S+1) 3 100 TND/an (2 tranches de 1 550 TND) ; appartement 6 personnes (S+2) 3 100 TND/an (2 tranches de 1 550 TND).",
+    "titre": "Combien coûte le foyer universitaire à ESPRIT ?",
+    "contenu": "Pour l'année 2024-2025, les tarifs du foyer universitaire pour les étudiants tunisiens sont : chambre double 3 000 TND/an (2 tranches de 1 500 TND) ; appartement 4 personnes (S+1) 3 100 TND/an (2 tranches de 1 550 TND) ; appartement 6 personnes (S+2) 3 100 TND/an (2 tranches de 1 550 TND). Pour les étudiants internationaux, les tarifs sont : chambre double 950 €/an (une seule tranche à l'inscription) ; appartement 6 personnes (S+2) 900 €/an (une seule tranche à l'inscription).",
     "source": "https://www.esprit.tn/admissions/cours-du-jour/cours-du-jour-tunisiens/"
-  },
-  {
-    "id": "grilles_foyer_internationaux_001",
-    "categorie": "Admissions",
-    "titre": "Grille tarifaire du foyer 2024-2025 (étudiants internationaux)",
-    "contenu": "Pour l'année 2024-2025, les tarifs du foyer universitaire pour les étudiants internationaux sont : chambre double 950 €/an (une seule tranche à l'inscription) ; appartement 6 personnes (S+2) 900 €/an (une seule tranche à l'inscription).",
-    "source": "https://www.esprit.tn/admissions/cours-du-jour/cours-du-jour-internationaux/"
   },
   {
     "id": "grilles_restauration_tunisiens_001",
     "categorie": "Admissions",
-    "titre": "Grille tarifaire de la restauration 2024-2025 (étudiants tunisiens)",
-    "contenu": "Pour l'année 2024-2025, les tarifs annuels de restauration pour les étudiants tunisiens sont : pension complète (petit-déjeuner + déjeuner + dîner) 4 700 TND/an (2 tranches de 2 350 TND) ; demi-pension F1 (petit-déjeuner + déjeuner ou dîner) 2 700 TND/an (2 tranches de 1 350 TND) ; demi-pension F2 (un seul repas, déjeuner ou dîner) 2 050 TND/an (2 tranches de 1 025 TND) ; demi-pension F3 (déjeuner + dîner) 4 350 TND/an (2 tranches de 2 175 TND). Tarifs mensuels équivalents : pension complète 550 TND/mois ; demi-pension F1 310 TND/mois ; demi-pension F2 250 TND/mois ; demi-pension F3 500 TND/mois.",
+    "titre": "Combien coûte la restauration (cantine) à ESPRIT ?",
+    "contenu": "Pour l'année 2024-2025, les tarifs annuels de restauration pour les étudiants tunisiens sont : pension complète (petit-déjeuner + déjeuner + dîner) 4 700 TND/an (2 tranches de 2 350 TND) ; demi-pension F1 (petit-déjeuner + déjeuner ou dîner) 2 700 TND/an (2 tranches de 1 350 TND) ; demi-pension F2 (un seul repas, déjeuner ou dîner) 2 050 TND/an (2 tranches de 1 025 TND) ; demi-pension F3 (déjeuner + dîner) 4 350 TND/an (2 tranches de 2 175 TND). Tarifs mensuels équivalents : pension complète 550 TND/mois ; demi-pension F1 310 TND/mois ; demi-pension F2 250 TND/mois ; demi-pension F3 500 TND/mois. Pour les étudiants internationaux, les tarifs annuels sont : pension complète 1 400 €/an (2 tranches de 700 €) ; demi-pension F1 850 €/an (2 tranches de 425 €) ; demi-pension F2 700 €/an (2 tranches de 350 €) ; demi-pension F3 1 250 €/an (2 tranches de 625 €). Tarifs mensuels équivalents : pension complète 170 €/mois ; demi-pension F1 120 €/mois ; demi-pension F2 100 €/mois ; demi-pension F3 150 €/mois.",
     "source": "https://www.esprit.tn/admissions/cours-du-jour/cours-du-jour-tunisiens/"
-  },
-  {
-    "id": "grilles_restauration_internationaux_001",
-    "categorie": "Admissions",
-    "titre": "Grille tarifaire de la restauration 2024-2025 (étudiants internationaux)",
-    "contenu": "Pour l'année 2024-2025, les tarifs annuels de restauration pour les étudiants internationaux sont : pension complète (petit-déjeuner + déjeuner + dîner) 1 400 €/an (2 tranches de 700 €) ; demi-pension F1 (petit-déjeuner + déjeuner ou dîner) 850 €/an (2 tranches de 425 €) ; demi-pension F2 (un seul repas) 700 €/an (2 tranches de 350 €) ; demi-pension F3 (déjeuner + dîner) 1 250 €/an (2 tranches de 625 €). Tarifs mensuels équivalents : pension complète 170 €/mois ; demi-pension F1 120 €/mois ; demi-pension F2 100 €/mois ; demi-pension F3 150 €/mois.",
-    "source": "https://www.esprit.tn/admissions/cours-du-jour/cours-du-jour-internationaux/"
   },
   {
     "id": "grilles_historique_cours_du_jour_tunisiens_001",
@@ -3040,15 +3012,8 @@
   {
     "id": "grilles_prepa_tunisiens_001",
     "categorie": "Admissions",
-    "titre": "Frais de scolarité 2024-2025 - Classe préparatoire (étudiants tunisiens)",
-    "contenu": "Pour l'année 2024-2025, les frais de scolarité de la classe préparatoire (PREPA) pour les étudiants tunisiens s'élèvent à 10 700 TND TTC, payables en 2 tranches de 5 350 TND chacune.",
-    "source": "https://www.esprit.tn/groupe-esprit/esprit-prepa/"
-  },
-  {
-    "id": "grilles_prepa_internationaux_001",
-    "categorie": "Admissions",
-    "titre": "Frais de scolarité 2024-2025 - Classe préparatoire (étudiants internationaux)",
-    "contenu": "Pour l'année 2024-2025, les frais de scolarité de la classe préparatoire (PREPA) pour les étudiants internationaux s'élèvent à 3 500 € TTC, payables en une seule tranche à l'inscription.",
+    "titre": "Combien coûte l'inscription en classe préparatoire (PREPA) à ESPRIT ?",
+    "contenu": "Pour l'année 2024-2025, les frais de scolarité de la classe préparatoire (PREPA) pour les étudiants tunisiens s'élèvent à 10 700 TND TTC, payables en 2 tranches de 5 350 TND chacune. Pour les étudiants internationaux, ils s'élèvent à 3 500 € TTC, payables en une seule tranche à l'inscription.",
     "source": "https://www.esprit.tn/groupe-esprit/esprit-prepa/"
   },
   {

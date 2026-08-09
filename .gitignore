@@ -33,3 +33,11 @@ extraction_app/data/historique.json
 extraction_app/data/url_sources.json
 extraction_app/data/a_verifier.json
 extraction_app/data/a_valider.json
+extraction_app/data/*.lock
+
+# Journaux de lancement des services (backend/extraction_app/frontend/
+# reindexation/tests) -- propres a chaque environnement, jamais versionnes.
+*.log
+
+# Fichiers audio generes lors de tests manuels (TTS/STT) -- jamais versionnes.
+*.wav

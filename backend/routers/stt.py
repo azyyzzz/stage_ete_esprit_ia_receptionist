@@ -36,7 +36,7 @@ def transcribe_audio(file: UploadFile = File(...)) -> TranscribeResponse:
     tmp_path = _save_upload_to_tmp(file)
     try:
         lang_result = detect_language(tmp_path)
-        stt_result = transcribe(tmp_path)
+        stt_result = transcribe(tmp_path, language=lang_result["language"])
     finally:
         tmp_path.unlink(missing_ok=True)
 
@@ -58,7 +58,7 @@ def voice_ask(file: UploadFile = File(...)) -> VoiceAskResponse:
     tmp_path = _save_upload_to_tmp(file)
     try:
         lang_result = detect_language(tmp_path)
-        stt_result = transcribe(tmp_path)
+        stt_result = transcribe(tmp_path, language=lang_result["language"])
     finally:
         tmp_path.unlink(missing_ok=True)
 
@@ -91,7 +91,8 @@ def converse(file: UploadFile = File(...)) -> FileResponse:
     """
     tmp_path = _save_upload_to_tmp(file)
     try:
-        stt_result = transcribe(tmp_path)
+        lang_result = detect_language(tmp_path)
+        stt_result = transcribe(tmp_path, language=lang_result["language"])
     finally:
         tmp_path.unlink(missing_ok=True)
 

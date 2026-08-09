@@ -125,10 +125,10 @@ def extract(
             if warning is not None:
                 error = warning
             else:
-                # Enregistrer la source pour le re-scraping quotidien est
+                # Enregistrer la source pour le re-scraping mensuel est
                 # independant de la validation de CE lot -- l'admin verra
                 # aussi chaque futur re-scraping passer par /a-valider
-                # (voir scheduler.py::run_daily_rescrape).
+                # (voir scheduler.py::run_monthly_url_rescrape).
                 register_url_source(url.strip(), categorie)
 
         else:

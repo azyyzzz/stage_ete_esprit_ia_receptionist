@@ -92,11 +92,12 @@ automatiquement par extraction_app).
 
 ## Planificateur
 
-Un job quotidien (03h00, `extraction_app/scheduler.py`) rejoue
+Un job mensuel (1er du mois, 03h00, `extraction_app/scheduler.py`) rejoue
 automatiquement l'extraction pour toutes les URLs deja soumises via
-l'interface (registre dans `extraction_app/data/url_sources.json`). Les
-sources PDF/Excel/image ne sont jamais replanifiees (le fichier original
-n'est pas conserve durablement).
+l'interface (registre dans `extraction_app/data/url_sources.json`). Un
+second job mensuel (1er du mois, 04h00) scrape les options de
+specialisation ESPRIT Tunis. Les sources PDF/Excel/image ne sont jamais
+replanifiees (le fichier original n'est pas conserve durablement).
 
 ## Limites assumees (a lire avant de faire confiance aux resultats)
 
@@ -106,22 +107,24 @@ n'est pas conserve durablement).
   s'il contient un mot-cle isole, ou rejeter du contenu pertinent mal
   formule qui n'utilise aucun des mots-cles prevus. Ce n'est pas une
   comprehension du sens, juste un filtre grossier.
-- **Verification semantique** (`services/semantic_dedup.py`) : TF-IDF +
-  cosinus (scikit-learn) est une mesure **lexicale** (chevauchement de
-  mots), pas une vraie comprehension semantique comme les embeddings du
-  RAG (`modules/rag/embeddings.py`). Deux fiches qui disent la meme chose
-  avec des mots tres differents peuvent passer sous le seuil et etre
-  dupliquees quand meme. Seuil actuel : `SIMILARITY_THRESHOLD = 0.85` dans
-  `config.py`, empirique -- a reajuster si trop de faux positifs (fiches
-  legitimes rejetees) ou faux negatifs (doublons non detectes) sont
+- **Verification semantique** (`services/semantic_dedup.py`) : compare le
+  contenu via les MEMES embeddings multilingues que le RAG
+  (`modules/rag/embeddings.py`, `paraphrase-multilingual-mpnet-base-v2`) +
+  similarite cosinus -- comparaison par le sens, pas par simple chevauchement
+  de mots (contrairement a l'ancienne version TF-IDF). Seuil actuel :
+  `SIMILARITY_THRESHOLD = 0.92` dans `config.py`, calibre empiriquement sur
+  la base reelle (des paires de fiches sans rapport peuvent deja depasser
+  0.8 en similarite d'embedding) -- a reajuster si trop de faux positifs
+  (fiches legitimes rejetees) ou faux negatifs (doublons non detectes) sont
   constates en usage reel.
-- **Performance de la dedup semantique** : le vectoriseur TF-IDF est
-  recalcule sur l'integralite de la base a chaque extraction. Sans
-  probleme a l'echelle actuelle (~600 fiches), mais si la base grossit a
-  plusieurs milliers de fiches, cela ralentira sensiblement. Pistes
-  d'optimisation non implementees ici : pre-calculer et mettre en cache
-  les vecteurs de la base existante, ou restreindre la comparaison aux
-  fiches de categorie proche plutot qu'a la base entiere.
+- **Performance de la dedup semantique** : les embeddings de la base
+  existante sont recalcules a chaque extraction (le modele tourne
+  directement dans le process `extraction_app`, contrairement a la
+  reindexation ChromaDB qui est isolee en sous-processus). Sans probleme a
+  l'echelle actuelle (~800 fiches), mais si la base grossit a plusieurs
+  milliers de fiches, cela ralentira sensiblement. Piste d'optimisation non
+  implementee ici : pre-calculer et mettre en cache les vecteurs de la base
+  existante plutot que de les recalculer a chaque appel.
 - **Scraping web generique** (`services/web_extractor.py`) : base sur
   `requests` + BeautifulSoup, qui ne peut ni executer de JavaScript ni
   contourner un blocage anti-bot. Si un site cible charge son contenu

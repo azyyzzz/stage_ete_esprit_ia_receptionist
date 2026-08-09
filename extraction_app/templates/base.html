@@ -25,12 +25,13 @@
       <a href="/">Extraire</a>
       <a href="/history">Historique</a>
       <a href="/a-valider">À valider</a>
+      <a href="/qualite">Qualité</a>
       <a href="http://127.0.0.1:5173" class="nav-external">Site public ↗</a>
       <a href="/logout" class="logout">Déconnexion</a>
     </div>
   </nav>
   {% endblock %}
-  <main>
+  <main class="{% block main_class %}{% endblock %}">
     {% block content %}{% endblock %}
   </main>
 </body>

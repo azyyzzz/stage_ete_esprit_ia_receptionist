@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+{% block title %}Qualité - Extraction KB ESPRIT{% endblock %}
+{% block main_class %}main-wide{% endblock %}
+{% block content %}
+<h1>Test qualité du modèle</h1>
+<p>
+  75 questions fournies par l'encadrant, testées en français, arabe standard
+  et tunisien (225 tests au total) à travers le pipeline RAG réel.
+  <strong>Aucune réponse de référence n'a été fournie</strong> : le "%
+  correct" n'est donc calculé QUE sur les questions que tu annotes toi-même
+  ci-dessous (bouton Correct/Incorrect par réponse) — les autres indicateurs
+  (temps de réponse, taux d'échec, score de confiance, cohérence
+  multilingue) sont calculés automatiquement.
+</p>
+
+<div class="result">
+  <p>
+    <strong>{{ kpis.global.total }}</strong> / {{ total_attendu }} tests exécutés
+    {% if kpis.global.total < total_attendu %}
+      <br><span class="warning">⚠️ Test encore en cours (scripts/run_quality_test.py tourne en arrière-plan) — cette page se met à jour à chaque rechargement.</span>
+    {% else %}
+      <br><span class="ok">✅ Test terminé</span>
+    {% endif %}
+  </p>
+</div>
+
+<div class="result">
+  <h2>Vue d'ensemble</h2>
+  <table class="history-table kpi-table">
+    <thead>
+      <tr>
+        <th>Langue</th>
+        <th>Tests</th>
+        <th>Temps de réponse (moy / médiane / min / max)</th>
+        <th>Taux d'échec (fallback)</th>
+        <th>Score de confiance moyen</th>
+        <th>Cohérence avec le français</th>
+        <th>% correct (annotés)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Global</strong></td>
+        <td>{{ kpis.global.total }}</td>
+        <td>
+          {% if kpis.global.temps_reponse.moyenne is not none %}
+            {{ kpis.global.temps_reponse.moyenne }}s / {{ kpis.global.temps_reponse.mediane }}s / {{ kpis.global.temps_reponse.min }}s / {{ kpis.global.temps_reponse.max }}s
+          {% else %}—{% endif %}
+        </td>
+        <td>{{ kpis.global.taux_fallback }}%</td>
+        <td>{{ kpis.global.score_confiance_moyen if kpis.global.score_confiance_moyen is not none else '—' }}</td>
+        <td>—</td>
+        <td>
+          {% if kpis.global.pct_correct is not none %}
+            {{ kpis.global.pct_correct }}% ({{ kpis.global.nb_annote }} annotés)
+          {% else %}<span class="mist">Aucune annotation</span>{% endif %}
+        </td>
+      </tr>
+      {% for langue in langues %}
+      <tr>
+        <td>{{ langue_labels[langue] }}</td>
+        <td>{{ kpis[langue].total }}</td>
+        <td>
+          {% if kpis[langue].temps_reponse.moyenne is not none %}
+            {{ kpis[langue].temps_reponse.moyenne }}s / {{ kpis[langue].temps_reponse.mediane }}s / {{ kpis[langue].temps_reponse.min }}s / {{ kpis[langue].temps_reponse.max }}s
+          {% else %}—{% endif %}
+        </td>
+        <td>{{ kpis[langue].taux_fallback }}%</td>
+        <td>{{ kpis[langue].score_confiance_moyen if kpis[langue].score_confiance_moyen is not none else '—' }}</td>
+        <td>
+          {% if langue == 'fr' %}
+            <span class="mist">référence</span>
+          {% elif consistency_avg[langue] is not none %}
+            {{ consistency_avg[langue] }}
+          {% else %}—{% endif %}
+        </td>
+        <td>
+          {% if kpis[langue].pct_correct is not none %}
+            {{ kpis[langue].pct_correct }}% ({{ kpis[langue].nb_annote }} annotés)
+          {% else %}<span class="mist">Aucune annotation</span>{% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <p><small>
+    <strong>Cohérence avec le français</strong> : similarité sémantique (embeddings, 0 à 1) entre la réponse dans cette langue
+    et la réponse française pour la MÊME question — proxy d'exactitude en l'absence de référence humaine
+    (la base de connaissances étant majoritairement en français, une réponse arabe très différente du français est suspecte).
+  </small></p>
+</div>
+
+<div class="result">
+  <input
+    type="text"
+    id="qualite-search"
+    class="search-input"
+    placeholder="Rechercher une question par numéro ou contenu…"
+    oninput="filterQualite(this.value)"
+  >
+</div>
+
+{% for row in rows %}
+<div class="result batch-card">
+  <p><strong>Question #{{ row.numero }}</strong> — {{ row.par_langue.fr.question if row.par_langue.fr else '' }}</p>
+
+  <table class="history-table qualite-table">
+    <thead>
+      <tr>
+        <th>Langue</th>
+        <th>Question posée</th>
+        <th>Réponse du modèle</th>
+        <th>Mesures</th>
+        <th>Annotation</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for langue in langues %}
+      {% set entry = row.par_langue.get(langue) %}
+      <tr>
+        <td>{{ langue_labels[langue] }}</td>
+        {% if entry %}
+        <td><div class="contenu-cell">{{ entry.question }}</div></td>
+        <td><div class="contenu-cell">{{ entry.reponse }}</div></td>
+        <td>
+          <small>
+            {{ entry.temps_reponse_s }}s<br>
+            score : {{ entry.score_principal if entry.score_principal is not none else '—' }}<br>
+            {% if entry.used_fallback %}<span class="error">échec (fallback)</span><br>{% endif %}
+            {% if langue != 'fr' and row.consistency.get(langue) is not none %}
+              cohérence FR : {{ row.consistency[langue] }}
+            {% endif %}
+          </small>
+        </td>
+        <td>
+          <form action="/qualite/{{ entry.id }}/annoter" method="post" class="inline-form">
+            <button type="submit" name="annotation" value="correct" class="{{ 'button-active-ok' if entry.annotation == 'correct' }}">Correct</button>
+          </form>
+          <form action="/qualite/{{ entry.id }}/annoter" method="post" class="inline-form">
+            <button type="submit" name="annotation" value="incorrect" class="button-danger {{ 'button-active-danger' if entry.annotation == 'incorrect' }}">Incorrect</button>
+          </form>
+          {% if entry.annotation %}
+          <form action="/qualite/{{ entry.id }}/annoter" method="post" class="inline-form">
+            <button type="submit" name="annotation" value="reset" class="button-reset">Réinitialiser</button>
+          </form>
+          {% endif %}
+        </td>
+        {% else %}
+        <td colspan="4"><span class="mist">En attente (test pas encore arrivé à cette question)</span></td>
+        {% endif %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endfor %}
+
+<script>
+function filterQualite(query) {
+  var q = query.trim().toLowerCase();
+  document.querySelectorAll('.batch-card').forEach(function (card) {
+    var text = card.textContent.toLowerCase();
+    card.style.display = (!q || text.indexOf(q) !== -1) ? '' : 'none';
+  });
+}
+</script>
+{% endblock %}

@@ -115,6 +115,10 @@ code, .contenu-cell { font-family: var(--font-mono); }
 .topnav .logout { color: var(--signal-400) !important; }
 
 main { max-width: 960px; margin: 2.5rem auto; padding: 0 1.5rem 4rem; }
+/* /a-valider a besoin de bien plus de largeur : tableau a 5 colonnes avec
+   du texte integral (contenu scrappe + fiche existante comparee cote a
+   cote) -- 960px les rendait illisibles (quelques caracteres par ligne). */
+main.main-wide { max-width: 1440px; }
 
 /* --- Formulaires / cartes verre --- */
 .login-page { display: flex; justify-content: center; align-items: center; min-height: 100vh; }
@@ -150,6 +154,9 @@ input, select {
 input::placeholder { color: var(--mist-500); }
 input:focus, select:focus { border-color: rgba(240, 52, 42, 0.5); }
 select option { background: var(--ink-800); color: var(--mist-100); }
+
+.search-input { width: 100%; font-size: 0.95rem; padding: 0.75rem 1rem; }
+#fiche-search-count { margin: 0.5rem 0 0; color: var(--mist-400); }
 
 button {
   padding: 0.65rem 1.4rem;
@@ -254,10 +261,15 @@ button:active { transform: scale(0.98); }
    de passer a la ligne (bug constate : titre illisible qui recouvre le
    contenu). Largeurs explicites par colonne pour laisser plus de place au
    contenu (la colonne la plus utile a lire). */
-.validation-table th:nth-child(1), .validation-table td:nth-child(1) { width: 13%; word-break: break-word; overflow-wrap: anywhere; }
-.validation-table th:nth-child(2), .validation-table td:nth-child(2) { width: 57%; }
-.validation-table th:nth-child(3), .validation-table td:nth-child(3) { width: 18%; word-break: break-word; overflow-wrap: anywhere; }
-.validation-table th:nth-child(4), .validation-table td:nth-child(4) { width: 12%; }
+.validation-table th:nth-child(1), .validation-table td:nth-child(1) { width: 10%; word-break: break-word; overflow-wrap: anywhere; }
+.validation-table th:nth-child(2), .validation-table td:nth-child(2) { width: 55%; }
+.validation-table th:nth-child(3), .validation-table td:nth-child(3) { width: 20%; word-break: break-word; overflow-wrap: anywhere; }
+.validation-table th:nth-child(4), .validation-table td:nth-child(4) { width: 15%; }
+/* Les 2 boutons Approuver/Rejeter empiles verticalement dans la colonne
+   Action (etroite par nature) -- cote a cote, ils depassaient de la
+   colonne et semblaient "mal alignes". */
+.validation-table td:nth-child(4) .inline-form { display: block; margin: 0 0 0.4rem; }
+.validation-table td:nth-child(4) .inline-form button { width: 100%; }
 .validation-table .contenu-cell {
   white-space: pre-wrap;
   word-break: break-word;
@@ -285,3 +297,23 @@ button:active { transform: scale(0.98); }
 
 details { color: var(--mist-400); font-size: 0.85rem; }
 details summary { cursor: pointer; color: var(--volt-400); }
+
+/* --- Dashboard qualite (/qualite) --- */
+.kpi-table th, .kpi-table td { font-size: 0.8rem; }
+
+.qualite-table {
+  margin-top: 0.8rem;
+  table-layout: fixed;
+}
+.qualite-table th:nth-child(1), .qualite-table td:nth-child(1) { width: 10%; }
+.qualite-table th:nth-child(2), .qualite-table td:nth-child(2) { width: 22%; }
+.qualite-table th:nth-child(3), .qualite-table td:nth-child(3) { width: 38%; }
+.qualite-table th:nth-child(4), .qualite-table td:nth-child(4) { width: 16%; }
+.qualite-table th:nth-child(5), .qualite-table td:nth-child(5) { width: 14%; }
+.qualite-table td:nth-child(5) .inline-form { display: block; margin: 0 0 0.4rem; }
+.qualite-table td:nth-child(5) .inline-form button { width: 100%; padding: 0.4rem 0.8rem; font-size: 0.78rem; }
+
+.button-active-ok { background: var(--volt-500) !important; color: #08090c !important; box-shadow: none !important; }
+.button-active-danger { background: var(--signal-500) !important; color: #fff !important; }
+.button-reset { background: transparent !important; border: 1px solid rgba(255, 255, 255, 0.15) !important; color: var(--mist-400) !important; box-shadow: none !important; }
+.button-reset:hover { background: rgba(255, 255, 255, 0.06) !important; }

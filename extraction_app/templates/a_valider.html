@@ -1,11 +1,12 @@
 {% extends "base.html" %}
 {% block title %}À valider - Extraction KB ESPRIT{% endblock %}
+{% block main_class %}main-wide{% endblock %}
 {% block content %}
 <h1>Lots en attente de validation</h1>
 <p>
   Contenu issu d'un scraping <strong>automatique planifié</strong> (1er de
-  chaque mois, 4h — <code>extraction_app/scheduler.py</code>, tant que le
-  serveur tourne en continu ce jour-là). Rien n'est écrit dans la base tant
+  chaque mois, 3h et 4h — <code>extraction_app/scheduler.py</code>, tant que
+  le serveur tourne en continu ce jour-là). Rien n'est écrit dans la base tant
   qu'une fiche n'est pas explicitement approuvée ci-dessous, fiche par
   fiche — approuver n'écrit QUE la fiche concernée.
 </p>
@@ -50,8 +51,19 @@ function startReindex(form) {
 {% if not batches %}
 <p>Aucun lot en attente pour l'instant.</p>
 {% else %}
-{% for batch in batches %}
 <div class="result">
+  <input
+    type="text"
+    id="fiche-search"
+    class="search-input"
+    placeholder="Rechercher une fiche par titre ou contenu…"
+    oninput="filterFiches(this.value)"
+  >
+  <p id="fiche-search-count"><small></small></p>
+</div>
+
+{% for batch in batches %}
+<div class="result batch-card">
   <p>
     <strong>{{ batch.source }}</strong> — {{ batch.categorie }}
     <br>Origine : {{ batch.origine }} · Déposé le {{ batch.date }}
@@ -69,8 +81,8 @@ function startReindex(form) {
     <thead>
       <tr>
         <th>Titre</th>
-        <th>Contenu intégral</th>
-        <th>Par rapport à la base actuelle</th>
+        <th>Contenu intégral (scrappé)</th>
+        <th>Statut</th>
         <th>Action</th>
       </tr>
     </thead>
@@ -78,14 +90,14 @@ function startReindex(form) {
       {% for c in batch.candidates %}
       <tr>
         <td>{{ c.titre }}</td>
-        <td class="contenu-cell">{{ c.contenu }}</td>
+        <td><div class="contenu-cell">{{ c.contenu }}</div></td>
         <td>
           {% if c._preview.statut == "nouveau" %}
             <span class="ok">Nouveau contenu</span>
-            {% if c._preview.score is not none %}<br><small>(similarité max avec l'existant : {{ c._preview.score }})</small>{% endif %}
+            {% if c._preview.score is not none %}<br><small>(similarité par le sens : {{ c._preview.score }})</small>{% endif %}
           {% elif c._preview.statut == "doublon" %}
             <span class="warning">Ressemble déjà à une fiche existante</span>
-            <br><small>« {{ c._preview.titre_existant }} » (score {{ c._preview.score }})</small>
+            <br><small>« {{ c._preview.titre_existant }} » (similarité par le sens : {{ c._preview.score }})</small>
           {% elif c._preview.statut == "hors_sujet" %}
             <span class="error">Serait rejeté (hors-sujet)</span>
           {% endif %}
@@ -104,5 +116,32 @@ function startReindex(form) {
   </table>
 </div>
 {% endfor %}
+
+<script>
+function filterFiches(query) {
+  var q = query.trim().toLowerCase();
+  var totalVisible = 0;
+
+  document.querySelectorAll('.batch-card').forEach(function (card) {
+    var anyRowVisible = false;
+
+    card.querySelectorAll('tbody tr').forEach(function (row) {
+      var titre = row.children[0].textContent.toLowerCase();
+      var contenu = row.children[1].textContent.toLowerCase();
+      var match = !q || titre.indexOf(q) !== -1 || contenu.indexOf(q) !== -1;
+      row.style.display = match ? '' : 'none';
+      if (match) {
+        anyRowVisible = true;
+        totalVisible++;
+      }
+    });
+
+    card.style.display = anyRowVisible ? '' : 'none';
+  });
+
+  var countEl = document.querySelector('#fiche-search-count small');
+  countEl.textContent = q ? totalVisible + ' fiche(s) trouvée(s)' : '';
+}
+</script>
 {% endif %}
 {% endblock %}

@@ -6,6 +6,8 @@ gratuit, aucune clé API).
 
 from __future__ import annotations
 
+import re
+
 import ollama
 
 from modules.rag.config import OLLAMA_MAX_TOKENS, OLLAMA_MODEL
@@ -21,6 +23,25 @@ Règles :
 - Formule des réponses courtes et naturelles à l'oral (pas de listes à puces, pas de mise en forme markdown), comme dans une vraie conversation téléphonique.
 - Si le contexte décrit plusieurs cas, conditions ou étapes distincts (ex. plusieurs itérations, configurations, ou "si... sinon..."), énumère-les TOUS dans ta réponse, avec des transitions orales ("d'abord... ensuite... enfin...", "premièrement... deuxièmement..."), plutôt que de les résumer en une seule phrase vague qui perd l'information précise -- c'est souvent un règlement qui régit un droit de l'étudiant, l'exactitude prime sur la brièveté.
 """
+
+# Sépare les phrases (. ! ?) suivies d'une majuscule/lettre arabe -- ne coupe
+# pas sur les points internes aux nombres/dates du domaine (dates en JJ/MM/AAAA,
+# montants avec virgule décimale), qui ne sont jamais suivis de "espace + majuscule".
+_SENTENCE_SPLIT_RE = re.compile(r"(?<=[.!?])\s+(?=[A-ZÀ-ÖØ-Þ؀-ۿ])")
+
+
+def _one_sentence_per_line(text: str) -> str:
+    """Force un saut de ligne apres chaque phrase, au sein de chaque
+    paragraphe deja produit par le modele -- le prompt seul (regle, exemple,
+    few-shot conversationnel) ne suffit pas a faire respecter ce format de
+    maniere fiable par ce modele 7B quantifie/degrade (CPU+GPU), donc on le
+    garantit ici de facon deterministe plutot que de dependre du modele."""
+    paragraphs = text.split("\n\n")
+    result_paragraphs = []
+    for paragraph in paragraphs:
+        sentences = _SENTENCE_SPLIT_RE.split(paragraph.strip())
+        result_paragraphs.append("\n".join(s.strip() for s in sentences if s.strip()))
+    return "\n\n".join(result_paragraphs)
 
 
 def _build_context(chunks: list[RetrievedChunk]) -> str:
@@ -75,4 +96,4 @@ def generate_answer(
         ],
         options={"num_predict": OLLAMA_MAX_TOKENS},
     )
-    return response["message"]["content"].strip()
+    return _one_sentence_per_line(response["message"]["content"].strip())

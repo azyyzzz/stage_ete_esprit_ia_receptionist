@@ -76,7 +76,7 @@ def merge_candidates(candidates: list[dict]) -> dict:
             rejected_id.append(candidate["id"])
             continue
 
-        is_dup, matched_title, score = deduper.check(contenu)
+        is_dup, matched_title, _matched_contenu, score = deduper.check(contenu)
         if is_dup:
             rejected_duplicate.append({"titre_candidat": titre, "titre_existant": matched_title, "score": round(score, 3)})
             continue
@@ -226,24 +226,63 @@ def reject_fiche(batch_id: str, fiche_id: str) -> None:
     _remove_fiche_from_batch(batches, batch_id, fiche_id)
 
 
-def preview_fiche_status(candidate: dict, deduper: SemanticDeduplicator) -> dict:
-    """Calcule, SANS RIEN ECRIRE, si cette fiche candidate passerait les 2
+_preview_cache: dict[tuple[str, float], dict] = {}
+
+
+def preview_batch_status(candidates: list[dict], deduper: SemanticDeduplicator) -> list[dict]:
+    """Calcule, SANS RIEN ECRIRE, si chaque fiche candidate passerait les 2
     garde-fous de merge_candidates si elle etait approuvee maintenant --
     affiche sur /a-valider pour que l'admin sache si une fiche ressemble
     deja a du contenu existant AVANT de decider. `deduper` doit etre
-    construit une seule fois par la base actuelle et reutilise pour toutes
-    les fiches d'un meme lot (cout du fit TF-IDF)."""
-    titre = candidate.get("titre", "")
-    contenu = candidate.get("contenu", "")
+    construit une seule fois par la base actuelle et reutilise pour tous
+    les lots affiches.
 
-    if not is_relevant(titre, contenu):
-        return {"statut": "hors_sujet", "titre_existant": None, "score": None}
+    Version BATCHEE (un seul appel au modele d'embeddings pour toutes les
+    fiches passees, via SemanticDeduplicator.check_many) plutot qu'un appel
+    par fiche.
 
-    is_dup, matched_title, score = deduper.check(contenu)
-    if is_dup:
-        return {"statut": "doublon", "titre_existant": matched_title, "score": round(score, 3)}
+    Met aussi en cache le resultat par fiche (id + mtime de la base) : les
+    fiches en attente ne changent pas entre deux chargements de page (seul
+    un approuver/rejeter les retire de la liste), donc reembedder les MEMES
+    fiches a chaque visite est du travail perdu -- mesure : ~550 fiches
+    reembeddees a chaque chargement faisaient depasser la minute, meme avec
+    la base KB deja en cache (voir semantic_dedup.get_cached_kb_deduper).
 
-    return {"statut": "nouveau", "titre_existant": None, "score": round(score, 3)}
+    Renvoie aussi titre/contenu de la fiche existante la plus proche (meme
+    quand ce n'est PAS un doublon confirme) pour que l'admin puisse comparer
+    visuellement les deux textes sur /a-valider, plutot que de devoir faire
+    confiance au score seul."""
+    kb_mtime = CLEAN_KB_PATH.stat().st_mtime if CLEAN_KB_PATH.exists() else 0.0
+
+    to_compute_indices: list[int] = []
+    to_compute_contents: list[str] = []
+    results: list[dict | None] = [None] * len(candidates)
+
+    for i, candidate in enumerate(candidates):
+        titre = candidate.get("titre", "")
+        contenu = candidate.get("contenu", "")
+        cache_key = (candidate.get("id", ""), kb_mtime)
+
+        if not is_relevant(titre, contenu):
+            results[i] = {"statut": "hors_sujet", "titre_existant": None, "contenu_existant": None, "score": None}
+        elif cache_key in _preview_cache:
+            results[i] = _preview_cache[cache_key]
+        else:
+            to_compute_indices.append(i)
+            to_compute_contents.append(contenu)
+
+    checks = deduper.check_many(to_compute_contents)
+    for idx, (is_dup, matched_title, matched_contenu, score) in zip(to_compute_indices, checks):
+        preview = {
+            "statut": "doublon" if is_dup else "nouveau",
+            "titre_existant": matched_title,
+            "contenu_existant": matched_contenu,
+            "score": round(score, 3),
+        }
+        results[idx] = preview
+        _preview_cache[(candidates[idx].get("id", ""), kb_mtime)] = preview
+
+    return results
 
 
 def log_history(*, source: str, source_type: str, origin: str, summary: dict | None = None, error: str | None = None, manual_review: bool = False) -> None:
