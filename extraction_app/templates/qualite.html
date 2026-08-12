@@ -173,18 +173,26 @@
             {% endif %}
           </small>
         </td>
-        <td>
-          <form action="/qualite/{{ entry.id }}/annoter" method="post" class="inline-form">
-            <button type="submit" name="annotation" value="correct" class="{{ 'button-active-ok' if entry.annotation == 'correct' }}">Correct</button>
-          </form>
-          <form action="/qualite/{{ entry.id }}/annoter" method="post" class="inline-form">
-            <button type="submit" name="annotation" value="incorrect" class="button-danger {{ 'button-active-danger' if entry.annotation == 'incorrect' }}">Incorrect</button>
-          </form>
-          {% if entry.annotation %}
-          <form action="/qualite/{{ entry.id }}/annoter" method="post" class="inline-form">
-            <button type="submit" name="annotation" value="reset" class="button-reset">Réinitialiser</button>
-          </form>
-          {% endif %}
+        <td class="annotation-cell" data-result-id="{{ entry.id }}">
+          <button
+            type="button"
+            class="btn-annoter {{ 'button-active-ok' if entry.annotation == 'correct' }}"
+            data-annotation="correct"
+            onclick="annoter(this, '{{ entry.id }}', 'correct')"
+          >Correct</button>
+          <button
+            type="button"
+            class="btn-annoter button-danger {{ 'button-active-danger' if entry.annotation == 'incorrect' }}"
+            data-annotation="incorrect"
+            onclick="annoter(this, '{{ entry.id }}', 'incorrect')"
+          >Incorrect</button>
+          <button
+            type="button"
+            class="btn-annoter button-reset"
+            data-annotation="reset"
+            style="{{ '' if entry.annotation else 'display:none' }}"
+            onclick="annoter(this, '{{ entry.id }}', 'reset')"
+          >Réinitialiser</button>
         </td>
         {% else %}
         <td colspan="4"><span class="mist">En attente (test pas encore arrivé à cette question)</span></td>
@@ -203,6 +211,43 @@ function filterQualite(query) {
     var text = card.textContent.toLowerCase();
     card.style.display = (!q || text.indexOf(q) !== -1) ? '' : 'none';
   });
+}
+
+// Annotation en AJAX (fetch) : pas de rechargement de page, donc pas de
+// saut de scroll en haut -- indispensable pour annoter 225 reponses a la
+// suite sans perdre sa place a chaque clic (voir routers/quality.py).
+function annoter(button, resultId, valeur) {
+  var cell = button.closest('.annotation-cell');
+  var btnCorrect = cell.querySelector('[data-annotation="correct"]');
+  var btnIncorrect = cell.querySelector('[data-annotation="incorrect"]');
+  var btnReset = cell.querySelector('[data-annotation="reset"]');
+
+  cell.querySelectorAll('.btn-annoter').forEach(function (b) { b.disabled = true; });
+
+  fetch('/qualite/' + encodeURIComponent(resultId) + '/annoter', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'X-Requested-With': 'fetch',
+    },
+    body: 'annotation=' + encodeURIComponent(valeur),
+  })
+    .then(function (resp) {
+      if (!resp.ok) throw new Error('HTTP ' + resp.status);
+      return resp.json();
+    })
+    .then(function (data) {
+      btnCorrect.classList.toggle('button-active-ok', data.annotation === 'correct');
+      btnIncorrect.classList.toggle('button-active-danger', data.annotation === 'incorrect');
+      btnReset.style.display = data.annotation ? '' : 'none';
+    })
+    .catch(function (err) {
+      console.error('Echec annotation', resultId, err);
+      alert("L'annotation n'a pas pu etre enregistree (" + err.message + "). Reessaie.");
+    })
+    .finally(function () {
+      cell.querySelectorAll('.btn-annoter').forEach(function (b) { b.disabled = false; });
+    });
 }
 </script>
 {% endblock %}

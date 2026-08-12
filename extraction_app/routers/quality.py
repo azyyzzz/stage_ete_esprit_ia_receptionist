@@ -9,8 +9,8 @@ annotees).
 
 from __future__ import annotations
 
-from fastapi import APIRouter, Depends, Form, Request
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi import APIRouter, Depends, Form, HTTPException, Request
+from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 
 from extraction_app.auth import require_login
@@ -57,6 +57,18 @@ def qualite_page(request: Request, username: str = Depends(require_login)):
 
 
 @router.post("/qualite/{result_id}/annoter")
-def annoter(result_id: str, annotation: str = Form(...), username: str = Depends(require_login)):
-    quality_test.set_annotation(result_id, annotation if annotation != "reset" else None)
+def annoter(request: Request, result_id: str, annotation: str = Form(...), username: str = Depends(require_login)):
+    valeur = None if annotation == "reset" else annotation
+    try:
+        quality_test.set_annotation(result_id, valeur)
+    except ValueError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+    # Appel AJAX (fetch, voir qualite.html) : renvoie juste le nouvel etat
+    # en JSON, sans recharger toute la page -- un formulaire classique
+    # rechargerait /qualite et ramenerait le scroll en haut, rendant
+    # l'annotation de 225 reponses une par une extremement penible.
+    if request.headers.get("x-requested-with") == "fetch":
+        return JSONResponse({"id": result_id, "annotation": valeur})
+
     return RedirectResponse(url="/qualite", status_code=303)
