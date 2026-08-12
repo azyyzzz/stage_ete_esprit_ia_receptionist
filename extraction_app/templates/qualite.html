@@ -90,6 +90,47 @@
   </small></p>
 </div>
 
+{% macro bar_chart(title, series, unit='', max_value=none) %}
+  {% set values = series | map(attribute='valeur') | list %}
+  {% set mx = max_value if max_value is not none else ((values | max) * 1.15 if values else 1) %}
+  <div class="chart-card">
+    <h3 class="chart-title">{{ title }}</h3>
+    {% if not series %}
+      <p class="mist">Pas encore de donnée.</p>
+    {% else %}
+    <svg viewBox="0 0 600 {{ series | length * 40 + 4 }}" class="bar-chart" role="img" aria-label="{{ title }}, par langue">
+      {% for s in series %}
+      {% set bar_w = ((s.valeur / mx) * 400) if mx > 0 else 0 %}
+      <g transform="translate(0, {{ loop.index0 * 40 }})">
+        <text x="0" y="17" class="chart-label">{{ s.label }}</text>
+        <rect x="150" y="4" width="400" height="20" rx="4" class="chart-track" />
+        <rect x="150" y="4" width="{{ bar_w }}" height="20" rx="4" fill="{{ s.color }}">
+          <title>{{ s.label }} : {{ s.valeur }}{{ unit }}</title>
+        </rect>
+        <text x="{{ 150 + bar_w + 8 }}" y="19" class="chart-value">{{ s.valeur }}{{ unit }}</text>
+      </g>
+      {% endfor %}
+    </svg>
+    {% endif %}
+  </div>
+{% endmacro %}
+
+<div class="result">
+  <h2>Graphiques</h2>
+  <div class="chart-legend">
+    <span class="chart-legend-item"><span class="chart-legend-dot" style="background:#3987e5"></span>Français</span>
+    <span class="chart-legend-item"><span class="chart-legend-dot" style="background:#d95926"></span>Arabe standard</span>
+    <span class="chart-legend-item"><span class="chart-legend-dot" style="background:#199e70"></span>Tunisien</span>
+  </div>
+  <div class="chart-grid">
+    {{ bar_chart("% correct (sur les questions annotées)", charts.pct_correct, unit="%", max_value=100) }}
+    {{ bar_chart("Temps de réponse moyen", charts.temps_moyen, unit="s") }}
+    {{ bar_chart("Taux d'échec (fallback)", charts.taux_fallback, unit="%", max_value=100) }}
+    {{ bar_chart("Score de confiance moyen", charts.score_confiance, max_value=1) }}
+    {{ bar_chart("Cohérence avec le français", charts.coherence, max_value=1) }}
+  </div>
+</div>
+
 <div class="result">
   <input
     type="text"

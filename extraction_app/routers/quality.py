@@ -28,6 +28,7 @@ def qualite_page(request: Request, username: str = Depends(require_login)):
     kpis = quality_test.compute_kpis(results)
     consistency = quality_test.compute_multilingual_consistency(results)
     consistency_avg = quality_test.average_consistency(consistency)
+    charts = quality_test.build_chart_series(kpis, consistency_avg)
 
     # Regroupe par numero pour l'affichage (une ligne = une question, les
     # 3 langues cote a cote) plutot que 225 lignes plates.
@@ -46,6 +47,7 @@ def qualite_page(request: Request, username: str = Depends(require_login)):
     context = {
         "kpis": kpis,
         "consistency_avg": consistency_avg,
+        "charts": charts,
         "rows": rows,
         "langues": quality_test.LANGUES,
         "langue_labels": quality_test.LANGUE_LABELS,

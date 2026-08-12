@@ -25,6 +25,43 @@ from modules.rag.embeddings import embed
 LANGUES = ("fr", "ar_fusha", "ar_tounsi")
 LANGUE_LABELS = {"fr": "Français", "ar_fusha": "Arabe standard", "ar_tounsi": "Tunisien"}
 
+# Palette categorique (identite = langue, fixe et jamais recyclee entre les
+# graphiques) -- 3 premiers pas de la palette de reference validee CVD-safe
+# (voir competence dataviz), verifiee au validateur contre la vraie couleur
+# de fond de l'appli (--ink-950 #08090c) : tous les checks passent (bande de
+# clarte, floor de chroma, separation CVD adjacente ΔE 9.4, floor vision
+# normale ΔE 26.5, contraste >= 3:1).
+LANGUE_COLORS = {"fr": "#3987e5", "ar_fusha": "#d95926", "ar_tounsi": "#199e70"}
+
+
+def build_chart_series(kpis: dict, consistency_avg: dict) -> dict[str, list[dict]]:
+    """Donnees pretes a tracer (une serie de barres par metrique), pour le
+    tableau de bord graphique de /qualite -- calculees ici plutot que dans
+    le template pour garder le Jinja simple (juste des rectangles SVG a
+    partir de valeurs deja pretes)."""
+    return {
+        "pct_correct": [
+            {"langue": l, "label": LANGUE_LABELS[l], "valeur": kpis[l]["pct_correct"], "color": LANGUE_COLORS[l]}
+            for l in LANGUES if kpis[l]["pct_correct"] is not None
+        ],
+        "temps_moyen": [
+            {"langue": l, "label": LANGUE_LABELS[l], "valeur": kpis[l]["temps_reponse"]["moyenne"], "color": LANGUE_COLORS[l]}
+            for l in LANGUES if kpis[l]["temps_reponse"]["moyenne"] is not None
+        ],
+        "taux_fallback": [
+            {"langue": l, "label": LANGUE_LABELS[l], "valeur": kpis[l]["taux_fallback"], "color": LANGUE_COLORS[l]}
+            for l in LANGUES if kpis[l]["taux_fallback"] is not None
+        ],
+        "score_confiance": [
+            {"langue": l, "label": LANGUE_LABELS[l], "valeur": kpis[l]["score_confiance_moyen"], "color": LANGUE_COLORS[l]}
+            for l in LANGUES if kpis[l]["score_confiance_moyen"] is not None
+        ],
+        "coherence": [
+            {"langue": l, "label": LANGUE_LABELS[l], "valeur": consistency_avg[l], "color": LANGUE_COLORS[l]}
+            for l in ("ar_fusha", "ar_tounsi") if consistency_avg.get(l) is not None
+        ],
+    }
+
 
 def load_results(path: Path = QUALITY_TEST_RESULTS_PATH) -> list[dict]:
     """Lit le fichier JSONL. Tolere une DERNIERE ligne malformee/tronquee :
@@ -103,7 +140,7 @@ def compute_kpis(results: list[dict]) -> dict:
     return kpis
 
 
-_consistency_cache_mtime: float | None = None
+_consistency_cache_key: int | None = None
 _consistency_cache: dict[int, dict[str, float | None]] | None = None
 
 
@@ -115,14 +152,17 @@ def compute_multilingual_consistency(results: list[dict], path: Path = QUALITY_T
     (base de connaissances majoritairement francaise), une reponse arabe
     tres differente du francais est suspecte.
 
-    Mis en cache par mtime du fichier de resultats (le test complet prend
-    des heures, recalculer les embeddings de 225 reponses a chaque
-    chargement de page serait inutilement lent -- meme logique que
-    services/semantic_dedup.py::get_cached_kb_deduper)."""
-    global _consistency_cache_mtime, _consistency_cache
+    Mis en cache par un hash du CONTENU des reponses (id + texte), pas par
+    mtime du fichier : annoter une reponse (bouton Correct/Incorrect sur
+    /qualite) reecrit le fichier de resultats sans jamais changer les
+    reponses elles-memes -- un cache par mtime serait invalide a chaque
+    annotation et relancerait inutilement les embeddings sur les 225
+    reponses a chaque clic (constate en usage reel : chaque annotation
+    devenait aussi lente que le tout premier chargement de la page)."""
+    global _consistency_cache_key, _consistency_cache
 
-    mtime = path.stat().st_mtime if path.exists() else None
-    if mtime is not None and mtime == _consistency_cache_mtime and _consistency_cache is not None:
+    cache_key = hash(tuple((r["id"], r.get("reponse")) for r in results))
+    if cache_key == _consistency_cache_key and _consistency_cache is not None:
         return _consistency_cache
 
     by_numero: dict[int, dict[str, dict]] = {}
@@ -160,9 +200,8 @@ def compute_multilingual_consistency(results: list[dict], path: Path = QUALITY_T
             score = float(fr_vector_by_numero[numero] @ vector)
             consistency[numero][langue] = round(score, 3)
 
-    if mtime is not None:
-        _consistency_cache_mtime = mtime
-        _consistency_cache = consistency
+    _consistency_cache_key = cache_key
+    _consistency_cache = consistency
     return consistency
 
 

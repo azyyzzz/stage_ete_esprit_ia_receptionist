@@ -108,7 +108,20 @@ def detect_option_mention(question: str) -> list[str]:
 # Noms de classe qui sont en realite des artefacts d'extraction (page/tableau
 # non identifie, marqueur de semestre isole...) -- jamais proposes comme
 # filtre, une question ne les mentionnera jamais tels quels.
+# Le 2e pattern rejette aussi un nom de classe contenant "semestre" N'IMPORTE
+# OU (pas seulement quand il constitue tout le nom) : constate en usage reel
+# avec "3B - 2025/2026 Semestre - 5", un doublon corrompu de la classe "3B"
+# (qui existe deja proprement par ailleurs) genere par un titre mal parse --
+# son alias auto-genere "bse" (prefixe de "b"+"semestre") matchait par
+# sous-chaine le mot "absences", filtrant a tort toute question sur les
+# absences vers les fiches de la classe 3B.
 JUNK_CLASSE_PATTERN = re.compile(r"^(page\d+_tableau\d+|s\d+|semestre.*)$", re.IGNORECASE)
+JUNK_CLASSE_CONTAINS_PATTERN = re.compile(r"\bsemestre\b", re.IGNORECASE)
+
+
+def _is_junk_classe(classe_nom: str) -> bool:
+    stripped = classe_nom.strip()
+    return bool(JUNK_CLASSE_PATTERN.match(stripped) or JUNK_CLASSE_CONTAINS_PATTERN.search(stripped))
 
 
 def _normalize(text: str) -> str:
@@ -133,7 +146,12 @@ def _classe_core(classe_nom: str) -> str:
     nom de classe a une question independamment de ces variations."""
     norm = _normalize(classe_nom)
     norm = re.sub(r"^classe\s+", "", norm)
-    norm = re.sub(r"\b(20)?\d{2}\s*[-/]\s*(20)?\d{2}\b", "", norm)
+    # _normalize() a deja remplace "-"/"/" par des espaces, donc un
+    # intervalle d'annees ("2025/2026", "25-26") apparait ici separe par un
+    # espace, pas par le separateur d'origine -- le motif doit matcher
+    # l'espace, pas [-/] (bug constate : la fiche "3B - 2025/2026 Semestre -
+    # 5" gardait "2025 2026" dans son coeur faute de matcher).
+    norm = re.sub(r"\b(20)?\d{2}\s+(20)?\d{2}\b", "", norm)
     return re.sub(r"\s+", " ", norm).strip()
 
 
@@ -152,7 +170,7 @@ def _load_known_classes() -> tuple[str, ...]:
         if not match:
             continue
         classe_nom = match.group(1)
-        if JUNK_CLASSE_PATTERN.match(classe_nom.strip()):
+        if _is_junk_classe(classe_nom):
             continue
         if classe_nom not in seen:
             seen.add(classe_nom)
@@ -164,7 +182,7 @@ def _load_known_classes() -> tuple[str, ...]:
                     # existing parsed classes
                     for cls in file_entry.get("classes", []):
                         classe_nom = cls.get("classe", "")
-                        if classe_nom and classe_nom not in seen and not JUNK_CLASSE_PATTERN.match(classe_nom.strip()):
+                        if classe_nom and classe_nom not in seen and not _is_junk_classe(classe_nom):
                             seen.add(classe_nom)
                             classes.append(classe_nom)
                     # if no classes parsed, try to extract a class-like token from the filename
@@ -180,7 +198,7 @@ def _load_known_classes() -> tuple[str, ...]:
                             # strip years like 2526 or 25-26
                             candidate = re.sub(r"\b\d{2}[- ]?\d{2}\b", "", candidate)
                             candidate = candidate.strip()
-                            if candidate and candidate not in seen and not JUNK_CLASSE_PATTERN.match(candidate):
+                            if candidate and candidate not in seen and not _is_junk_classe(candidate):
                                 seen.add(candidate)
                                 classes.append(candidate)
         except Exception:
@@ -220,8 +238,15 @@ def detect_classe_mention(question: str) -> str | None:
         numeric_tokens = [t for t in core_tokens if re.fullmatch(r"\d+", t)]
         if numeric_tokens:
             if any(nt in q_tokens for nt in numeric_tokens):
-                # check for at least one additional non-numeric token overlap
-                if any(t in q_tokens for t in core_tokens if t not in numeric_tokens):
+                # Check for at least one additional non-numeric token overlap
+                # -- token d'1 seul caractere (ex. "a" pour la classe "3A")
+                # exclu : "a"/"à" (sans accent) est un mot autonome courant
+                # en francais ("il y A", "A esprit"), donc n'importe quelle
+                # question mentionnant un numero ET contenant "a esprit"
+                # matchait a tort la classe "3A" (constate en usage reel sur
+                # "la classe 3AI", "en 3eme annee" -- aucun rapport avec la
+                # classe 3A du programme d'etudes).
+                if any(t in q_tokens for t in core_tokens if t not in numeric_tokens and len(t) > 1):
                     heuristic_matches.append(classe_nom)
                     continue
 
@@ -246,7 +271,26 @@ def detect_classe_mention(question: str) -> str | None:
             if re.search(rf"\b{re.escape(alias)}\b", q_norm):
                 alias_matches.append(canon)
         else:
-            if alias in q_norm:
+            # Un alias court (ex. "b", genere pour une classe comme "3B"
+            # dont la seule partie non numerique est une lettre isolee, via
+            # le prefixe de longueur 2/3 qui degenere sur un token d'1
+            # caractere) matche par SOUS-CHAINE n'importe quel mot qui le
+            # contient -- "b" matchait "club", faisant detecter a tort la
+            # classe 3B dans une question sur un club etudiant (constate en
+            # usage reel). Exiger un mot entier (pas une sous-chaine) en
+            # dessous de 3 caracteres NE SUFFIT PAS : un alias d'1 SEUL
+            # caractere comme "a" (classe "3A") matche alors le mot "a"
+            # ou "à" (sans accent apres normalisation) -- omnipresent en
+            # francais ("il y A", "A ESPRIT"...) -- constate en usage reel
+            # sur "Y a-t-il une salle de sport A esprit ?". Les alias d'1
+            # caractere sont donc purement et simplement ignores ; ceux de
+            # 2 caracteres restent exiges en mot entier.
+            if len(alias) < 2:
+                continue
+            if len(alias) < 3:
+                if re.search(rf"\b{re.escape(alias)}\b", q_norm):
+                    alias_matches.append(canon)
+            elif alias in q_norm:
                 alias_matches.append(canon)
 
     # deduplicate while preserving order
@@ -416,8 +460,28 @@ def _has_list_wording(q_norm: str) -> bool:
     les options...") quel que soit le verbe, alors que "quel"/"quelle"
     (singulier, ex. "quel EST le score minimum") signale un fait precis --
     a ne surtout pas confondre en imposant un verbe specifique comme
-    "sont" (exclurait a tort "quelles ... propose")."""
-    return bool(re.search(r"\bquel(s|les)\b", q_norm) or re.search(r"\b(liste|toutes|tous)\b", q_norm))
+    "sont" (exclurait a tort "quelles ... propose").
+
+    "toutes"/"tous" seuls ont ete retires du declencheur (faux positif
+    constate en usage reel : "Le tarif est-il le meme pour TOUTES les
+    specialites ?" n'est PAS une demande de liste, mais une comparaison a
+    travers les specialites -- le mot apparait dans bien d'autres
+    tournures que "liste tout"). "quelles ... toutes les specialites"
+    reste couvert par le test quel(s|les) ci-dessus, donc rien n'est perdu
+    pour la vraie formulation de liste exhaustive.
+
+    "c'est quoi les X" (normalise en "c est quoi les X", tres frequent a
+    l'oral/dans le jeu de test) suit la meme logique que quel(s|les) :
+    l'article pluriel "les" juste apres "quoi" signale une liste ("c'est
+    quoi LES specialites qu'ESPRIT propose" == "quelles sont les
+    specialites"), alors que l'article singulier ("c'est quoi LA classe
+    3AI") signale un fait precis sur une seule chose -- meme distinction
+    exactement, portee par l'article plutot que par quel/quels."""
+    return bool(
+        re.search(r"\bquel(s|les)\b", q_norm)
+        or re.search(r"\bliste\b", q_norm)
+        or re.search(r"\bquoi les\b", q_norm)
+    )
 
 
 def is_list_options_intent(question: str) -> bool:

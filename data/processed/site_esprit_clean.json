@@ -198,8 +198,8 @@
   {
     "id": "admissions_cours_du_jour_tunisiens_029",
     "categorie": "Admissions",
-    "titre": "Puis-je postuler directement en 3ème année ?",
-    "contenu": "Oui, les titulaires d’une licence dans la spécialité choisie ou en sciences et technologies, ainsi que ceux admis aux concours nationaux d’accès aux études d’ingénieur, peuvent postuler en 3ème année.",
+    "titre": "Puis-je postuler directement en 3ème année avec un BTS ?",
+    "contenu": "Non, l'accès direct en 3ème année du cycle d'ingénieur à ESPRIT n'est pas ouvert aux titulaires d'un BTS seul. La 3ème année (début du cycle ingénieur) est réservée aux titulaires d'une Licence dans la spécialité choisie (ou en sciences et technologies), ou aux admis au concours national d'accès aux études d'ingénieur. Conditions d'admission par année : la 1ère année est ouverte aux titulaires d'un baccalauréat scientifique ou technique. La 2ème année est accessible après une année réussie en cycle préparatoire. La 3ème année est réservée aux titulaires d'une Licence dans la spécialité ou aux admis au concours national d'ingénieurs. La 4ème année est accessible aux titulaires d'un Master (M1). Un BTS équivaut à un niveau Bac+2 (120 crédits ECTS). Avec ce profil, il est souvent nécessaire de passer par une année de mise à niveau ou d'intégrer une Licence appliquée/Bachelor (souvent en 3ème année de licence) avant de pouvoir prétendre postuler au cycle d'ingénieur. Il est recommandé de contacter directement le service des admissions d'ESPRIT pour vérifier l'existence de passerelles spécifiques ou d'équivalences selon la mention exacte du BTS.",
     "source": "https://www.esprit.tn/admissions/cours-du-jour/cours-du-jour-tunisiens/"
   },
   {
@@ -1080,8 +1080,8 @@
   {
     "id": "vie_étudiante_clubs_esprit_001",
     "categorie": "Vie étudiante",
-    "titre": "Clubs ESPRIT",
-    "contenu": "ESPRIT compte de nombreux clubs et associations étudiantes, animés par les étudiants eux-mêmes.",
+    "titre": "Quels sont les clubs disponibles à ESPRIT ?",
+    "contenu": "ESPRIT compte plus de 40 clubs et associations etudiantes, animes par les etudiants eux-memes. Parmi les clubs disponibles : Esprit-Dev, Esprit FUTURA, ESPRIT Club AERO, Japanese Club of Esprit (JCE), ESPRIT Club ESPOIR, ESPRIT Club FUSION, ESPRIT Club Conceptronix, ESPRIT You ROBOT, ESPRIT CISCO, ESPRIT Club IeeeSb, Club Genie Civil Esprit, ESPRIT Club Internationaux, EMUN, ESPRIT Club engineers Spark, Esprit ENACTUS, Auto Club Esprit, ESPRIT Club Libre, Enactus Esprit ICT, et ESPRO Junior Entreprise.",
     "source": "https://www.esprit.tn/vie-estudiantine/clubs-esprit/"
   },
   {
@@ -3670,8 +3670,8 @@
   {
     "id": "paiements_moyens_detailles_2025_2026",
     "categorie": "Paiements",
-    "titre": "Tous les moyens de paiement disponibles (2025-2026)",
-    "contenu": "Moyens de paiement des frais de scolarité : (1) En ligne par carte bancaire, nationale ou internationale, via https://esprit-tn.com/ESPOnline/Online/Login.aspx. (2) Versement en espèces à l'agence Amen Bank, en indiquant nom et identifiant étudiant. (3) Versement en espèces à l'agence BIAT, compte ESPRIT n° 51 10 98009 6, en indiquant nom et identifiant étudiant. (4) Chèque bancaire ou postal libellé à l'ordre d'ESPRIT, à déposer au service financier. (5) Paiement sur place par carte bancaire, directement auprès du service financier de l'école. (6) Prélèvement bancaire mensuel : paiement en 10 mensualités égales (1/10e des frais), nécessite de constituer un dossier auprès du service financier. (7) Traite avalisée (effet de commerce signé par la banque), dossier à constituer auprès du service financier.",
+    "titre": "Tous les moyens de paiement disponibles (2025-2026) — dont le paiement en ligne depuis l'étranger",
+    "contenu": "Oui, il est possible de payer les frais de scolarité depuis l'étranger, sans être physiquement en Tunisie : le paiement en ligne par carte bancaire nationale ou internationale est disponible et fonctionne depuis n'importe quel pays. Moyens de paiement des frais de scolarité : (1) En ligne par carte bancaire, nationale ou internationale, via https://esprit-tn.com/ESPOnline/Online/Login.aspx — c'est le moyen recommandé pour un étudiant ou un parent à l'étranger. (2) Versement en espèces à l'agence Amen Bank, en indiquant nom et identifiant étudiant. (3) Versement en espèces à l'agence BIAT, compte ESPRIT n° 51 10 98009 6, en indiquant nom et identifiant étudiant. (4) Chèque bancaire ou postal libellé à l'ordre d'ESPRIT, à déposer au service financier. (5) Paiement sur place par carte bancaire, directement auprès du service financier de l'école. (6) Prélèvement bancaire mensuel : paiement en 10 mensualités égales (1/10e des frais), nécessite de constituer un dossier auprès du service financier. (7) Traite avalisée (effet de commerce signé par la banque), dossier à constituer auprès du service financier.",
     "source": "Email de paiement/réinscription 2025-2026 (Direction ESPRIT)"
   },
   {
@@ -5465,5 +5465,117 @@
     "titre": "Quelle est la différence entre les classes 3A et 3B ?",
     "contenu": "La différence entre les classes 3A et 3B à ESPRIT Tunisie repose sur le profil d'entrée des étudiants, le volume horaire de la formation et le parcours académique antérieur. Vous pouvez consulter les détails sur le site officiel d'ESPRIT.\n\nProfil des étudiants\nClasse 3A : Réservée aux étudiants titulaires d'une licence en informatique, ou ayant commencé dès la première année à ESPRIT.\nClasse 3B : Pour les étudiants titulaires d'une licence dans une autre spécialité, ou issus des classes préparatoires admis via le concours national d'accès aux études d'ingénieur en filières scientifiques ou technologiques.\n\nVolume horaire et mise à niveau\nClasse 3A : Volume horaire total de 630 heures, axé directement sur le cycle d'ingénieur informatique.\nClasse 3B : Volume horaire total de 724,5 heures, incluant des modules de mise à niveau en informatique (comme les bases de données et le développement web) pour compenser l'origine non-informatique du cursus initial.",
     "source": "Interne — ESPRIT Tunis (fiche ajoutée manuellement)"
+  },
+  {
+    "id": "faq_tarif_uniforme_specialites_001",
+    "categorie": "Admissions",
+    "titre": "Le tarif est-il le même pour toutes les spécialités ?",
+    "contenu": "Oui, les frais de scolarité de base pour le cycle ingénieur en cours du jour à ESPRIT sont généralement uniformes pour les principales spécialités d'ingénierie (génie informatique, télécommunications, génie civil, électromécanique). Le montant global annuel s'applique de manière égale au cycle d'ingénieur principal pour les étudiants tunisiens. Des variations de prix existent si vous changez de cycle global ou d'établissement rattaché, par exemple entre le cycle d'ingénieur classique, les cours du soir, ou les formations de l'Esprit School of Business (filières management/business). Les étudiants internationaux, ou en double diplôme/executive (comme l'EMBA), disposent de grilles tarifaires spécifiques et distinctes.",
+    "source": "Information fournie par l'utilisateur (reponses de reference verifiees)"
+  },
+  {
+    "id": "vie_etudiante_infrastructures_sport_001",
+    "categorie": "Vie étudiante",
+    "titre": "Y a-t-il une salle de sport à ESPRIT ?",
+    "contenu": "Oui, il existe une infrastructure sportive incluant une salle de sport et une piscine couverte au sein du campus ESPRIT. L'accès et les activités sont gérés en lien avec la vie estudiantine et l'association Esprit Sport. L'accès aux cours et à la piscine nécessite parfois une réservation préalable selon les consignes de l'administration ou du club. Des réductions et des offres spéciales sur les abonnements sont régulièrement proposées aux étudiants et au staff par le biais de l'association sportive de l'école.",
+    "source": "Information fournie par l'utilisateur (reponses de reference verifiees)"
+  },
+  {
+    "id": "vie_etudiante_forum_entreprises_001",
+    "categorie": "Vie étudiante",
+    "titre": "Est-ce qu'il y a un forum entreprises organisé par l'école ?",
+    "contenu": "Oui, ESPRIT organise régulièrement un Forum des Entreprises au cours de l'année universitaire, généralement deux fois par an (sessions d'automne et de printemps). Cet événement met en relation les étudiants et jeunes diplômés avec plus de 50 entreprises partenaires pour des opportunités de stages, de PFE (projet de fin d'études) ou d'embauche. Les activités principales sont : la Zone Connect (rencontres et recrutement direct entre étudiants et entreprises), le Business Connect (échanges et synergies B2B entre l'école et ses partenaires), et Engage & Inspire (ateliers, présentations et simulations d'entretiens animés par les sponsors). La dernière édition de type \"Spring\" s'est tenue le 6 mai 2026.",
+    "source": "Information fournie par l'utilisateur (reponses de reference verifiees)"
+  },
+  {
+    "id": "admissions_cycle_preparatoire_integre_001",
+    "categorie": "Admissions",
+    "titre": "Y a-t-il un cycle préparatoire intégré à ESPRIT ?",
+    "contenu": "Oui, ESPRIT propose un cycle préparatoire intégré d'une durée de deux ans (4 semestres), qui permet aux bacheliers d'acquérir les bases scientifiques requises (mathématiques, sciences physiques, sciences de l'ingénieur) avant de poursuivre vers un cycle d'ingénieur, avec une transition directe vers les spécialités du cycle ingénieur de l'établissement. À ESPRIT Tunis, le cycle préparatoire intégré est axé sur les bases de l'ingénierie. À ESPRIT Monastir (ESPRIM), le cycle préparatoire propose les filières Mathématiques-Physique (MP), Physique-Chimie (PC) et Technologie (T). ESPRIT Prépa offre aussi des classes préparatoires (CPGE) axées sur les concours nationaux et français.",
+    "source": "Information fournie par l'utilisateur (reponses de reference verifiees)"
+  },
+  {
+    "id": "programmes_atelier_creatif_innovation_001",
+    "categorie": "Programmes",
+    "titre": "C'est quoi l'Atelier Créatif Innovation à ESPRIT ?",
+    "contenu": "L'Atelier Créatif : Innovation et Entrepreneuriat est un module pédagogique optionnel de 21 heures à ESPRIT. Il aide les étudiants en ingénierie à développer leur esprit d'entreprise, à transformer des idées novatrices en projets concrets, et à stimuler leur créativité.",
+    "source": "Information fournie par l'utilisateur (reponses de reference verifiees)"
+  },
+  {
+    "id": "admissions_terminale_etranger_001",
+    "categorie": "Admissions",
+    "titre": "Est-ce que les élèves de terminale à l'étranger peuvent postuler à ESPRIT ?",
+    "contenu": "Oui, les élèves en classe de terminale à l'étranger peuvent postuler à ESPRIT. L'école dispose d'une procédure d'admission spécifique dédiée aux bacheliers et futurs bacheliers internationaux. Le candidat doit préparer un baccalauréat scientifique ou technologique international (bac français, baccalauréat d'un pays d'Afrique subsaharienne, etc.). L'admission en première année (notamment pour le cycle préparatoire intégré) se base sur l'étude du dossier scolaire (bulletins des trois dernières années de lycée) et les résultats finaux du baccalauréat. La procédure de candidature se fait en ligne via le portail des admissions ESPRIT : remplir un formulaire et télécharger les pièces justificatives (bulletins, pièce d'identité). Une fois le dossier pré-sélectionné, le candidat passe un entretien de motivation à distance devant une commission d'enseignants spécialisés. Si le candidat est admis, ESPRIT délivre une attestation de pré-inscription indispensable pour effectuer les démarches de visa étudiant auprès de l'ambassade de Tunisie du pays d'origine.",
+    "source": "Information fournie par l'utilisateur (reponses de reference verifiees)"
+  },
+  {
+    "id": "programmes_classe_3ai_001",
+    "categorie": "Programmes",
+    "titre": "C'est quoi la classe 3AI à ESPRIT ?",
+    "contenu": "La classe 3AI à ESPRIT désigne la classe de 3ème année du cycle d'ingénieur spécialisée en Intelligence Artificielle (IA). Les étudiants intègrent cette classe au début de leur troisième année, qui correspond à la première année de spécialisation de l'école (le tronc commun informatique se déroulant en 1ère et 2ème année). L'accès à la classe 3AI est sélectif et se fait sur la base du classement et des notes obtenues lors des deux premières années. L'apprentissage repose fortement sur la pédagogie par projet (méthodologie active). Les étudiants de la classe 3AI acquièrent des bases en algorithmes fondamentaux (apprentissage automatique / Machine Learning et apprentissage profond / Deep Learning), en traitement de données (Data Science, Big Data, statistiques), et réalisent des projets pratiques (conception et déploiement de modèles prédictifs appliqués à des cas industriels ou des problématiques réelles d'entreprises). ESPRIT met à disposition une station de calcul haute performance pour entraîner localement des modèles d'IA complexes. Grâce à un partenariat académique avec NVIDIA, les étudiants de la classe 3AI peuvent passer des certifications industrielles reconnues durant leur cursus.",
+    "source": "Information fournie par l'utilisateur (reponses de reference verifiees)"
+  },
+  {
+    "id": "admissions_orientation_3eme_annee_001",
+    "categorie": "Admissions",
+    "titre": "Comment se fait l'orientation en 3ème année à ESPRIT ?",
+    "contenu": "Réponse courte : l'orientation se fait par la moyenne (le mérite), pas par simple choix personnel libre. À ESPRIT, l'orientation en 3ème année (le choix de l'option ou de la spécialité du cycle d'ingénieur) se fait principalement sur la base du mérite, c'est-à-dire selon le classement et la moyenne des deux premières années, et par voeux formulés en ligne sur la plateforme de l'école. L'école organise un Forum des Options annuel où les étudiants rencontrent les enseignants, les responsables de parcours et les anciens diplômés pour découvrir les programmes et les débouchés. Un calcul de score ou de moyenne générale basé sur la progression académique des années précédentes détermine le rang de chaque étudiant. L'étudiant formule ensuite ses choix d'options par ordre de préférence via son espace numérique sur le portail ESPRIT. L'attribution des places se fait selon le principe du mérite et des capacités d'accueil de chaque filière (génie logiciel, cybersécurité, BI, systèmes embarqués, etc.).",
+    "source": "Information fournie par l'utilisateur (reponses de reference verifiees)"
+  },
+  {
+    "id": "programmes_score_option_cybersecurity_cloud_001",
+    "categorie": "Programmes",
+    "titre": "Comment calculer mon score pour l'option Cybersecurity & Cloud Engineering (spécialité Informatique) ?",
+    "contenu": "Le score pour l'option Cybersecurity & Cloud Engineering — spécialité Génie Informatique — ESPRIT Tunis se calcule différemment selon la classe. En 3A : 40% Moyenne Générale + 5% UE Communication, Culture & Citoyenneté A3 + 5% UE Communication, Culture & Citoyenneté F3 + 10% UE Management de l'entreprise + 15% UE Administration des bases de données + 15% UE Réseaux IP et routage + 10% PI (Projet Intégré) Systèmes et Réseaux. En 3B : 40% Moyenne Générale + 5% UE Communication, Culture & Citoyenneté A3 + 5% UE Communication, Culture & Citoyenneté F3 + 10% UE Management de l'entreprise + 20% UE Systèmes de base + 20% UE Réseaux IP et communication.",
+    "source": "Information fournie par l'utilisateur (reponses de reference verifiees)"
+  },
+  {
+    "id": "programmes_score_option_iot_informatique_001",
+    "categorie": "Programmes",
+    "titre": "Comment est calculé le score pour l'option IoT & Embedded Technologies (spécialité Informatique) ?",
+    "contenu": "Le calcul du score pour l'option IoT & Embedded Technologies — spécialité Génie Informatique — ESPRIT Tunis dépend de la classe (3A ou 3B). En 3A : 40% Moyenne Générale + 5% UE Communication, Culture & Citoyenneté A3 + 5% UE Communication, Culture & Citoyenneté F3 + 10% UE Management de l'entreprise + 10% UE Administration des SE + 10% UE Modélisation et Programmation Objet + 10% UE Développement Web et Mobile + 10% UE Projet Intégré : Développement Web Java. En 3B : 40% Moyenne Générale + 5% UE Communication, Culture & Citoyenneté A3 + 5% UE Communication, Culture & Citoyenneté F3 + 10% UE Management de l'entreprise + 10% UE Technologie Web1 + 5% UE Électronique + 10% UE Bases de Données et SGBD + 5% UE Architecture des microcontrôleurs + 10% UE Modélisation et programmation par objet.",
+    "source": "Information fournie par l'utilisateur (reponses de reference verifiees)"
+  },
+  {
+    "id": "programmes_certification_ccna_001",
+    "categorie": "Programmes",
+    "titre": "Est-ce qu'ESPRIT prépare au CCNA ?",
+    "contenu": "Oui, ESPRIT prépare au CCNA. L'école est partenaire de la CISCO Networking Academy (NetAcad) et tous les étudiants passent la certification CCNA en troisième année.",
+    "source": "Information fournie par l'utilisateur (reponses de reference verifiees)"
+  },
+  {
+    "id": "programmes_certifications_5eme_annee_001",
+    "categorie": "Programmes",
+    "titre": "Quelles certifications obtient-on en 5ème année à ESPRIT ?",
+    "contenu": "En 5ème année à ESPRIT, l'étudiant obtient principalement le Diplôme National d'Ingénieur, qui bénéficie de l'accréditation internationale EUR-ACE (délivrée via la CTI française). En plus du diplôme d'ingénieur, le cursus intègre la préparation et le passage de plusieurs certifications professionnelles, variant selon la spécialité : en Réseaux, Télécoms et Sécurité, grâce aux partenariats académiques d'ESPRIT — Cisco (certifications de niveau associé ou professionnel comme le CCNA ou le CCNP) et Huawei (certifications HCIA / HCIP en Cloud, Routage & Commutation, Sécurité). En Intelligence Artificielle et Data Science — NVIDIA, des certifications délivrées en collaboration avec le NVIDIA Deep Learning Institute (DLI) en IA, Deep Learning et calcul accéléré. En Génie Logiciel et Architecture — la certification internationale iSAQB (CPSA-F, Certified Professional for Software Architecture, Foundation Level), et une préparation fréquente aux certifications Scrum Master (PSM I). En Gestion de Projet — la certification Lean Six Sigma (généralement Green Belt), et des modules alignés pour préparer les certifications du PMI (comme le CAPM). Certifications linguistiques : la validation du diplôme d'ingénieur requiert obligatoirement un score minimal à un test de langue international — TOEIC ou IELTS pour l'anglais, TCF ou TEF pour le français (selon les exigences académiques).",
+    "source": "Information fournie par l'utilisateur (reponses de reference verifiees)"
+  },
+  {
+    "id": "vie_etudiante_marateck_001",
+    "categorie": "Vie étudiante",
+    "titre": "C'est quoi le Marateck à ESPRIT ?",
+    "contenu": "Le MaraTech (ou Marateck) est un hackathon de 42 à 48 heures de programmation non-stop organisé à ESPRIT. Son nom vient du mélange des mots marathon et technologie. L'objectif est de créer des applications intelligentes et utiles pour aider des associations ou améliorer la vie des personnes à mobilité réduite. L'événement rassemble des étudiants de toute la Tunisie pour coder en équipes pendant deux jours intenses. La première édition a été lancée en février 2026 à l'école.",
+    "source": "Information fournie par l'utilisateur (reponses de reference verifiees)"
+  },
+  {
+    "id": "admissions_duree_formation_ingenieur_001",
+    "categorie": "Admissions",
+    "titre": "Combien d'années dure la formation d'ingénieur à ESPRIT ?",
+    "contenu": "La formation d'ingénieur à ESPRIT dure au total 5 ans (10 semestres) après le baccalauréat. La durée réelle des études au sein de l'école dépend cependant du niveau d'accès de l'étudiant : après le baccalauréat, 5 ans au total (cursus complet) ; après une année de classe préparatoire, 4 ans d'études à l'école ; après un cycle préparatoire ou une Licence, 3 ans d'études (intégration en 3ème année) ; après un Master (M1), 2 ans d'études (intégration en 4ème année).",
+    "source": "Information fournie par l'utilisateur (reponses de reference verifiees)"
+  },
+  {
+    "id": "reglement_absences_seuil_sanction_001",
+    "categorie": "Règlement",
+    "titre": "Combien d'absences sont tolérées avant sanction à ESPRIT ?",
+    "contenu": "Combien d'absences un étudiant peut-il tolérer avant de recevoir une sanction à ESPRIT ? La réponse précise à cette question est : 28 absences cumulées. Le nombre exact d'absences tolérées avant l'élimination d'une matière (ou d'un module) à ESPRIT est fixé à 28 absences cumulées, ce qui correspond au seuil critique d'élimination pour un module -- c'est le seul et unique seuil chiffré d'absences à ESPRIT, à ne mélanger avec aucun autre nombre (par exemple le nombre de stages exigés, qui est un sujet totalement différent). Toute absence non justifiée à un contrôle ou un examen vaut directement la note zéro.",
+    "source": "Information fournie par l'utilisateur (reponses de reference verifiees)"
+  },
+  {
+    "id": "vie_etudiante_soutien_rattrapage_001",
+    "categorie": "Vie étudiante",
+    "titre": "Y a-t-il des cours de rattrapage en cas de difficulté dans une matière à ESPRIT ?",
+    "contenu": "À ESPRIT, il n'y a pas de cours de soutien ou de rattrapage obligatoires intégrés en continu pour toutes les matières, mais l'école met en place un accompagnement à travers des séances de tutorat, un suivi par projets (pédagogie active) et une cellule d'écoute et d'orientation. Dispositifs d'aide aux étudiants : Encadrement par projets — la méthode d'apprentissage repose sur des cas pratiques et des projets en équipe, ce qui permet aux enseignants et encadrants d'identifier rapidement les lacunes et d'aider l'élève au cas par cas. Séances de tutorat et soutien — des temps de tutorat ou de mise à niveau sont parfois organisés selon les besoins spécifiques des promotions ou des programmes. Cellule d'écoute — si les difficultés scolaires sont liées à du stress ou à un blocage, les étudiants peuvent se tourner vers la cellule d'accompagnement de l'établissement. Examens et rattrapages officiels : sessions de rattrapage — en cas d'échec aux examens d'un module, une session de rattrapage officielle est organisée à la fin de l'année universitaire pour valider les acquis.",
+    "source": "Information fournie par l'utilisateur (reponses de reference verifiees)"
   }
 ]

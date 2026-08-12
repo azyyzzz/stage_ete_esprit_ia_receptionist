@@ -313,6 +313,45 @@ details summary { cursor: pointer; color: var(--volt-400); }
 .qualite-table td:nth-child(5) .inline-form { display: block; margin: 0 0 0.4rem; }
 .qualite-table td:nth-child(5) .inline-form button { width: 100%; padding: 0.4rem 0.8rem; font-size: 0.78rem; }
 
+/* --- Graphiques /qualite (barres SVG, une couleur = une langue, fixe sur
+   tous les graphiques -- voir services/quality_test.py::LANGUE_COLORS) --- */
+.chart-legend { display: flex; flex-wrap: wrap; gap: 1.25rem; margin-bottom: 1rem; }
+.chart-legend-item { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.82rem; color: var(--mist-300); }
+.chart-legend-dot { width: 11px; height: 11px; border-radius: 999px; flex: none; }
+
+.chart-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+  gap: 1.25rem;
+}
+.chart-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 14px;
+  padding: 1.1rem 1.25rem;
+}
+.chart-title {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--mist-100);
+  margin: 0 0 0.9rem;
+}
+.bar-chart { width: 100%; height: auto; overflow: visible; }
+.chart-track { fill: var(--ink-700); }
+.chart-label {
+  font-family: var(--font-body);
+  font-size: 12px;
+  fill: var(--mist-300);
+  dominant-baseline: middle;
+}
+.chart-value {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  fill: var(--mist-100);
+  dominant-baseline: middle;
+}
+
 .button-active-ok { background: var(--volt-500) !important; color: #08090c !important; box-shadow: none !important; }
 .button-active-danger { background: var(--signal-500) !important; color: #fff !important; }
 .button-reset { background: transparent !important; border: 1px solid rgba(255, 255, 255, 0.15) !important; color: var(--mist-400) !important; box-shadow: none !important; }

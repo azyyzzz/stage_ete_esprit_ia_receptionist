@@ -41,7 +41,29 @@ _TRANSLATE_SYSTEM_PROMPT = (
     "مصاريف الدراسة / معاليم -> frais de scolarité\n"
     "تسجيل -> inscription\n"
     "قسط -> tranche\n"
-    "شهادة -> attestation ou certificat (selon contexte administratif ESPRIT)"
+    "شهادة -> attestation ou certificat (selon contexte administratif ESPRIT)\n"
+    "بانييه / البانييه -> panier (unité d'enseignement, terme du programme d'études ESPRIT)\n"
+    "ماتيار / الماتيار -> matière(s)\n"
+    "أوبسيون -> option (de spécialisation)\n"
+    "سكور -> score\n"
+    "قسم (suivi d'un code comme 3A, 3B, 3AI) -> classe (garder le code tel quel, ex. \"قسم 3AI\" -> \"classe 3AI\")\n"
+    "التوجيه -> orientation\n"
+    "المعدل -> la moyenne\n"
+    "الاختيار / بالاختيار -> le choix / par choix\n"
+    "فوروم توظيف / فوروم الشركات -> forum entreprises (forum de recrutement organisé par l'école)\n"
+    "نخلص / نخلص المعلوم -> payer / régler les frais de scolarité (نخلص = payer en dialecte tunisien, PAS \"terminer\")\n"
+    "المعلوم -> les frais (de scolarité)\n"
+    "برا تونس / وأنا برا تونس -> depuis l'étranger / en étant hors de Tunisie\n"
+    "دروس استدراك / دروس تدارك -> cours de soutien (cours de rattrapage en cas de difficulté)\n"
+    "قداش -> combien (mot tunisien très courant, JAMAIS \"exempté\" ou autre sens)\n"
+    "يتحمل (une absence/un nombre) -> tolère / supporte\n"
+    "غياب / غيابات -> absence(s)\n"
+    "عقوبة -> sanction\n\n"
+    "Attention : ne traduis JAMAIS mot à mot un verbe dialectal tunisien qui ressemble à un "
+    "autre mot de l'arabe standard (ex. نخلص vient de la racine خلص qui veut dire \"finir\" en "
+    "arabe standard, mais en tunisien نخلص signifie \"payer/régler\" -- utilise TOUJOURS le sens "
+    "tunisien dans ce contexte administratif). Si le sens t'échappe, garde la traduction la plus "
+    "littérale possible plutôt que d'inventer un sens proche mais différent."
 )
 
 
@@ -61,7 +83,15 @@ def translate_to_french(text: str) -> str:
                 {"role": "system", "content": _TRANSLATE_SYSTEM_PROMPT},
                 {"role": "user", "content": text},
             ],
-            options={"num_predict": 150},
+            # temperature=0 : une traduction n'est pas une tache creative,
+            # le tirage aleatoire par defaut (voir generator.py) a deja
+            # produit une traduction qui melangeait un vrai texte traduit
+            # avec une fausse remarque "il n'y a pas d'information
+            # disponible" (hallucination du modele de traduction lui-meme,
+            # constate en usage reel sur un nom propre anglais integre a
+            # une phrase arabe) -- viser systematiquement le mot le plus
+            # probable reduit ce risque et rend la traduction reproductible.
+            options={"num_predict": 150, "temperature": 0},
         )
         translated = response["message"]["content"].strip()
         return translated or text
