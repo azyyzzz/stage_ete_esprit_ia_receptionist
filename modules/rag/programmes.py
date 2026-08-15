@@ -36,14 +36,46 @@ PROGRAMME_LABELS: dict[str, str] = {
 }
 
 
-def programme_label(source_url: str) -> str | None:
-    """Renvoie le libellé du programme concerné par cette URL, ou None si la
-    page n'est pas spécifique à un programme (FAQ générale, infos
-    pratiques...)."""
+# Les reglements (chartes, articles) sont scrapes depuis des PDF dont
+# l'URL ("Reglement-scolarite-24-25-cs.pdf") ne contient AUCUN segment de
+# PROGRAMME_LABELS -- programme_label() base sur l'URL seule renvoie donc
+# systematiquement None pour TOUTE fiche de reglement, meme quand son
+# TITRE dit explicitement de quel programme il s'agit ("Cours du soir -
+# Article 4 : ..."). Constate en usage reel : une question generale sur
+# les horaires ("a quelle heure commencent les etudes ?") remonte a la
+# fois une fiche EMBA (URL reconnue) et "Cours du soir - Article 4" (URL
+# PDF non reconnue) parmi ses meilleurs resultats, mais _ambiguous_
+# programmes (pipeline.py) ne detectait qu'UN SEUL programme (EMBA) --
+# l'autre etant invisible -- et ne demandait donc jamais de precision
+# jour/soir. Prefixe de titre -> label, verifie en dernier recours si le
+# titre commence par exactement ce prefixe suivi de " - Article " (evite
+# les faux positifs sur un titre qui mentionnerait "cours du soir" en
+# milieu de phrase, sans etre reellement un article de reglement de ce
+# programme).
+TITRE_REGLEMENT_PREFIXES: dict[str, str] = {
+    "Cours du jour (English)": "Cours du jour (étudiants internationaux)",
+    "Cours du jour": "Cours du jour (étudiants tunisiens)",
+    "Cours du soir": "Cours du soir",
+    "Formation en alternance": "Formation en alternance",
+}
+
+
+def programme_label(source_url: str, titre: str = "") -> str | None:
+    """Renvoie le libellé du programme concerné par cette fiche (URL en
+    priorité, titre en repli pour les reglements PDF -- voir
+    TITRE_REGLEMENT_PREFIXES), ou None si elle n'est spécifique à aucun
+    programme (FAQ générale, infos pratiques...)."""
     segments = [s for s in source_url.rstrip("/").split("/") if s]
     for segment in reversed(segments):
         if segment in PROGRAMME_LABELS:
             return PROGRAMME_LABELS[segment]
+
+    # Les cles les plus longues d'abord : "Cours du jour (English)" doit
+    # matcher avant "Cours du jour" pour un titre qui commence par le
+    # prefixe anglais.
+    for prefixe in sorted(TITRE_REGLEMENT_PREFIXES, key=len, reverse=True):
+        if titre.startswith(prefixe + " - Article "):
+            return TITRE_REGLEMENT_PREFIXES[prefixe]
     return None
 
 

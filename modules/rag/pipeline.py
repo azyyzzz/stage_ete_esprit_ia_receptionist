@@ -11,7 +11,7 @@ from modules.rag.fallback import get_fallback_message
 from modules.rag.generator import generate_answer
 from modules.rag.nlu import detect_classe_mention, detect_option_mention, detect_specialite_tunis_mention, is_list_all_intent
 from modules.rag.nlu import is_count_intent, is_list_options_intent, is_list_specialites_intent
-from modules.rag.programmes import CAMPUS_LABELS, mentioned_programme, programme_label
+from modules.rag.programmes import CAMPUS_LABELS, PROGRAMME_KEYWORDS, mentioned_programme, programme_label
 from modules.rag.retriever import retrieve, retrieve_all
 from modules.rag.translate import contains_arabic, translate_to_french
 
@@ -32,7 +32,7 @@ def _ambiguous_programmes(chunks: list) -> set[str]:
     (ex. question generale sur un service -- stages, carriere...) en fausse
     alerte. Le consensus sur le top N est plus robuste a ce bruit."""
     top = chunks[:TOP_N_FOR_CONSENSUS]
-    labels_per_chunk = [programme_label(c.metadata.get("source", "")) for c in top]
+    labels_per_chunk = [programme_label(c.metadata.get("source", ""), c.metadata.get("titre", "")) for c in top]
     if sum(1 for label in labels_per_chunk if label) < len(top) // 2 + 1:
         return set()
 
@@ -41,7 +41,7 @@ def _ambiguous_programmes(chunks: list) -> set[str]:
     for chunk in chunks:
         if chunk.score < best_score - PROGRAMME_AMBIGUITY_MARGIN:
             continue
-        label = programme_label(chunk.metadata.get("source", ""))
+        label = programme_label(chunk.metadata.get("source", ""), chunk.metadata.get("titre", ""))
         if label:
             labels.add(label)
     return labels
@@ -343,7 +343,21 @@ def answer_question(question: str, allow_clarification: bool = True, structured:
         }
 
     programmes = _ambiguous_programmes(chunks)
-    is_ambiguous = len(programmes) >= 2 and not mentioned_programme(question, programmes)
+    # Verifie aussi contre TOUS les programmes connus, pas seulement ceux
+    # detectes dans ce top_k precis : la recherche peut rester "confuse"
+    # (rester dominee par un autre programme) meme apres que l'appelant a
+    # explicitement precise le sien en reponse a une premiere demande de
+    # clarification (ex. "(cours du jour)" ajoute a la question, mais le
+    # cours du jour ne remonte toujours pas dans le top 3) -- sans ce
+    # filet, mentioned_programme(question, programmes) renverrait None
+    # (le programme mentionne n'etant pas dans l'ensemble ambigu detecte)
+    # et redemanderait indefiniment la meme precision (constate en usage
+    # reel). Des que l'appelant nomme explicitement UN programme connu, on
+    # fait confiance a son intention plutot qu'au classement de la
+    # recherche.
+    is_ambiguous = len(programmes) >= 2 and not (
+        mentioned_programme(question, programmes) or mentioned_programme(question, set(PROGRAMME_KEYWORDS.keys()))
+    )
 
     if is_ambiguous and allow_clarification:
         options = ", ".join(sorted(programmes))

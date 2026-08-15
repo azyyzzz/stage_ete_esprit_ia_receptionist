@@ -9,6 +9,7 @@ interface Result {
   answer: string;
   sources: Source[];
   language: string;
+  needsClarification: boolean;
 }
 
 export default function VoiceDemo() {
@@ -17,6 +18,13 @@ export default function VoiceDemo() {
   const [result, setResult] = useState<Result | null>(null);
   const [error, setError] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
+  // Question d'origine memorisee quand le tour precedent s'est termine par
+  // une demande de precision -- voir dashboard/src/components/ChatDemo.tsx
+  // pour la meme logique cote chat. `res.question` renvoyee par le backend
+  // est deja la question combinee (voir backend/routers/stt.py), donc la
+  // reutiliser telle quelle chaine correctement meme sur plusieurs tours
+  // de precision successifs.
+  const pendingClarificationRef = useRef<string | null>(null);
 
   async function handleToggleRecord() {
     if (status === "recording") {
@@ -38,8 +46,15 @@ export default function VoiceDemo() {
 
   async function handleAudio(blob: Blob) {
     try {
-      const res = await voiceAsk(blob);
-      setResult({ question: res.question, answer: res.answer, sources: res.sources, language: res.language });
+      const res = await voiceAsk(blob, pendingClarificationRef.current);
+      pendingClarificationRef.current = res.needs_clarification ? res.question : null;
+      setResult({
+        question: res.question,
+        answer: res.answer,
+        sources: res.sources,
+        language: res.language,
+        needsClarification: res.needs_clarification,
+      });
 
       setPhase("speaking");
       const wav = await speak(res.answer);
@@ -82,7 +97,8 @@ export default function VoiceDemo() {
         {phase === "thinking" && "Transcription + réflexion…"}
         {phase === "speaking" && "Synthèse de la voix…"}
         {phase === "idle" && !result && "Appuie pour parler"}
-        {phase === "done" && "Terminé — réappuie pour recommencer"}
+        {phase === "done" && result?.needsClarification && "En attente de ta précision — réappuie et réponds"}
+        {phase === "done" && !result?.needsClarification && "Terminé — réappuie pour recommencer"}
         {phase === "error" && "Erreur"}
       </p>
 
@@ -101,7 +117,9 @@ export default function VoiceDemo() {
             <p className="mt-1 text-sm text-mist-200">{result.question}</p>
           </div>
           <div className="rounded-xl border border-volt-500/20 bg-volt-500/[0.06] px-4 py-3">
-            <p className="font-mono text-[11px] uppercase tracking-wide text-volt-400">Réponse</p>
+            <p className="font-mono text-[11px] uppercase tracking-wide text-volt-400">
+              {result.needsClarification ? "Précision demandée" : "Réponse"}
+            </p>
             <p className="mt-1 whitespace-pre-line text-sm text-mist-100">{result.answer}</p>
           </div>
         </div>

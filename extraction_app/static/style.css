@@ -305,12 +305,13 @@ details summary { cursor: pointer; color: var(--volt-400); }
   margin-top: 0.8rem;
   table-layout: fixed;
 }
-.qualite-table th:nth-child(1), .qualite-table td:nth-child(1) { width: 9%; }
-.qualite-table th:nth-child(2), .qualite-table td:nth-child(2) { width: 9%; }
-.qualite-table th:nth-child(3), .qualite-table td:nth-child(3) { width: 26%; }
-.qualite-table th:nth-child(4), .qualite-table td:nth-child(4) { width: 30%; }
-.qualite-table th:nth-child(5), .qualite-table td:nth-child(5) { width: 13%; }
-.qualite-table th:nth-child(6), .qualite-table td:nth-child(6) { width: 13%; }
+.qualite-table th:nth-child(1), .qualite-table td:nth-child(1) { width: 8%; }
+.qualite-table th:nth-child(2), .qualite-table td:nth-child(2) { width: 8%; }
+.qualite-table th:nth-child(3), .qualite-table td:nth-child(3) { width: 24%; }
+.qualite-table th:nth-child(4), .qualite-table td:nth-child(4) { width: 27%; }
+.qualite-table th:nth-child(5), .qualite-table td:nth-child(5) { width: 12%; }
+.qualite-table th:nth-child(6), .qualite-table td:nth-child(6) { width: 12%; }
+.qualite-table th:nth-child(7), .qualite-table td:nth-child(7) { width: 9%; }
 
 .badge {
   display: inline-block;

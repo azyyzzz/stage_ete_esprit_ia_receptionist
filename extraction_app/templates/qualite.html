@@ -66,14 +66,14 @@
     <tbody>
       <tr>
         <td><strong>Global</strong></td>
-        <td>{{ kpis.global.total }}</td>
-        <td>
+        <td id="kpi-total-global">{{ kpis.global.total }}</td>
+        <td id="kpi-temps-global">
           {% if kpis.global.temps_reponse.moyenne is not none %}
             {{ kpis.global.temps_reponse.moyenne }}s / {{ kpis.global.temps_reponse.mediane }}s / {{ kpis.global.temps_reponse.min }}s / {{ kpis.global.temps_reponse.max }}s
           {% else %}—{% endif %}
         </td>
-        <td>{{ kpis.global.taux_fallback }}%</td>
-        <td>{{ kpis.global.score_confiance_moyen if kpis.global.score_confiance_moyen is not none else '—' }}</td>
+        <td id="kpi-fallback-global">{{ kpis.global.taux_fallback }}%</td>
+        <td id="kpi-confiance-global">{{ kpis.global.score_confiance_moyen if kpis.global.score_confiance_moyen is not none else '—' }}</td>
         <td>—</td>
         <td id="kpi-pct-correct-global">
           {% if kpis.global.pct_correct is not none %}
@@ -84,15 +84,15 @@
       {% for langue in langues %}
       <tr>
         <td>{{ langue_labels[langue] }}</td>
-        <td>{{ kpis[langue].total }}</td>
-        <td>
+        <td id="kpi-total-{{ langue }}">{{ kpis[langue].total }}</td>
+        <td id="kpi-temps-{{ langue }}">
           {% if kpis[langue].temps_reponse.moyenne is not none %}
             {{ kpis[langue].temps_reponse.moyenne }}s / {{ kpis[langue].temps_reponse.mediane }}s / {{ kpis[langue].temps_reponse.min }}s / {{ kpis[langue].temps_reponse.max }}s
           {% else %}—{% endif %}
         </td>
-        <td>{{ kpis[langue].taux_fallback }}%</td>
-        <td>{{ kpis[langue].score_confiance_moyen if kpis[langue].score_confiance_moyen is not none else '—' }}</td>
-        <td>
+        <td id="kpi-fallback-{{ langue }}">{{ kpis[langue].taux_fallback }}%</td>
+        <td id="kpi-confiance-{{ langue }}">{{ kpis[langue].score_confiance_moyen if kpis[langue].score_confiance_moyen is not none else '—' }}</td>
+        <td id="kpi-coherence-{{ langue }}">
           {% if langue == 'fr' %}
             <span class="mist">référence</span>
           {% elif consistency_avg[langue] is not none %}
@@ -115,7 +115,7 @@
   </small></p>
 </div>
 
-{% macro bar_chart(title, series, unit='', max_value=none) %}
+{% macro bar_chart(title, series, unit='', max_value=none, metric_key='') %}
   {% set values = series | map(attribute='valeur') | list %}
   {% set mx = max_value if max_value is not none else ((values | max) * 1.15 if values else 1) %}
   <div class="chart-card">
@@ -129,10 +129,10 @@
       <g transform="translate(0, {{ loop.index0 * 40 }})">
         <text x="0" y="17" class="chart-label">{{ s.label }}</text>
         <rect x="150" y="4" width="400" height="20" rx="4" class="chart-track" />
-        <rect x="150" y="4" width="{{ bar_w }}" height="20" rx="4" fill="{{ s.color }}">
+        <rect x="150" y="4" width="{{ bar_w }}" height="20" rx="4" fill="{{ s.color }}" id="bar-{{ metric_key }}-{{ s.langue }}-rect">
           <title>{{ s.label }} : {{ s.valeur }}{{ unit }}</title>
         </rect>
-        <text x="{{ 150 + bar_w + 8 }}" y="19" class="chart-value">{{ s.valeur }}{{ unit }}</text>
+        <text x="{{ 150 + bar_w + 8 }}" y="19" class="chart-value" id="bar-{{ metric_key }}-{{ s.langue }}-value">{{ s.valeur }}{{ unit }}</text>
       </g>
       {% endfor %}
     </svg>
@@ -206,11 +206,11 @@
   <p><small class="mist">Avant/après : le point clair est la mesure avant corrections, le point plein après. Jauges : la couleur indique si le niveau est bon, moyen ou à surveiller (pas la langue — le nom de la langue est le label).</small></p>
   <div class="chart-grid">
     {{ dumbbell_chart(comparaison) }}
-    {{ bar_chart("Temps de réponse moyen", charts.temps_moyen, unit="s") }}
+    {{ bar_chart("Temps de réponse moyen", charts.temps_moyen, unit="s", metric_key="temps_moyen") }}
     {{ meter_group("% correct (sur les questions annotées)", charts.pct_correct, metric_key="pct_correct") }}
-    {{ meter_group("Taux d'échec (fallback)", charts.taux_fallback) }}
-    {{ meter_group("Score de confiance moyen", charts.score_confiance) }}
-    {{ meter_group("Cohérence avec le français", charts.coherence) }}
+    {{ meter_group("Taux d'échec (fallback)", charts.taux_fallback, metric_key="taux_fallback") }}
+    {{ meter_group("Score de confiance moyen", charts.score_confiance, metric_key="score_confiance") }}
+    {{ meter_group("Cohérence avec le français", charts.coherence, metric_key="coherence") }}
   </div>
 </div>
 
@@ -234,11 +234,12 @@
         <th>Réponse du modèle</th>
         <th>Mesures</th>
         <th>Annotation</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
       {% for entry in entries %}
-      <tr class="qualite-entry-row" data-search-text="{{ (entry.question ~ ' ' ~ entry.reponse) | lower }}">
+      <tr class="qualite-entry-row" id="row-{{ entry.id }}" data-search-text="{{ (entry.question ~ ' ' ~ entry.reponse) | lower }}">
         <td>
           {% if entry.source == 'live' %}
             <span class="badge badge-live">Réel{{ ' · ' ~ entry.canal if entry.canal }}</span>
@@ -280,6 +281,13 @@
             onclick="annoter(this, '{{ entry.id }}', 'reset')"
           >Réinitialiser</button>
         </td>
+        <td>
+          <button
+            type="button"
+            class="btn-annoter button-danger"
+            onclick="supprimer(this, '{{ entry.id }}')"
+          >Supprimer</button>
+        </td>
       </tr>
       {% endfor %}
     </tbody>
@@ -294,6 +302,8 @@ function filterQualite(query) {
     row.style.display = (!q || text.indexOf(q) !== -1) ? '' : 'none';
   });
 }
+
+var LANGUES = ['fr', 'ar_fusha', 'ar_tounsi'];
 
 // Annotation en AJAX (fetch) : pas de rechargement de page, donc pas de
 // saut de scroll en haut -- indispensable pour annoter 225 reponses a la
@@ -333,10 +343,38 @@ function annoter(button, resultId, valeur) {
     });
 }
 
-// Met a jour, sans recharger la page, les seuls indicateurs qu'une
-// annotation peut faire changer ("% correct", le seul KPI derive de
-// l'annotation manuelle -- voir routers/quality.py::annoter, qui renvoie
-// ces valeurs deja recalculees dans la reponse JSON).
+// Suppression en AJAX : retire la ligne du tableau et met a jour tous les
+// KPI/graphiques en direct (voir routers/quality.py::supprimer), sans
+// jamais recharger la page.
+function supprimer(button, resultId) {
+  if (!confirm("Supprimer definitivement cette question/reponse du journal qualite ? C'est irreversible.")) return;
+  button.disabled = true;
+
+  fetch('/qualite/' + encodeURIComponent(resultId) + '/supprimer', {
+    method: 'POST',
+    headers: { 'X-Requested-With': 'fetch' },
+  })
+    .then(function (resp) {
+      if (!resp.ok) throw new Error('HTTP ' + resp.status);
+      return resp.json();
+    })
+    .then(function (data) {
+      var row = document.getElementById('row-' + resultId);
+      if (row) row.remove();
+      applyRealtimeUpdate(data);
+    })
+    .catch(function (err) {
+      console.error('Echec suppression', resultId, err);
+      alert("La suppression n'a pas pu etre effectuee (" + err.message + "). Reessaie.");
+      button.disabled = false;
+    });
+}
+
+// Met a jour, sans recharger la page, tous les KPI/tuiles/jauges/barres
+// affectes par une annotation ou une suppression (voir routers/quality.py
+// ::_dashboard_payload, appele par annoter() et supprimer(), qui renvoie
+// toujours la meme forme de donnees). Le graphique avant/apres
+// (comparaison) n'est jamais concerne : il compare a un snapshot fige.
 function applyRealtimeUpdate(data) {
   function setText(id, text) {
     var el = document.getElementById(id);
@@ -352,11 +390,29 @@ function applyRealtimeUpdate(data) {
     }
     return k.pct_correct + '% (' + k.nb_annote + ' annotés)';
   }
+  function temps_reponseHtml(k) {
+    var t = k.temps_reponse;
+    if (!t || t.moyenne === null || t.moyenne === undefined) return '—';
+    return t.moyenne + 's / ' + t.mediane + 's / ' + t.min + 's / ' + t.max + 's';
+  }
 
   if (data.kpis) {
-    setHtml('kpi-pct-correct-global', pctCorrectHtml(data.kpis.global));
-    ['fr', 'ar_fusha', 'ar_tounsi'].forEach(function (langue) {
-      if (data.kpis[langue]) setHtml('kpi-pct-correct-' + langue, pctCorrectHtml(data.kpis[langue]));
+    var scopes = ['global'].concat(LANGUES);
+    scopes.forEach(function (scope) {
+      var k = data.kpis[scope];
+      if (!k) return;
+      setText('kpi-total-' + scope, k.total);
+      setHtml('kpi-temps-' + scope, temps_reponseHtml(k));
+      setText('kpi-fallback-' + scope, k.taux_fallback + '%');
+      setText('kpi-confiance-' + scope, k.score_confiance_moyen === null || k.score_confiance_moyen === undefined ? '—' : k.score_confiance_moyen);
+      setHtml('kpi-pct-correct-' + scope, pctCorrectHtml(k));
+    });
+  }
+
+  if (data.consistency_avg) {
+    ['ar_fusha', 'ar_tounsi'].forEach(function (langue) {
+      var v = data.consistency_avg[langue];
+      setText('kpi-coherence-' + langue, v === null || v === undefined ? '—' : v);
     });
   }
 
@@ -368,15 +424,32 @@ function applyRealtimeUpdate(data) {
     });
   }
 
-  if (data.pct_correct_meters) {
-    data.pct_correct_meters.forEach(function (m) {
-      var fill = document.getElementById('meter-pct_correct-' + m.langue + '-fill');
-      if (fill) {
-        fill.style.width = (m.max ? (m.valeur / m.max) * 100 : 0) + '%';
-        fill.style.background = m.color;
-      }
-      setText('meter-pct_correct-' + m.langue + '-value', m.valeur + m.unit);
+  if (data.charts) {
+    ['pct_correct', 'taux_fallback', 'score_confiance', 'coherence'].forEach(function (metricKey) {
+      (data.charts[metricKey] || []).forEach(function (m) {
+        var fill = document.getElementById('meter-' + metricKey + '-' + m.langue + '-fill');
+        if (fill) {
+          fill.style.width = (m.max ? (m.valeur / m.max) * 100 : 0) + '%';
+          fill.style.background = m.color;
+        }
+        setText('meter-' + metricKey + '-' + m.langue + '-value', m.valeur + m.unit);
+      });
     });
+
+    var tempsMoyen = data.charts.temps_moyen || [];
+    if (tempsMoyen.length) {
+      var mx = Math.max.apply(null, tempsMoyen.map(function (s) { return s.valeur; })) * 1.15;
+      tempsMoyen.forEach(function (s) {
+        var barW = mx > 0 ? (s.valeur / mx) * 400 : 0;
+        var rect = document.getElementById('bar-temps_moyen-' + s.langue + '-rect');
+        var value = document.getElementById('bar-temps_moyen-' + s.langue + '-value');
+        if (rect) rect.setAttribute('width', barW);
+        if (value) {
+          value.setAttribute('x', 150 + barW + 8);
+          value.textContent = s.valeur + 's';
+        }
+      });
+    }
   }
 }
 </script>

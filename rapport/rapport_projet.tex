@@ -4,6 +4,7 @@
 \setmainfont{Arial}
 \newfontfamily\arabicfont[Script=Arabic]{Arial}
 
+\usepackage{amsmath}
 \usepackage[a4paper,margin=2.5cm]{geometry}
 \usepackage{xcolor}
 \definecolor{esprit}{RGB}{0,70,140}
@@ -34,7 +35,7 @@
 
 \title{\vspace{-2cm}\textbf{\Huge ESPRIT AI Receptionist}\\[0.3cm]\Large Rapport de suivi de projet -- Assistant vocal intelligent}
 \author{Stage -- ESPRIT}
-\date{Document vivant, mis à jour au fil du projet\\Dernière mise à jour : 20 juillet 2026}
+\date{Document vivant, mis à jour au fil du projet\\Dernière mise à jour : 15 août 2026}
 
 \begin{document}
 
@@ -806,6 +807,163 @@ spécifiquement 2025/2026, différent de 2024/2025'') : score porté à 0,88, re
 source la plus pertinente. Le \texttt{conflits\_a\_verifier.json} a été mis à jour pour
 marquer ce conflit comme résolu.
 
+\section{Support arabe/tunisien : traduction avant recherche}
+\textbf{Problème constaté} : une question posée en arabe pur (ou en dialecte tunisien)
+matchait nettement moins bien ($\sim$0,08 de similarité cosinus en moins, mesuré sur un
+cas réel) la fiche pertinente que son équivalent français -- la base de connaissances
+étant presque entièrement en français, l'écart suffisait à faire sortir la bonne fiche du
+\texttt{top\_k} et faire répondre le modèle à côté du sujet.
+
+\textbf{Solution implémentée} (\texttt{modules/rag/translate.py}) : la question est
+traduite en français par le LLM local \textbf{avant} la recherche par similarité (pas
+après), avec une température fixée à 0 (traduction déterministe, pas créative -- un essai
+avec la température par défaut avait produit une traduction mêlant du texte traduit
+correct à une remarque hallucinée). Un lexique de référence est injecté dans le prompt de
+traduction pour forcer le vocabulaire administratif exact d'ESPRIT plutôt qu'une
+traduction littérale (ex. \emph{``panier''} pour بانييه, \emph{``classe''} pour قسم suivi
+d'un code, \emph{``payer''} -- pas \emph{``finir''} -- pour نخلص en tunisien). La réponse
+finale, elle, est générée à partir de la question \textbf{originale} (non traduite), pour
+répondre dans la langue effectivement utilisée par l'appelant.
+
+\begin{noteinfo}
+\textbf{Cas résolus grâce à ce lexique} : plusieurs mots tunisiens très fréquents
+(قداش = combien, نخلص = payer, دروس استدراك = cours de soutien) étaient mal traduits par
+défaut, entraînant une recherche sur un sujet totalement différent de la question posée
+(ex. ``comment payer mes frais depuis l'étranger'' traduit en ``comment terminer mes
+études et revenir en Tunisie''). Chaque cas a été diagnostiqué en comparant la traduction
+produite au sens réel de la question tunisienne, puis corrigé en ajoutant l'entrée
+manquante au lexique.
+\end{noteinfo}
+
+\section{Bug NLU : classe fantôme générée par un titre mal parsé}
+\textbf{Problème constaté} : une question generale contenant ``à ESPRIT'' (ex.
+``Combien d'absences sont tolérées avant sanction à ESPRIT ?'') filtrait à tort la
+recherche sur une classe précise du programme d'études, masquant la bonne réponse.
+
+\textbf{Cause racine} : une fiche de programme d'étude mal titrée
+(\emph{``3B - 2025/2026 Semestre - 5''}) génère un nom de ``classe'' contenant le mot
+``Semestre'', dont un alias auto-généré (concaténation des 2 premiers caractères de
+chaque mot significatif, ex. ``bse'') matchait par \textbf{sous-chaîne} n'importe quel mot
+le contenant -- ``bse'' est littéralement une sous-chaîne de ``ab\textbf{se}nces''. Un bug
+de la même famille (alias d'1 seul caractère, ex. ``a'' pour la classe ``3A'', matchant le
+mot ``à''/``a'' omniprésent en français) avait déjà été corrigé plus tôt dans le projet ;
+celui-ci en est une variante non couverte par le correctif initial.
+
+\textbf{Correction} (\texttt{modules/rag/nlu.py}) : les classes dont le nom contient le
+mot ``semestre'' (artefact d'extraction, jamais un vrai nom de classe qu'un appelant
+mentionnerait) sont désormais exclues de la liste des classes reconnues. La regex de
+nettoyage d'année dans \texttt{\_classe\_core()} a aussi été corrigée (elle cherchait un
+tiret/slash séparateur qui avait déjà été remplacé par un espace en amont, donc ne
+s'appliquait jamais).
+
+\section{Clarification interactive étendue au chat et au vocal}
+\label{sec:clarification-chat-vocal}
+Le mécanisme de détection d'ambiguïté entre programmes (section~\ref{sec:test-qualite-35}
+et \S\,``Amélioration 1'') existait déjà dans \texttt{modules/rag/pipeline.py}, mais
+n'était \textbf{activé sur aucun canal réel} : les trois points d'entrée
+(\texttt{/api/ask}, \texttt{/api/voice-ask}, \texttt{/api/converse}) appelaient
+\texttt{answer\_question(..., allow\_clarification=False)}, désactivant systématiquement
+la demande de précision au profit d'un mélange des programmes concurrents dans une même
+réponse (chacun nommé explicitement, mais sans garantie que le LLM suive bien cette
+consigne).
+
+\textbf{Activation} (sur demande explicite, avec validation préalable des canaux
+concernés) :
+\begin{itemize}
+    \item \texttt{/api/ask} (chat texte) : \texttt{allow\_clarification=True}.
+    \item \texttt{/api/voice-ask} (démo vocale) : \texttt{allow\_clarification=True},
+    avec un nouveau paramètre \texttt{pending\_question} (formulaire) permettant au
+    frontend de renvoyer la question d'origine mémorisée, recombinée côté serveur avec
+    la réponse orale de l'appelant avant un nouvel appel au pipeline.
+    \item \texttt{/api/converse} (canal audio-vers-audio, pas encore branché à un
+    véritable système téléphonique) : laissé inchangé, faute de mécanisme de mémoire de
+    conversation exploitable pour ce canal.
+\end{itemize}
+
+\textbf{Mémoire côté client} (\texttt{dashboard/src/components/ChatDemo.tsx} et
+\texttt{VoiceDemo.tsx}) : le chat et le vocal étant sans état côté serveur, chaque
+composant retient la question d'origine dans une référence locale quand
+\texttt{needs\_clarification=true}, et la recombine avec la réponse de l'utilisateur
+(\texttt{"\{question\} (\{précision\})"}) avant le prochain appel -- sans quoi le serveur
+recevrait uniquement ``Tunis'' ou ``cours du jour'', sans savoir à quelle question
+d'origine cela se rapporte.
+
+\textbf{Deux bugs découverts en testant le flux complet} :
+\begin{enumerate}
+    \item \textbf{Fiches de règlement invisibles à la détection d'ambiguïté.} Les fiches
+    scrapées depuis des PDF de règlement (ex. \emph{``Cours du soir - Article 4''}) ont une
+    URL source qui ne contient aucun segment reconnu par \texttt{programme\_label()}
+    (basé sur l'URL des pages web), même quand leur \textbf{titre} identifie clairement le
+    programme concerné. Conséquence réelle : une question générale sur les horaires
+    (``à quelle heure commencent les études ?'') ne déclenchait jamais de clarification
+    jour/soir, car seule la fiche EMBA (URL reconnue) était détectée comme
+    ``programme'', l'autre (cours du soir, PDF) restant invisible. \textbf{Corrigé} :
+    \texttt{programme\_label()} accepte maintenant un titre en repli, avec une table de
+    préfixes de règlement (\texttt{"Cours du jour - Article "}, \texttt{"Cours du soir -
+    Article "}...) vérifiée si la recherche par URL échoue.
+    \item \textbf{Risque de boucle infinie de clarification.} Une fois le bug précédent
+    corrigé, un nouveau cas est apparu : si l'appelant répond avec un programme que la
+    recherche n'a \textbf{pas} détecté dans son ensemble ambigu initial (ex. ``cours du
+    jour'' alors que seuls ``cours du soir'' et ``EMBA'' avaient été proposés), le
+    système redemandait indéfiniment la même précision. \textbf{Corrigé}
+    (\texttt{modules/rag/pipeline.py}) : la vérification ``la question mentionne-t-elle
+    un programme ?'' se fait désormais aussi contre l'ensemble \textbf{complet} des
+    programmes connus (pas seulement ceux détectés dans ce tour précis) -- dès que
+    l'appelant nomme explicitement un programme reconnu, le système lui fait confiance
+    plutôt que de re-questionner le classement de la recherche.
+\end{enumerate}
+
+\begin{noteinfo}
+\textbf{Limite assumée, non corrigée} : même après ces deux correctifs, certaines
+questions vraiment ambiguës (ex. ``à quelle heure commencent les études ?'') ne
+déclenchent toujours pas de clarification, car la recherche par similarité ne fait
+jamais remonter suffisamment de fiches distinctes dans le \texttt{top\_3} utilisé pour le
+consensus (\texttt{TOP\_N\_FOR\_CONSENSUS}). Décision explicite de garder ce seuil de
+sensibilité tel quel pour l'instant plutôt que de le rendre plus agressif (risque de
+clarifications inutiles) -- à ajuster si ce type de cas se répète en usage réel.
+\end{noteinfo}
+
+\section{Réponse toujours en arabe standard, jamais en dialecte tunisien}
+Sur demande explicite (minimiser les erreurs de langue en sortie), la consigne de langue
+du prompt système (\texttt{modules/rag/generator.py::SYSTEM\_PROMPT}) a été resserrée :
+une question en français reçoit une réponse en français (inchangé) ; une question en
+arabe -- standard \textbf{ou} dialecte tunisien, mélangé au français ou non -- reçoit
+désormais systématiquement une réponse en \textbf{arabe standard (فصحى)}, jamais en
+dialecte, avec une consigne explicite de ne pas imiter le registre de la question posée.
+Validé sur une question réelle en tunisien (\emph{``فما فوروم توظيف في إسبري؟''}) : la
+réponse produite ne contient plus aucun marqueur de dialecte tunisien.
+
+\section{Fusion des fiches fragmentées : frais de scolarité}
+\textbf{Problème constaté} : à la question ``quels sont les frais d'inscription à ESPRIT
+(cours du jour) ?'', le modèle ne mentionnait que la 1\textsuperscript{ère} tranche des
+frais, omettant le montant total et la 2\textsuperscript{ème} tranche.
+
+\textbf{Cause racine} : le montant total et chaque tranche existaient dans \textbf{3
+fiches séparées} (\texttt{paiements\_2024-2025\_montant\_total},
+\texttt{\_tranche1}, \texttt{\_tranche2}), en concurrence avec une fiche déjà complète
+existant par ailleurs pour 2024-2025 -- selon la formulation exacte de la question, la
+recherche pouvait ne remonter que la fiche ``tranche 1'' seule dans le \texttt{top\_k}.
+
+\textbf{Correction} : les 3 fiches fragmentées 2024-2025 (redondantes avec la fiche
+complète) ont été supprimées ; les 3 fiches fragmentées 2025-2026 (pas de fiche complète
+équivalente) ont été fusionnées en une seule, avec le même format (montant total + 2
+tranches datées). Le mot ``frais d'inscription'', absent du vocabulaire des fiches
+existantes (qui utilisaient uniquement ``frais de scolarité''), a été ajouté comme
+synonyme explicite dans le titre et le contenu.
+
+\begin{statutlimite}
+\textbf{Limite non résolue} : la formulation informelle exacte issue du flux de
+clarification (\S\,\ref{sec:clarification-chat-vocal}), \emph{``frais
+d'inscriptions... (cours du jour)''}, continue à mal retrouver l'information même après
+ces corrections -- le modèle d'embeddings confond cette formulation précise avec des
+fiches de frais de foyer (résidence étudiante) ou d'EMBA. Plusieurs pistes de contenu ont
+été essayées (dont une modification de titre par négation, qui a \textbf{empiré} le score
+-- les modèles d'embeddings ne traitent pas la négation comme un contraste sémantique, ils
+la traitent comme des mots supplémentaires qui rapprochent). Un vrai correctif
+demanderait un filtrage de la recherche par métadonnée ``programme'' (comme il en existe
+déjà pour ``classe'' et ``campus''), pas encore implémenté pour cet axe.
+\end{statutlimite}
+
 \chapter{Module synthèse vocale (TTS)}
 
 \section{Choix techniques}
@@ -819,10 +977,19 @@ La voix par défaut parlait trop vite pour un usage téléphonique. Un paramètr
 \texttt{modules/text\_to\_speech/config.py}, appliqué via \texttt{SynthesisConfig} de
 Piper.
 
+\section{Ajout d'une voix arabe et sélection automatique}
+Une voix arabe standard (\texttt{ar\_JO-kareem-medium}, arabe jordanien -- aucune voix
+tunisienne disponible chez Piper) a été ajoutée en complément de la voix française. Le
+module sélectionne automatiquement la voix à utiliser selon la langue détectée du texte à
+synthétiser (voir \texttt{modules/text\_to\_speech/synthesize.py}), cohérent avec la
+règle du pipeline RAG qui répond désormais toujours en arabe standard, jamais en dialecte
+tunisien (aucune voix dialectale n'aurait de toute façon été disponible pour la lire).
+
 \begin{statutlimite}
-\textbf{Limite connue} : aucune voix arabe tunisienne (dialecte) disponible chez Piper --
-seulement de l'arabe standard moderne. Le module reste donc pertinent uniquement pour le
-français pour l'instant.
+\textbf{Limite restante} : la voix arabe disponible est jordanienne, pas tunisienne --
+l'accent ne correspond pas à celui des appelants. Aucune voix Piper tunisienne
+n'existe à ce jour ; limite structurelle de l'écosystème open-source disponible, pas du
+projet lui-même.
 \end{statutlimite}
 
 \chapter{Backend / API REST}
@@ -1335,6 +1502,119 @@ sur un ré-upload exact du même fichier. Job planifié déclenché manuellement
 erreur. \texttt{site\_esprit\_clean.json} confirmé non modifié par l'application.
 \end{statutfait}
 
+\chapter{Dashboard qualité et supervision (\texttt{/qualite})}
+\label{chap:qualite}
+
+\section{Contexte et objectif}
+L'encadrant a fourni 3 fichiers de 75 questions chacun (français, arabe standard, arabe
+tunisien -- 225 questions au total), \textbf{sans réponses de référence}. Objectif :
+mesurer objectivement la qualité du modèle malgré cette absence, et donner à l'admin un
+tableau de bord pour suivre l'évolution dans le temps.
+
+\begin{noteinfo}
+\textbf{Décision de conception clé} : en l'absence de réponse de référence, le
+``\% correct'' ne peut pas être calculé automatiquement. Le dashboard combine donc deux
+approches complémentaires plutôt que d'en choisir une seule : des \textbf{indicateurs
+objectifs automatiques} (taux d'échec, score de confiance, cohérence multilingue -- voir
+plus bas) calculés sur \textbf{tous} les résultats, et une \textbf{annotation manuelle}
+correct/incorrect que l'admin remplit lui-même -- le pourcentage de bonnes réponses n'est
+alors calculé QUE sur les réponses annotées, jamais extrapolé sur le reste.
+\end{noteinfo}
+
+\section{Indicateurs calculés}
+\begin{itemize}
+    \item \textbf{Taux d'échec (fallback)} : proportion de questions où aucune fiche
+    pertinente n'a été trouvée (score sous le seuil).
+    \item \textbf{Score de confiance moyen} : score de similarité de la meilleure fiche
+    récupérée, moyenné.
+    \item \textbf{Cohérence multilingue} : similarité sémantique (embeddings) entre la
+    réponse arabe standard/tunisienne et la réponse française pour la \textbf{même}
+    question -- proxy d'exactitude en l'absence de référence humaine (la base étant
+    majoritairement en français, une réponse arabe très différente de la française est
+    suspecte). Calculable uniquement pour les questions du test officiel (posées dans les
+    3 langues à la fois), pas pour le trafic réel.
+    \item \textbf{\% correct annoté} : calculé uniquement sur les réponses que l'admin a
+    explicitement marquées correct/incorrect.
+\end{itemize}
+
+\section{Visualisations variées (compétence \emph{dataviz})}
+Une première version du dashboard utilisait le même graphique en barres pour les 5
+indicateurs -- retour utilisateur explicite : trop uniforme, pas assez ``tableau de bord
+professionnel''. Le dashboard a été refondu pour utiliser un type de visualisation
+différent selon le \emph{job} de chaque donnée (méthode issue de la compétence interne
+\emph{dataviz}, pas une variété arbitraire) :
+\begin{itemize}
+    \item \textbf{Tuiles KPI} (chiffres-clés) pour les indicateurs globaux les plus
+    importants (tests exécutés, taux d'échec global, score de confiance moyen,
+    \% correct), avec écart signé vs un run ``avant corrections'' sauvegardé.
+    \item \textbf{Jauges (\emph{meters})} pour les 4 indicateurs qui sont des ratios
+    contre une limite (taux d'échec, score de confiance, \% correct, cohérence) -- la
+    couleur y encode une \textbf{sévérité} (bon/moyen/à surveiller), pas l'identité de la
+    langue, contrairement aux autres graphiques.
+    \item \textbf{Graphique avant/après (\emph{dumbbell})} : comparaison visuelle entre un
+    run de résultats sauvegardé avant une série de corrections et le run courant, par
+    langue -- seul le temps de réponse reste en simple barres (magnitude sans limite
+    naturelle, pas un ratio).
+\end{itemize}
+Palette catégorique (identité de langue) validée par le script de vérification de la
+compétence \emph{dataviz} contre le fond réel de l'application : séparation entre paires
+adjacentes suffisante pour un daltonisme protanope/deutéranope.
+
+\section{Journalisation automatique du trafic réel}
+\label{sec:quality-log}
+Sur demande explicite, le dashboard ne se limite plus au test des 75 questions fournies :
+\textbf{chaque question réellement posée} via l'application (\texttt{/api/ask},
+\texttt{/api/voice-ask}, \texttt{/api/converse}) est désormais journalisée
+automatiquement, avec sa langue détectée, mélangée dans la même liste et les mêmes
+indicateurs que le test officiel.
+
+\textbf{Détection de langue du trafic réel} (\texttt{modules/rag/translate.py::
+detect\_text\_language}) : français/arabe fiable (alphabet différent) ; la distinction
+arabe standard/tunisien est une \textbf{heuristique par mots-clés} (liste de marqueurs
+très caractéristiques du tunisien, ex. قداش, شنو, باهي), assumée comme approximative --
+aucune vraie détection de dialecte n'existe de façon fiable pour du texte court.
+
+\textbf{Architecture} : les fonctions de lecture/écriture du journal ont été extraites
+dans un nouveau module neutre \texttt{modules/quality\_log.py}, partagé entre
+\texttt{backend} et \texttt{extraction\_app}, plutôt que de faire dépendre le backend de
+l'application d'administration. L'écriture se fait en tâche de fond
+(\texttt{BackgroundTasks} de FastAPI) pour ne jamais ralentir la réponse renvoyée à
+l'appelant.
+
+\begin{statutlimite}
+\textbf{Bug de concurrence corrigé} : plusieurs vraies questions peuvent arriver en même
+temps (contrairement au script de test, séquentiel) -- un verrou (\texttt{threading.Lock})
+protège désormais toute écriture du fichier de résultats, qu'il s'agisse d'un ajout
+(trafic réel) ou d'une réécriture complète (annotation), pour éviter qu'une écriture
+concurrente n'en écrase silencieusement une autre. Une corruption réelle (octets NUL dans
+une ligne) avait déjà été observée avant ce correctif, causée par une collision entre
+deux processus lors d'un redémarrage rapide.
+\end{statutlimite}
+
+Sur demande explicite, les tours où le modèle demande une précision
+(\S\,\ref{sec:clarification-chat-vocal}, \texttt{needs\_clarification=true}) ne sont
+\textbf{pas} journalisés -- ce n'est pas une réponse à évaluer, seul le tour final
+(question recombinée + vraie réponse) est conservé.
+
+\section{Annotation et suppression en temps réel (AJAX)}
+Les boutons Correct/Incorrect envoyaient initialement un formulaire classique,
+rechargeant toute la page \texttt{/qualite} et ramenant le défilement en haut -- pénible
+pour annoter 225+ réponses à la suite. Remplacé par un appel \texttt{fetch()} : le serveur
+renvoie le nouvel état \textbf{et} tous les indicateurs recalculés en JSON, que le
+JavaScript client applique directement aux tuiles/tableau/jauges concernés, sans jamais
+recharger la page.
+
+Un bouton \textbf{Supprimer} par question (avec confirmation) a été ajouté sur la même
+demande, permettant à l'admin de retirer une entrée non pertinente du journal -- suit
+exactement le même mécanisme de mise à jour en temps réel que l'annotation (fonction
+partagée \texttt{\_dashboard\_payload()} côté serveur, réutilisée par les deux routes).
+
+\begin{noteinfo}
+Le graphique avant/après (comparaison à un run figé) n'est volontairement jamais
+recalculé par ces mises à jour en temps réel -- il compare à un snapshot immuable, une
+annotation ou une suppression ne le fait jamais changer.
+\end{noteinfo}
+
 \chapter{Tests et validation}
 
 \section{Tests manuels effectués}
@@ -1347,6 +1627,16 @@ erreur. \texttt{site\_esprit\_clean.json} confirmé non modifié par l'applicati
     \item Cas limites du RAG testés : questions précises, questions vagues, questions sur
     des services généraux -- comportement validé dans les trois cas après corrections.
 \end{itemize}
+
+\section{Test systématique sur 225 questions (\texttt{scripts/run\_quality\_test.py})}
+Rejeu automatique des 75 questions fournies par l'encadrant dans les 3 langues (225 tests)
+à travers le pipeline RAG réel, résultats persistés au fur et à mesure (voir
+chapitre~\ref{chap:qualite}). Méthodologie de comparaison avant/après une série de
+corrections : le fichier de résultats est sauvegardé avant de relancer le test complet,
+permettant de mesurer objectivement l'effet des correctifs plutôt que de se fier à
+l'impression subjective. Sur la dernière série de corrections (glossaire de traduction,
+bug NLU de classe fantôme, fiches KB manquantes) : taux d'échec global passé de 4{,}0\% à
+1{,}8\%, cohérence tunisien$\leftrightarrow$français passée de 0{,}722 à 0{,}780.
 
 \section{Scripts de test disponibles}
 \begin{itemize}
@@ -1366,21 +1656,38 @@ erreur. \texttt{site\_esprit\_clean.json} confirmé non modifié par l'applicati
     \item \textbf{Vitesse} : $\sim$20 à 40 secondes par réponse vocale complète, due au
     GPU limité (4~Go VRAM) partagé entre Whisper (CPU) et Ollama (50\% CPU / 50\% GPU).
     \item \textbf{Qualité arabe tunisien} : limite structurelle des modèles gratuits
-    disponibles (Whisper et Piper), documentée par la recherche académique.
+    disponibles (Whisper et Piper), documentée par la recherche académique -- partiellement
+    contournée côté génération en forçant systématiquement la réponse en arabe standard
+    plutôt qu'en dialecte.
     \item \textbf{Espace disque C} : cause identifiée (Docker + pagefile Windows) mais
     correctif pas encore appliqué (nécessite droits admin + redémarrage).
+    \item \textbf{Détection dialectale du trafic réel} : la distinction arabe standard vs
+    tunisien pour la journalisation qualité (\S\,\ref{sec:quality-log}) est une
+    heuristique par mots-clés, pas une vraie détection de dialecte -- assumé comme
+    approximatif.
+    \item \textbf{Collision d'embeddings sur certaines formulations} : une formulation
+    informelle précise peut rester mal retrouvée par la recherche sémantique malgré un
+    contenu correct en base (ex. ``frais d'inscriptions... (cours du jour)'', voir
+    chapitre~\ref{chap:rag}) -- un filtrage par métadonnée ``programme'' résoudrait ce
+    type de cas mais n'est pas encore implémenté.
 \end{itemize}
 \end{statutlimite}
 
 \section{Travail restant}
 \begin{statutencours}
 \begin{itemize}
-    \item \textbf{Dashboard} : interface CRUD documents + statistiques/indicateurs (nb
-    appels selon critère, FAQ, satisfaction) -- pas commencé.
     \item \textbf{Docker} : conteneurisation des services + déploiement -- dossier vide.
     \item \textbf{Tests arabe approfondis} : lancer \texttt{test\_language\_quality.py}
     avec de vrais enregistrements et analyser les résultats.
     \item \textbf{Durcissement API REST} : gestion d'erreurs, tests automatisés.
+    \item \textbf{Filtrage de recherche par programme} : étendre le filtrage par
+    métadonnée (déjà en place pour ``classe'' et ``campus'') à l'axe ``programme''
+    (cours du jour/soir, EMBA...), pour fiabiliser la désambiguïsation au-delà du réglage
+    actuel de sensibilité.
+    \item \textbf{/api/converse} : canal audio-vers-audio pas encore branché à un
+    véritable système téléphonique ; n'a pas reçu la clarification interactive
+    (\S\,\ref{sec:clarification-chat-vocal}), faute de mécanisme de mémoire de
+    conversation adapté à ce canal.
 \end{itemize}
 \end{statutencours}
 
@@ -1390,7 +1697,24 @@ terminé -- fiches ``gouvernance'' et contacts restants corrigés, catalogue RDI
 supprimé, préfixe d'interface parasite retiré, doublons de contenu fusionnés, conflit des
 calendriers multi-promotions résolu, grilles tarifaires extraites et intégrées, titres
 ``nom de fichier + page'' nettoyés, champ \texttt{type} mort supprimé, détection
-d'ambiguïté rendue robuste au bruit de score. Base finale : 740 fiches.
+d'ambiguïté rendue robuste au bruit de score, fiches de frais de scolarité fragmentées
+fusionnées. Base finale : 792 fiches.
+\end{statutfait}
+
+\begin{statutfait}
+\textbf{Dashboard qualité (clôturé)} : tableau de bord \texttt{/qualite} construit de
+zéro -- indicateurs objectifs automatiques, annotation manuelle correct/incorrect en
+temps réel (AJAX, suppression incluse), visualisations variées (tuiles KPI, jauges,
+graphique avant/après), journalisation automatique du trafic réel mélangée au test
+officiel. Voir chapitre~\ref{chap:qualite}.
+\end{statutfait}
+
+\begin{statutfait}
+\textbf{Clarification interactive (clôturé)} : le mécanisme de détection d'ambiguïté
+entre programmes, déjà implémenté mais jamais activé, est désormais actif sur le chat et
+le vocal de démonstration, avec mémoire côté client pour recombiner la question
+d'origine et la précision de l'utilisateur. Voir
+\S\,\ref{sec:clarification-chat-vocal}.
 \end{statutfait}
 
 \end{document}

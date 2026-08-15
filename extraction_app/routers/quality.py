@@ -77,6 +77,23 @@ def qualite_page(request: Request, username: str = Depends(require_login)):
     return templates.TemplateResponse(request, "qualite.html", context)
 
 
+def _dashboard_payload() -> dict:
+    """KPI/jauges/tuiles recalcules a partir de l'etat courant du journal --
+    payload JSON partage par annoter() et supprimer() (voir qualite.html,
+    applyRealtimeUpdate()) pour que les deux actions mettent a jour le
+    dashboard en direct sans recharger la page. N'inclut PAS `comparaison`
+    (avant/apres) : elle compare a un snapshot fige, une annotation ou une
+    suppression ne la fait jamais changer, pas la peine de la recalculer
+    ni de la renvoyer a chaque fois."""
+    results = quality_test.load_results()
+    kpis = quality_test.compute_kpis(results)
+    consistency_avg = quality_test.average_consistency(quality_test.compute_multilingual_consistency(results))
+    charts = quality_test.build_chart_series(kpis, consistency_avg)
+    kpis_avant, _ = _load_avant_kpis()
+    stat_tiles = quality_test.build_stat_tiles(kpis, kpis_avant)
+    return {"kpis": kpis, "consistency_avg": consistency_avg, "stat_tiles": stat_tiles, "charts": charts}
+
+
 @router.post("/qualite/{result_id}/annoter")
 def annoter(request: Request, result_id: str, annotation: str = Form(...), username: str = Depends(require_login)):
     valeur = None if annotation == "reset" else annotation
@@ -89,23 +106,21 @@ def annoter(request: Request, result_id: str, annotation: str = Form(...), usern
     # KPI/jauges recalcules, sans recharger toute la page -- un formulaire
     # classique rechargerait /qualite et ramenerait le scroll en haut,
     # rendant l'annotation de 225+ reponses une par une extremement
-    # penible. Le JS cote client (annoter() dans qualite.html) met a jour
-    # les tuiles/jauges/tableau "% correct" en direct avec ces valeurs --
-    # c'est le seul indicateur qu'une annotation peut faire changer (les
-    # autres ne dependent pas de l'annotation).
+    # penible.
     if request.headers.get("x-requested-with") == "fetch":
-        results = quality_test.load_results()
-        kpis = quality_test.compute_kpis(results)
-        consistency_avg = quality_test.average_consistency(quality_test.compute_multilingual_consistency(results))
-        charts = quality_test.build_chart_series(kpis, consistency_avg)
-        kpis_avant, _ = _load_avant_kpis()
-        stat_tiles = quality_test.build_stat_tiles(kpis, kpis_avant)
-        return JSONResponse({
-            "id": result_id,
-            "annotation": valeur,
-            "kpis": kpis,
-            "stat_tiles": stat_tiles,
-            "pct_correct_meters": charts["pct_correct"],
-        })
+        return JSONResponse({"id": result_id, "annotation": valeur, **_dashboard_payload()})
+
+    return RedirectResponse(url="/qualite", status_code=303)
+
+
+@router.post("/qualite/{result_id}/supprimer")
+def supprimer(request: Request, result_id: str, username: str = Depends(require_login)):
+    try:
+        quality_test.delete_result(result_id)
+    except ValueError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+    if request.headers.get("x-requested-with") == "fetch":
+        return JSONResponse({"id": result_id, "deleted": True, **_dashboard_payload()})
 
     return RedirectResponse(url="/qualite", status_code=303)

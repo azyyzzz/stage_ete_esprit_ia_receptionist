@@ -21,6 +21,13 @@ export default function ChatDemo() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
+  // Question d'origine memorisee quand le tour precedent s'est termine par
+  // une demande de precision (needs_clarification=True cote backend) --
+  // le chat est sans etat cote serveur, donc c'est le client qui doit se
+  // souvenir de quoi parlait la question pour recombiner avec la reponse
+  // de precision de l'utilisateur ("Tunis" seul ne suffirait pas au
+  // modele a retrouver le sujet d'origine "frais d'inscription").
+  const pendingClarificationRef = useRef<string | null>(null);
 
   async function send(question: string) {
     const q = question.trim();
@@ -29,8 +36,11 @@ export default function ChatDemo() {
     setLoading(true);
     setTurns((prev) => [...prev, { question: q }]);
 
+    const actualQuestion = pendingClarificationRef.current ? `${pendingClarificationRef.current} (${q})` : q;
+
     try {
-      const res = await ask(q);
+      const res = await ask(actualQuestion);
+      pendingClarificationRef.current = res.needs_clarification ? actualQuestion : null;
       setTurns((prev) =>
         prev.map((t, i) =>
           i === prev.length - 1
@@ -77,7 +87,16 @@ export default function ChatDemo() {
                   </p>
                 ) : t.answer ? (
                   <>
-                    <p className="whitespace-pre-line rounded-2xl rounded-tl-sm bg-ink-800 px-4 py-2.5 text-sm leading-relaxed text-mist-100">{t.answer}</p>
+                    {t.needsClarification && (
+                      <p className="font-mono text-[11px] uppercase tracking-wide text-volt-400">Précision demandée</p>
+                    )}
+                    <p
+                      className={`whitespace-pre-line rounded-2xl rounded-tl-sm px-4 py-2.5 text-sm leading-relaxed ${
+                        t.needsClarification ? "border border-volt-500/30 bg-volt-500/[0.06] text-mist-100" : "bg-ink-800 text-mist-100"
+                      }`}
+                    >
+                      {t.answer}
+                    </p>
                     {t.sources && t.sources.length > 0 && (
                       <div className="flex flex-wrap gap-1.5 pl-1">
                         {t.sources.slice(0, 4).map((s, j) => (

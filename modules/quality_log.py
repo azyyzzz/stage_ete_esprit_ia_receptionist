@@ -88,6 +88,18 @@ def set_annotation(result_id: str, annotation: str | None) -> None:
     raise ValueError(f"Resultat introuvable : {result_id}")
 
 
+def delete_result(result_id: str) -> None:
+    """Supprime definitivement une entree (test ou live) du journal --
+    utilise depuis /qualite quand l'admin juge une entree non pertinente
+    (mauvaise transcription, question de test, etc.). Leve ValueError si
+    l'id n'existe pas."""
+    results = load_results()
+    remaining = [r for r in results if r["id"] != result_id]
+    if len(remaining) == len(results):
+        raise ValueError(f"Resultat introuvable : {result_id}")
+    write_results(remaining)
+
+
 def append_live_result(
     question: str,
     reponse: str,

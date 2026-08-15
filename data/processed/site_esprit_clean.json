@@ -282,8 +282,8 @@
   {
     "id": "admissions_cours_du_jour_tunisiens_043",
     "categorie": "Admissions",
-    "titre": "Quels sont les frais de scolarité pour l'année 2024/2025 ? (corrigé)",
-    "contenu": "Pour les cours du jour (étudiants tunisiens), les frais de scolarité 2024/2025 s'élèvent à 8 200 DT TTC, payables en deux tranches : 4050 DT avant le 31/08/2024, 4150 DT avant le 15 janvier 2025. (Confirmé par email officiel de réinscription de la Direction ; corrige une valeur erronée de 8 400 TND précédemment indiquée sur cette page.)",
+    "titre": "Quels sont les frais d'inscription (frais de scolarité) pour l'année 2024/2025 ?",
+    "contenu": "Les frais d'inscription (aussi appelés frais de scolarité) pour les cours du jour (étudiants tunisiens) pour l'année 2024/2025 s'élèvent au total à 8 200 DT TTC, payables en deux tranches : 4050 DT avant le 31/08/2024, 4150 DT avant le 15 janvier 2025. (Confirmé par email officiel de réinscription de la Direction ; corrige une valeur erronée de 8 400 TND précédemment indiquée sur cette page.)",
     "source": "https://www.esprit.tn/admissions/cours-du-jour/cours-du-jour-tunisiens/"
   },
   {
@@ -2758,27 +2758,6 @@
     "source": "Email de paiement/réinscription 2024-2025"
   },
   {
-    "id": "paiements_2024-2025_montant_total",
-    "categorie": "Paiements",
-    "titre": "Montant des frais de scolarité 2024-2025",
-    "contenu": "Pour l'année universitaire 2024-2025, les frais de scolarité s'élèvent à 8200, payables en deux tranches.",
-    "source": "Email de paiement/réinscription 2024-2025"
-  },
-  {
-    "id": "paiements_2024-2025_tranche1",
-    "categorie": "Paiements",
-    "titre": "1ère tranche des frais de scolarité 2024-2025",
-    "contenu": "La 1ère tranche des frais de scolarité est de 4050 DT, payable avant le 31/08/2024, exigée dès l'inscription.",
-    "source": "Email de paiement/réinscription 2024-2025"
-  },
-  {
-    "id": "paiements_2024-2025_tranche2",
-    "categorie": "Paiements",
-    "titre": "2ème tranche des frais de scolarité 2024-2025",
-    "contenu": "La 2ème tranche des frais de scolarité est de 4150,0 DT, payable avant le 15 janvier 2025.",
-    "source": "Email de paiement/réinscription 2024-2025"
-  },
-  {
     "id": "paiements_2024-2025_moyens_paiement",
     "categorie": "Paiements",
     "titre": "Moyens de paiement des frais de scolarité",
@@ -3649,22 +3628,8 @@
   {
     "id": "paiements_2025-2026_montant_total",
     "categorie": "Paiements",
-    "titre": "Frais de scolarité 2025/2026",
-    "contenu": "Pour l'année universitaire 2025/2026, les frais de scolarité s'élèvent à 8350,0 dinars par an, payables en deux tranches. Ce montant concerne spécifiquement l'année 2025/2026 (différent du montant de l'année précédente 2024/2025).",
-    "source": "Email de paiement/réinscription 2025-2026 (Direction ESPRIT)"
-  },
-  {
-    "id": "paiements_2025-2026_tranche1",
-    "categorie": "Paiements",
-    "titre": "1ère tranche des frais de scolarité 2025/2026",
-    "contenu": "La 1ère tranche des frais de scolarité pour l'année 2025/2026 est de 4050 TND, payable avant le 31/08/2025, exigée dès l'inscription. Ce montant concerne spécifiquement l'année 2025/2026.",
-    "source": "Email de paiement/réinscription 2025-2026 (Direction ESPRIT)"
-  },
-  {
-    "id": "paiements_2025-2026_tranche2",
-    "categorie": "Paiements",
-    "titre": "2ème tranche des frais de scolarité 2025/2026",
-    "contenu": "La 2ème tranche des frais de scolarité pour l'année 2025/2026 est de 4300 TND, payable avant le 15 janvier 2026. Ce montant concerne spécifiquement l'année 2025/2026.",
+    "titre": "Quels sont les frais d'inscription (frais de scolarité) pour l'année 2025/2026 ?",
+    "contenu": "Les frais d'inscription (aussi appelés frais de scolarité) pour les cours du jour (étudiants tunisiens) pour l'année 2025/2026 s'élèvent au total à 8 350 TND TTC, payables en deux tranches : 4050 TND avant le 31/08/2025, 4300 TND avant le 15 janvier 2026.",
     "source": "Email de paiement/réinscription 2025-2026 (Direction ESPRIT)"
   },
   {

@@ -43,10 +43,14 @@ export async function ask(question: string): Promise<AskResponse> {
 }
 
 /** POST /api/voice-ask -- question a l'oral (blob audio), reponse texte
- * (transcription + reponse du RAG), pas d'audio en retour. */
-export async function voiceAsk(audio: Blob): Promise<VoiceAskResponse> {
+ * (transcription + reponse du RAG), pas d'audio en retour.
+ * `pendingQuestion` : question d'origine memorisee cote client quand le
+ * tour precedent s'est termine par une demande de precision -- voir
+ * VoiceDemo.tsx, combinee cote serveur avec ce qui vient d'etre dit. */
+export async function voiceAsk(audio: Blob, pendingQuestion?: string | null): Promise<VoiceAskResponse> {
   const form = new FormData();
   form.append("file", audio, "question.webm");
+  if (pendingQuestion) form.append("pending_question", pendingQuestion);
   const res = await fetch(`${BACKEND_URL}/api/voice-ask`, { method: "POST", body: form });
   await assertOk(res);
   return res.json();

@@ -26,7 +26,7 @@ import statistics
 import numpy as np
 
 from modules.quality_log import QUALITY_LOG_PATH as QUALITY_TEST_RESULTS_PATH
-from modules.quality_log import load_results, set_annotation  # noqa: F401 -- reexportes pour /qualite
+from modules.quality_log import delete_result, load_results, set_annotation  # noqa: F401 -- reexportes pour /qualite
 from modules.rag.embeddings import embed
 
 LANGUES = ("fr", "ar_fusha", "ar_tounsi")
