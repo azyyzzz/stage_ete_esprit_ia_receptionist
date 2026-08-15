@@ -1384,6 +1384,7 @@ explicitement au modèle de comparer chiffre par chiffre avant de conclure.
 \end{statutfait}
 
 \section{Garde-fous obligatoires avant sauvegarde}
+\label{sec:garde-fous}
 
 Deux vérifications s'appliquent à toute fiche candidate, quelle que soit sa source,
 avant toute fusion dans la base :
@@ -1393,34 +1394,131 @@ avant toute fusion dans la base :
     domaines couverts par l'assistant (admissions, scolarité, règlements, examens,
     calendrier, paiements, vie étudiante, stages, programmes, contacts).
     \item \textbf{Vérification sémantique} (\texttt{services/semantic\_dedup.py}) --
-    TF-IDF + similarité cosinus (scikit-learn), comparée contre le contenu de
-    \textbf{toutes} les fiches déjà présentes dans \texttt{site\_esprit.json} (pas
-    seulement même catégorie/source). Seuil configurable en haut de
-    \texttt{config.py} (\texttt{SIMILARITY\_THRESHOLD~=~0.85}).
+    comparée contre le contenu de \textbf{toutes} les fiches déjà présentes dans la base
+    (pas seulement même catégorie/source). Seuil configurable en haut de
+    \texttt{config.py} (\texttt{SIMILARITY\_THRESHOLD~=~0.92}).
 \end{enumerate}
 Une dédup complémentaire par \texttt{id} empêche par ailleurs tout écrasement d'une
-fiche existante d'une autre source. Chaque extraction (manuelle ou planifiée) est
-journalisée dans \texttt{data/historique.json} : date, source, type, nombre de fiches
-ajoutées/rejetées (avec le titre de la fiche recoupée en cas de doublon), erreurs
-éventuelles -- consultable sur la page \texttt{/history}.
+fiche existante d'une autre source.
+
+\begin{noteinfo}
+\textbf{Migration TF-IDF $\to$ embeddings (sur demande explicite : ``je veux que le
+score soit par le sens'')} : la vérification sémantique utilisait initialement TF-IDF +
+similarité cosinus (scikit-learn), une méthode lexicale (compte de mots partagés) qui
+sous-notait deux fiches disant la même chose avec des mots différents. Remplacée par de
+vrais embeddings -- \texttt{modules/rag/embeddings.py}, modèle
+\texttt{paraphrase-multilingual-mpnet-base-v2}, le \textbf{même} que celui utilisé par
+la recherche du RAG lui-même (même espace vectoriel). Le seuil a dû être recalibré à
+cette occasion (0{,}85 $\to$ 0{,}92) : la distribution des scores diffère entre les deux
+méthodes -- avec des embeddings, deux fiches sans rapport peuvent déjà dépasser 0{,}8 de
+similarité, un seuil resté à 0{,}85 aurait donc généré des faux positifs.
+\end{noteinfo}
+
+\section{Interface de validation (\texttt{/a-valider})}
+\label{sec:a-valider}
+
+Toute extraction \textbf{non supervisée} (les deux jobs planifiés, voir section
+suivante) n'est jamais fusionnée directement dans la base : elle atterrit dans une file
+d'attente que l'admin doit valider fiche par fiche (ou lot par lot) sur
+\texttt{/a-valider} -- contrairement à un upload manuel (PDF/Excel/Word/image/URL via
+l'interface), où le geste de l'admin constitue déjà lui-même l'approbation explicite.
+
+\textbf{Aperçu de similarité, sans écriture} : pour chaque fiche candidate de chaque lot
+en attente, la page calcule -- \textbf{avant} toute décision de l'admin -- si elle serait
+jugée doublon si elle était approuvée maintenant, en comparant son contenu à
+\textbf{l'intégralité} de la base actuelle (mêmes embeddings et même seuil que les
+garde-fous, section~\ref{sec:garde-fous}). Le calcul se fait en \textbf{un seul appel
+d'embedding groupé} pour tous les candidats de la page (pas un appel par fiche), et le
+comparateur construit sur toute la base est mis en cache (invalidé sur changement de la
+base), pour éviter de ré-embedder $\sim$800 fiches à chaque chargement de page
+($\sim$65s sans ce cache). Chaque candidat affiche soit ``nouveau contenu'' (avec son
+meilleur score), soit la fiche existante la plus proche -- titre \textbf{et} contenu
+complet affichés côte à côte, pour que l'admin compare visuellement plutôt que de se
+fier au score seul -- soit ``serait rejeté (hors-sujet)'' si le filtre de pertinence
+échoue déjà.
+
+\textbf{Masquage des doublons exacts (score = 1)} : sur demande explicite (``je veux que
+je puisse supprimer les questions... la colonne fiche similaire n'est pas utile''
+initialement, puis affinée), les candidats dont le score de similarité vaut exactement 1
+(doublon confirmé) sont masqués de l'affichage -- inutile de les montrer, ils ne font
+qu'allonger une liste mensuelle déjà longue. \textbf{Masquage d'affichage uniquement} :
+la fiche reste présente dans les données du lot et reste rejetable/approuvable via les
+actions groupées ci-dessous.
+
+\textbf{Recherche dynamique} : une barre de recherche filtre les fiches affichées en
+temps réel (à la frappe, sans rechargement de page) -- JavaScript pur, comparaison de
+sous-chaîne sur le titre et le contenu déjà rendus dans la page (pas de requête serveur,
+pas de recherche sémantique dans la barre elle-même -- différent du score de similarité
+ci-dessus).
+
+\textbf{Actions} : approbation/rejet fiche par fiche, ou en bloc par lot (``Tout
+approuver'' / ``Tout rejeter'' -- les deux garde-fous de la section~\ref{sec:garde-fous}
+restent appliqués fiche par fiche même en approbation groupée). Une fiche approuvée est
+écrite directement dans \texttt{site\_esprit\_clean.json} \textbf{et}
+\texttt{site\_esprit.json}, et journalisée dans l'historique (section suivante).
+
+\section{Réindexation à la demande}
+En approuvant une fiche, elle devient présente dans \texttt{site\_esprit\_clean.json}
+mais \textbf{pas encore cherchable} par l'assistant : la base vectorielle ChromaDB n'est
+jamais reconstruite automatiquement après chaque clic (effet de bord jugé inacceptable --
+une ré-indexation complète prend de l'ordre d'une minute). Un bandeau en haut de
+\texttt{/a-valider} indique si l'index est à jour ou obsolète, en comparant la date de
+dernière modification de \texttt{site\_esprit\_clean.json} à celle du fichier ChromaDB --
+et un bouton ``Réindexer maintenant'' déclenche \texttt{python -m modules.rag.ingest} en
+sous-processus séparé (pas un import direct dans le processus \texttt{extraction\_app},
+pour éviter de charger \texttt{sentence-transformers}/\texttt{torch} en permanence dans
+une application qui n'en a besoin que rarement). Le résultat du dernier lancement
+(succès/échec, sortie console) reste affiché dans le bandeau jusqu'au prochain
+redémarrage du serveur.
+
+\section{Page d'historique (\texttt{/history})}
+Page en lecture seule (pas de recherche ni filtre, contrairement à \texttt{/a-valider})
+listant chronologiquement (plus récent en premier) chaque extraction -- manuelle ou
+planifiée : date, source, type, origine (manuel/planifié), nombre de fiches ajoutées,
+rejetées pour hors-sujet, rejetées pour doublon (avec le détail dépliable de chaque paire
+\emph{titre candidat $\sim$ titre existant (score)}), et statut (erreur le cas échéant,
+``à vérifier manuellement'', ou ok).
 
 \section{Authentification et planificateur}
 
 Un compte unique protège l'interface (mot de passe généré aléatoirement au premier
-lancement, affiché une seule fois en console, jamais versionné). Un job
-\texttt{APScheduler} quotidien (03h00) rejoue automatiquement l'extraction pour les
-sources de type URL déjà soumises via l'interface -- jamais pour les PDF/Excel/image
-uploadés manuellement, dont le fichier d'origine n'est pas conservé.
+lancement, affiché une seule fois en console, jamais versionné). Deux jobs
+\texttt{APScheduler}, tous deux \textbf{mensuels} (sur demande explicite -- initialement
+quotidien + mensuel, simplifié en mensuel uniquement pour les deux) :
+
+\begin{center}
+\begin{tabular}{@{}p{3.6cm}p{2.8cm}p{7.5cm}@{}}
+\toprule
+\textbf{Job} & \textbf{Fréquence} & \textbf{Action} \\
+\midrule
+\texttt{monthly\_url\_rescrape} & 1\textsuperscript{er} du mois, 03h00 & Rejoue
+l'extraction pour chaque source de type URL déjà soumise via l'interface. \\
+\texttt{monthly\_options\_scrape} & 1\textsuperscript{er} du mois, 04h00 & Re-scrape les
+options de spécialisation ESPRIT Tunis. \\
+\bottomrule
+\end{tabular}
+\end{center}
+Les deux heures sont décalées d'une heure entre elles (heures creuses). Ni l'un ni
+l'autre ne rejoue les sources PDF/Excel/image uploadées manuellement, dont le fichier
+d'origine n'est pas conservé. Le \texttt{BackgroundScheduler} tournant en mémoire du
+processus \texttt{extraction\_app}, un job ne se déclenche que si le serveur est
+effectivement en cours d'exécution à cette date/heure précise.
 
 \begin{noteinfo}
-\textbf{Point d'attention} : \texttt{extraction\_app} écrit uniquement dans
-\texttt{data/processed/site\_esprit.json} (le fichier brut), jamais dans
-\texttt{site\_esprit\_clean.json} (celui que le RAG ingère réellement). Après une
-session d'extraction, il faut donc relancer manuellement
-\texttt{data/scripts/clean\_knowledgebase} puis \texttt{python -m modules.rag.ingest}
-pour que les nouvelles fiches soient prises en compte par le RAG. Décision
-délibérée pour ne jamais court-circuiter le nettoyage exact-match existant.
+\textbf{Aucun des deux jobs n'écrit jamais directement dans la base} -- les deux
+résultats sont systématiquement mis en attente sur \texttt{/a-valider}
+(section~\ref{sec:a-valider}), jamais fusionnés automatiquement, contrairement à un
+upload manuel où le geste de l'admin vaut déjà approbation.
 \end{noteinfo}
+
+\section{Intégration avec le dashboard React}
+Le dashboard React (\texttt{dashboard/}) et \texttt{extraction\_app} restent deux
+processus \textbf{entièrement séparés} (ports 8000 vs 8001, authentification
+indépendante). La page ``Administration'' du dashboard (\texttt{dashboard/src/pages/
+Admin.tsx}) n'affiche \textbf{aucune} donnée d'\texttt{extraction\_app} elle-même --
+c'est un simple point d'entrée avec des liens directs vers \texttt{/}, \texttt{/a-valider}
+et \texttt{/history} sur le port 8001, sans appel API ni partage de session entre les
+deux applications.
 
 \section{Découverte : corruption d'encodage dans les fichiers .docx d'admission}
 
