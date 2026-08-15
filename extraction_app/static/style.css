@@ -305,13 +305,23 @@ details summary { cursor: pointer; color: var(--volt-400); }
   margin-top: 0.8rem;
   table-layout: fixed;
 }
-.qualite-table th:nth-child(1), .qualite-table td:nth-child(1) { width: 10%; }
-.qualite-table th:nth-child(2), .qualite-table td:nth-child(2) { width: 22%; }
-.qualite-table th:nth-child(3), .qualite-table td:nth-child(3) { width: 38%; }
-.qualite-table th:nth-child(4), .qualite-table td:nth-child(4) { width: 16%; }
-.qualite-table th:nth-child(5), .qualite-table td:nth-child(5) { width: 14%; }
-.qualite-table td:nth-child(5) .inline-form { display: block; margin: 0 0 0.4rem; }
-.qualite-table td:nth-child(5) .inline-form button { width: 100%; padding: 0.4rem 0.8rem; font-size: 0.78rem; }
+.qualite-table th:nth-child(1), .qualite-table td:nth-child(1) { width: 9%; }
+.qualite-table th:nth-child(2), .qualite-table td:nth-child(2) { width: 9%; }
+.qualite-table th:nth-child(3), .qualite-table td:nth-child(3) { width: 26%; }
+.qualite-table th:nth-child(4), .qualite-table td:nth-child(4) { width: 30%; }
+.qualite-table th:nth-child(5), .qualite-table td:nth-child(5) { width: 13%; }
+.qualite-table th:nth-child(6), .qualite-table td:nth-child(6) { width: 13%; }
+
+.badge {
+  display: inline-block;
+  padding: 0.18rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.badge-test { background: rgba(255, 255, 255, 0.08); color: var(--mist-300); }
+.badge-live { background: rgba(34, 193, 224, 0.15); color: var(--volt-400); }
 
 /* --- Graphiques /qualite (barres SVG, une couleur = une langue, fixe sur
    tous les graphiques -- voir services/quality_test.py::LANGUE_COLORS) --- */
@@ -356,3 +366,60 @@ details summary { cursor: pointer; color: var(--volt-400); }
 .button-active-danger { background: var(--signal-500) !important; color: #fff !important; }
 .button-reset { background: transparent !important; border: 1px solid rgba(255, 255, 255, 0.15) !important; color: var(--mist-400) !important; box-shadow: none !important; }
 .button-reset:hover { background: rgba(255, 255, 255, 0.06) !important; }
+
+/* --- Stat tiles (chiffres-cles, voir services/quality_test.py::build_stat_tiles) --- */
+.stat-tile-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 1rem;
+  margin: 1.1rem 0 1.5rem;
+}
+.stat-tile {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 14px;
+  padding: 1rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.stat-tile-label { font-size: 0.78rem; color: var(--mist-400); }
+.stat-tile-value {
+  font-family: var(--font-display);
+  font-size: 1.9rem;
+  font-weight: 600;
+  color: var(--mist-100);
+  font-variant-numeric: proportional-nums;
+}
+.stat-tile-delta, .stat-tile-note { font-size: 0.78rem; }
+.stat-tile-delta-good { color: var(--volt-400); }
+.stat-tile-delta-bad { color: var(--signal-400); }
+.stat-tile-note { color: var(--mist-500); }
+
+/* --- Jauges (ratio contre une limite -- % ou score 0-1 -- la couleur y
+   encode une SEVERITE bonne/moyenne/mauvaise, jamais l'identite d'une
+   langue, voir services/quality_test.py::_severity) --- */
+.meter-group { display: flex; flex-direction: column; gap: 0.7rem; }
+.meter-row { display: grid; grid-template-columns: 110px 1fr 56px; align-items: center; gap: 0.6rem; }
+.meter-label { font-size: 0.8rem; color: var(--mist-300); }
+.meter-track {
+  height: 10px;
+  border-radius: 999px;
+  background: var(--ink-700);
+  overflow: hidden;
+}
+.meter-fill { height: 100%; border-radius: 999px; transition: width 0.2s ease; }
+.meter-value {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--mist-100);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- Dumbbell avant/apres (voir services/quality_test.py::build_comparison) --- */
+.dumbbell-metric-title { font-size: 0.8rem; color: var(--mist-300); margin: 0.9rem 0 0.3rem; }
+.dumbbell-metric-title:first-child { margin-top: 0; }
+.dumbbell-chart { width: 100%; height: auto; overflow: visible; margin-bottom: 0.4rem; }
+.dumbbell-good { fill: var(--volt-400) !important; }
+.dumbbell-bad { fill: var(--signal-400) !important; }

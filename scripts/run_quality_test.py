@@ -29,11 +29,12 @@ import time
 from datetime import datetime, timezone
 from pathlib import Path
 
+from modules.quality_log import QUALITY_LOG_PATH
 from modules.rag.pipeline import answer_question
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 QUESTIONS_DIR = PROJECT_ROOT / "data" / "questions_test"
-RESULTS_PATH = PROJECT_ROOT / "extraction_app" / "data" / "quality_test_results.jsonl"
+RESULTS_PATH = QUALITY_LOG_PATH
 LOCK_PATH = RESULTS_PATH.with_suffix(".lock")
 
 FILES_BY_LANGUE = {
@@ -97,6 +98,8 @@ def run_one(numero: int, langue: str, question: str) -> dict:
     return {
         "id": f"{numero}_{langue}",
         "numero": numero,
+        "source": "test",
+        "canal": "texte",
         "langue": langue,
         "question": question,
         "reponse": result["answer"],

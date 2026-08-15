@@ -6,14 +6,17 @@ Route qui expose la détection de langue + reconnaissance vocale
 from __future__ import annotations
 
 import tempfile
+import time
 from pathlib import Path
 
-from fastapi import APIRouter, File, UploadFile
+from fastapi import APIRouter, BackgroundTasks, File, UploadFile
 from fastapi.responses import FileResponse
 
 from backend.schemas import TranscribeResponse, VoiceAskResponse
 from modules.language_detection.detect import detect_language
+from modules.quality_log import append_live_result
 from modules.rag.pipeline import answer_question
+from modules.rag.translate import detect_text_language
 from modules.speech_to_text.transcribe import transcribe
 from modules.text_to_speech.synthesize import synthesize_to_wav
 
@@ -48,7 +51,7 @@ def transcribe_audio(file: UploadFile = File(...)) -> TranscribeResponse:
 
 
 @router.post("/voice-ask", response_model=VoiceAskResponse)
-def voice_ask(file: UploadFile = File(...)) -> VoiceAskResponse:
+def voice_ask(background_tasks: BackgroundTasks, file: UploadFile = File(...)) -> VoiceAskResponse:
     """
     Reçoit une question posée à l'oral (fichier audio) et renvoie la
     réponse générée par le RAG : enchaîne détection de langue, transcription
@@ -63,7 +66,24 @@ def voice_ask(file: UploadFile = File(...)) -> VoiceAskResponse:
         tmp_path.unlink(missing_ok=True)
 
     question = stt_result["text"]
+    t0 = time.time()
     rag_result = answer_question(question, allow_clarification=False)
+    elapsed = time.time() - t0
+
+    # detect_text_language() (mots-cles sur le texte transcrit) donne une
+    # distinction fusha/tounsi plus fine que detect_language() (audio,
+    # fr/ar uniquement) -- voir modules/rag/translate.py.
+    background_tasks.add_task(
+        append_live_result,
+        question=question,
+        reponse=rag_result["answer"],
+        langue=detect_text_language(question),
+        canal="vocal",
+        temps_reponse_s=elapsed,
+        score_principal=rag_result["sources"][0]["score"] if rag_result.get("sources") else None,
+        used_fallback=rag_result["used_fallback"],
+        sources=rag_result.get("sources", []),
+    )
 
     return VoiceAskResponse(
         language=lang_result["language"],
@@ -77,7 +97,7 @@ def voice_ask(file: UploadFile = File(...)) -> VoiceAskResponse:
 
 
 @router.post("/converse")
-def converse(file: UploadFile = File(...)) -> FileResponse:
+def converse(background_tasks: BackgroundTasks, file: UploadFile = File(...)) -> FileResponse:
     """
     Cycle complet de l'assistant vocal : reçoit une question posée à l'oral
     (fichier audio), la transcrit, génère la réponse via le RAG, puis
@@ -96,7 +116,22 @@ def converse(file: UploadFile = File(...)) -> FileResponse:
     finally:
         tmp_path.unlink(missing_ok=True)
 
-    rag_result = answer_question(stt_result["text"], allow_clarification=False)
+    question = stt_result["text"]
+    t0 = time.time()
+    rag_result = answer_question(question, allow_clarification=False)
+    elapsed = time.time() - t0
+
+    background_tasks.add_task(
+        append_live_result,
+        question=question,
+        reponse=rag_result["answer"],
+        langue=detect_text_language(question),
+        canal="vocal",
+        temps_reponse_s=elapsed,
+        score_principal=rag_result["sources"][0]["score"] if rag_result.get("sources") else None,
+        used_fallback=rag_result["used_fallback"],
+        sources=rag_result.get("sources", []),
+    )
 
     output_path = Path(tempfile.mktemp(suffix=".wav"))
     synthesize_to_wav(rag_result["answer"], output_path)

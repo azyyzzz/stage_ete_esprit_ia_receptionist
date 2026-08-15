@@ -51,12 +51,12 @@ CONFIG_LOCAL_PATH = DATA_DIR / "config_local.json"
 # "Approuver" sur /a-valider -- voir services/kb_merge.py.
 A_VALIDER_PATH = DATA_DIR / "a_valider.json"
 
-# Resultats du test qualite (scripts/run_quality_test.py, voir /qualite) --
-# une ligne JSON par question testee (numero x langue), ecrite au fur et a
-# mesure pendant le test (peut durer plusieurs heures). Annotations
-# correct/incorrect ajoutees depuis /qualite persistees dans ce meme
-# fichier (voir services/quality_test.py).
-QUALITY_TEST_RESULTS_PATH = DATA_DIR / "quality_test_results.jsonl"
+# Resultats du test qualite + journal du trafic reel (voir /qualite) --
+# chemin defini une seule fois dans modules/quality_log.py (partage avec
+# `backend`, qui y ecrit le trafic reel sans dependre de extraction_app),
+# re-expose ici pour ne pas casser le code existant qui l'importe depuis
+# ce module de config.
+from modules.quality_log import QUALITY_LOG_PATH as QUALITY_TEST_RESULTS_PATH  # noqa: E402
 
 UPLOADS_DIR = APP_ROOT / "uploads"
 

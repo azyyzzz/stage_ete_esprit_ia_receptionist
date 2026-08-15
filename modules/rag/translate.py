@@ -97,3 +97,32 @@ def translate_to_french(text: str) -> str:
         return translated or text
     except Exception:
         return text
+
+
+# Marqueurs lexicaux tres caracteristiques du tunisien (dialecte), absents
+# ou rares en arabe standard (fusha) -- ex. "قداش" (combien) au lieu de
+# "كم", "شنو" (quoi) au lieu de "ماذا", "باهي" (d'accord/bien), "فما" (il y
+# a) au lieu de "يوجد"... Liste volontairement courte et haute-confiance :
+# mieux vaut classer "fusha" par defaut sur une phrase ambigue que
+# sur-detecter le tunisien avec des mots communs aux deux registres.
+_TOUNSI_MARKERS = [
+    "قداش", "شنو", "شنية", "شنوة", "علاش", "كيفاش", "وقتاش", "فما", "فمة",
+    "برشة", "ياسر", "توا", "الوقتي", "باهي", "زعمة", "نجم", "يجم", "نجمو",
+    "موش", "مانيش", "ماهوش", "زوز", "برا", "عندي", "حاجة", "نحكي", "نحب",
+    "خويا", "وختي", "معلش", "إسبري",
+]
+_TOUNSI_MARKER_RE = re.compile("|".join(_TOUNSI_MARKERS))
+
+
+def detect_text_language(text: str) -> str:
+    """Classe un texte ecrit en "fr" / "ar_fusha" / "ar_tounsi" -- utilise
+    pour journaliser automatiquement la langue des questions posees en
+    conditions reelles (voir extraction_app/services/quality_test.py::
+    append_live_result). Heuristique par mots-cles, PAS une vraie detection
+    de dialecte (qui n'existe pas de facon fiable pour du texte court) :
+    fr/arabe est fiable (script different), mais fusha/tounsi est une
+    estimation approximative assumee comme telle -- l'admin peut corriger
+    en le voyant sur /qualite si besoin."""
+    if not contains_arabic(text):
+        return "fr"
+    return "ar_tounsi" if _TOUNSI_MARKER_RE.search(text) else "ar_fusha"

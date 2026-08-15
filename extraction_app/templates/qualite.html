@@ -2,26 +2,51 @@
 {% block title %}Qualité - Extraction KB ESPRIT{% endblock %}
 {% block main_class %}main-wide{% endblock %}
 {% block content %}
-<h1>Test qualité du modèle</h1>
+<h1>Qualité du modèle</h1>
 <p>
-  75 questions fournies par l'encadrant, testées en français, arabe standard
-  et tunisien (225 tests au total) à travers le pipeline RAG réel.
+  Mélange deux sources : les 75 questions fournies par l'encadrant, testées en
+  français, arabe standard et tunisien (225 tests), et le <strong>trafic réel</strong>
+  — chaque question effectivement posée via l'app (texte ou vocal) est
+  journalisée automatiquement ici, avec sa langue détectée
+  (français fiable, arabe standard/tunisien approximatif — c'est une
+  estimation par mots-clés, pas une vraie détection de dialecte).
   <strong>Aucune réponse de référence n'a été fournie</strong> : le "%
   correct" n'est donc calculé QUE sur les questions que tu annotes toi-même
   ci-dessous (bouton Correct/Incorrect par réponse) — les autres indicateurs
   (temps de réponse, taux d'échec, score de confiance, cohérence
-  multilingue) sont calculés automatiquement.
+  multilingue) sont calculés automatiquement. Les chiffres et jauges se
+  mettent à jour immédiatement après chaque annotation, sans recharger la
+  page.
 </p>
 
+{% set nb_test = entries | selectattr('source', 'equalto', 'test') | list | length %}
+{% set nb_live = entries | selectattr('source', 'equalto', 'live') | list | length %}
 <div class="result">
   <p>
-    <strong>{{ kpis.global.total }}</strong> / {{ total_attendu }} tests exécutés
-    {% if kpis.global.total < total_attendu %}
-      <br><span class="warning">⚠️ Test encore en cours (scripts/run_quality_test.py tourne en arrière-plan) — cette page se met à jour à chaque rechargement.</span>
+    <strong>{{ nb_test }}</strong> / {{ total_attendu }} questions du test de l'encadrant
+    {% if nb_test < total_attendu %}
+      <span class="warning">⚠️ en cours (scripts/run_quality_test.py tourne en arrière-plan)</span>
     {% else %}
-      <br><span class="ok">✅ Test terminé</span>
+      <span class="ok">✅ terminé</span>
     {% endif %}
+    <br><strong>{{ nb_live }}</strong> question{{ 's' if nb_live != 1 }} réelle{{ 's' if nb_live != 1 }} enregistrée{{ 's' if nb_live != 1 }} depuis l'app
   </p>
+</div>
+
+<div class="stat-tile-row">
+  {% for tile in stat_tiles %}
+  <div class="stat-tile" id="stat-tile-{{ tile.key }}">
+    <span class="stat-tile-label">{{ tile.label }}</span>
+    <span class="stat-tile-value" id="stat-tile-{{ tile.key }}-value">{{ tile.valeur if tile.valeur is not none else '—' }}{{ tile.unit if tile.valeur is not none else '' }}</span>
+    {% if tile.delta %}
+      <span class="stat-tile-delta {{ 'stat-tile-delta-good' if tile.delta.bon else 'stat-tile-delta-bad' }}">
+        {{ '%+.1f'|format(tile.delta.valeur) }}{{ tile.unit }} vs avant corrections
+      </span>
+    {% elif tile.note %}
+      <span class="stat-tile-note" id="stat-tile-{{ tile.key }}-note">{{ tile.note }}</span>
+    {% endif %}
+  </div>
+  {% endfor %}
 </div>
 
 <div class="result">
@@ -50,7 +75,7 @@
         <td>{{ kpis.global.taux_fallback }}%</td>
         <td>{{ kpis.global.score_confiance_moyen if kpis.global.score_confiance_moyen is not none else '—' }}</td>
         <td>—</td>
-        <td>
+        <td id="kpi-pct-correct-global">
           {% if kpis.global.pct_correct is not none %}
             {{ kpis.global.pct_correct }}% ({{ kpis.global.nb_annote }} annotés)
           {% else %}<span class="mist">Aucune annotation</span>{% endif %}
@@ -74,7 +99,7 @@
             {{ consistency_avg[langue] }}
           {% else %}—{% endif %}
         </td>
-        <td>
+        <td id="kpi-pct-correct-{{ langue }}">
           {% if kpis[langue].pct_correct is not none %}
             {{ kpis[langue].pct_correct }}% ({{ kpis[langue].nb_annote }} annotés)
           {% else %}<span class="mist">Aucune annotation</span>{% endif %}
@@ -115,6 +140,62 @@
   </div>
 {% endmacro %}
 
+{% macro meter_group(title, series, metric_key='') %}
+  <div class="chart-card">
+    <h3 class="chart-title">{{ title }}</h3>
+    {% if not series %}
+      <p class="mist">Pas encore de donnée.</p>
+    {% else %}
+      <div class="meter-group">
+        {% for s in series %}
+        <div class="meter-row">
+          <span class="meter-label">{{ s.label }}</span>
+          <div class="meter-track" title="{{ s.label }} : {{ s.valeur }}{{ s.unit }}">
+            <div class="meter-fill" id="meter-{{ metric_key }}-{{ s.langue }}-fill" style="width: {{ ((s.valeur / s.max) * 100) if s.max else 0 }}%; background: {{ s.color }};"></div>
+          </div>
+          <span class="meter-value" id="meter-{{ metric_key }}-{{ s.langue }}-value">{{ s.valeur }}{{ s.unit }}</span>
+        </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+{% endmacro %}
+
+{% macro dumbbell_chart(comp) %}
+  <div class="chart-card">
+    <h3 class="chart-title">Avant / après corrections</h3>
+    {% if not comp %}
+      <p class="mist">Pas de run "avant corrections" sauvegardé pour comparer.</p>
+    {% else %}
+      {% for bloc in comp %}
+        <p class="dumbbell-metric-title">{{ bloc.metrique }}</p>
+        {% set maxv = (bloc.lignes | map(attribute='avant') | list + bloc.lignes | map(attribute='apres') | list) | max %}
+        {% set mx = (maxv * 1.2) if maxv else 1 %}
+        <svg viewBox="0 0 600 {{ bloc.lignes | length * 40 + 4 }}" class="dumbbell-chart" role="img" aria-label="{{ bloc.metrique }}, avant et après, par langue">
+          {% for l in bloc.lignes %}
+          {% set x_avant = 150 + (l.avant / mx) * 400 %}
+          {% set x_apres = 150 + (l.apres / mx) * 400 %}
+          <g transform="translate(0, {{ loop.index0 * 40 }})">
+            <text x="0" y="17" class="chart-label">{{ l.label }}</text>
+            <line x1="{{ x_avant }}" x2="{{ x_apres }}" y1="14" y2="14" stroke="{{ l.color }}" stroke-width="2" />
+            <circle cx="{{ x_avant }}" cy="14" r="5" fill="{{ l.color }}" opacity="0.4">
+              <title>{{ l.label }} avant : {{ l.avant }}{{ l.unit }}</title>
+            </circle>
+            <circle cx="{{ x_apres }}" cy="14" r="6" fill="{{ l.color }}">
+              <title>{{ l.label }} après : {{ l.apres }}{{ l.unit }}</title>
+            </circle>
+            <text x="{{ x_apres + (10 if x_apres >= x_avant else -10) }}" y="19" class="chart-value {{ 'dumbbell-good' if l.ameliore == true else ('dumbbell-bad' if l.ameliore == false else '') }}" text-anchor="{{ 'start' if x_apres >= x_avant else 'end' }}">
+              {{ l.avant }}{{ l.unit }} → {{ l.apres }}{{ l.unit }}
+              {{ '▼' if l.apres < l.avant else ('▲' if l.apres > l.avant else '') }}
+            </text>
+          </g>
+          {% endfor %}
+        </svg>
+      {% endfor %}
+    {% endif %}
+  </div>
+{% endmacro %}
+
 <div class="result">
   <h2>Graphiques</h2>
   <div class="chart-legend">
@@ -122,12 +203,14 @@
     <span class="chart-legend-item"><span class="chart-legend-dot" style="background:#d95926"></span>Arabe standard</span>
     <span class="chart-legend-item"><span class="chart-legend-dot" style="background:#199e70"></span>Tunisien</span>
   </div>
+  <p><small class="mist">Avant/après : le point clair est la mesure avant corrections, le point plein après. Jauges : la couleur indique si le niveau est bon, moyen ou à surveiller (pas la langue — le nom de la langue est le label).</small></p>
   <div class="chart-grid">
-    {{ bar_chart("% correct (sur les questions annotées)", charts.pct_correct, unit="%", max_value=100) }}
+    {{ dumbbell_chart(comparaison) }}
     {{ bar_chart("Temps de réponse moyen", charts.temps_moyen, unit="s") }}
-    {{ bar_chart("Taux d'échec (fallback)", charts.taux_fallback, unit="%", max_value=100) }}
-    {{ bar_chart("Score de confiance moyen", charts.score_confiance, max_value=1) }}
-    {{ bar_chart("Cohérence avec le français", charts.coherence, max_value=1) }}
+    {{ meter_group("% correct (sur les questions annotées)", charts.pct_correct, metric_key="pct_correct") }}
+    {{ meter_group("Taux d'échec (fallback)", charts.taux_fallback) }}
+    {{ meter_group("Score de confiance moyen", charts.score_confiance) }}
+    {{ meter_group("Cohérence avec le français", charts.coherence) }}
   </div>
 </div>
 
@@ -136,18 +219,16 @@
     type="text"
     id="qualite-search"
     class="search-input"
-    placeholder="Rechercher une question par numéro ou contenu…"
+    placeholder="Rechercher dans les questions ou réponses…"
     oninput="filterQualite(this.value)"
   >
 </div>
 
-{% for row in rows %}
-<div class="result batch-card">
-  <p><strong>Question #{{ row.numero }}</strong> — {{ row.par_langue.fr.question if row.par_langue.fr else '' }}</p>
-
+<div class="result">
   <table class="history-table qualite-table">
     <thead>
       <tr>
+        <th>Source</th>
         <th>Langue</th>
         <th>Question posée</th>
         <th>Réponse du modèle</th>
@@ -156,11 +237,16 @@
       </tr>
     </thead>
     <tbody>
-      {% for langue in langues %}
-      {% set entry = row.par_langue.get(langue) %}
-      <tr>
-        <td>{{ langue_labels[langue] }}</td>
-        {% if entry %}
+      {% for entry in entries %}
+      <tr class="qualite-entry-row" data-search-text="{{ (entry.question ~ ' ' ~ entry.reponse) | lower }}">
+        <td>
+          {% if entry.source == 'live' %}
+            <span class="badge badge-live">Réel{{ ' · ' ~ entry.canal if entry.canal }}</span>
+          {% else %}
+            <span class="badge badge-test">Test #{{ entry.numero }}</span>
+          {% endif %}
+        </td>
+        <td>{{ langue_labels.get(entry.langue, entry.langue) }}</td>
         <td><div class="contenu-cell">{{ entry.question }}</div></td>
         <td><div class="contenu-cell">{{ entry.reponse }}</div></td>
         <td>
@@ -168,8 +254,8 @@
             {{ entry.temps_reponse_s }}s<br>
             score : {{ entry.score_principal if entry.score_principal is not none else '—' }}<br>
             {% if entry.used_fallback %}<span class="error">échec (fallback)</span><br>{% endif %}
-            {% if langue != 'fr' and row.consistency.get(langue) is not none %}
-              cohérence FR : {{ row.consistency[langue] }}
+            {% if entry.coherence_fr is not none %}
+              cohérence FR : {{ entry.coherence_fr }}
             {% endif %}
           </small>
         </td>
@@ -194,22 +280,18 @@
             onclick="annoter(this, '{{ entry.id }}', 'reset')"
           >Réinitialiser</button>
         </td>
-        {% else %}
-        <td colspan="4"><span class="mist">En attente (test pas encore arrivé à cette question)</span></td>
-        {% endif %}
       </tr>
       {% endfor %}
     </tbody>
   </table>
 </div>
-{% endfor %}
 
 <script>
 function filterQualite(query) {
   var q = query.trim().toLowerCase();
-  document.querySelectorAll('.batch-card').forEach(function (card) {
-    var text = card.textContent.toLowerCase();
-    card.style.display = (!q || text.indexOf(q) !== -1) ? '' : 'none';
+  document.querySelectorAll('.qualite-entry-row').forEach(function (row) {
+    var text = row.dataset.searchText || '';
+    row.style.display = (!q || text.indexOf(q) !== -1) ? '' : 'none';
   });
 }
 
@@ -240,6 +322,7 @@ function annoter(button, resultId, valeur) {
       btnCorrect.classList.toggle('button-active-ok', data.annotation === 'correct');
       btnIncorrect.classList.toggle('button-active-danger', data.annotation === 'incorrect');
       btnReset.style.display = data.annotation ? '' : 'none';
+      applyRealtimeUpdate(data);
     })
     .catch(function (err) {
       console.error('Echec annotation', resultId, err);
@@ -248,6 +331,53 @@ function annoter(button, resultId, valeur) {
     .finally(function () {
       cell.querySelectorAll('.btn-annoter').forEach(function (b) { b.disabled = false; });
     });
+}
+
+// Met a jour, sans recharger la page, les seuls indicateurs qu'une
+// annotation peut faire changer ("% correct", le seul KPI derive de
+// l'annotation manuelle -- voir routers/quality.py::annoter, qui renvoie
+// ces valeurs deja recalculees dans la reponse JSON).
+function applyRealtimeUpdate(data) {
+  function setText(id, text) {
+    var el = document.getElementById(id);
+    if (el) el.textContent = text;
+  }
+  function setHtml(id, html) {
+    var el = document.getElementById(id);
+    if (el) el.innerHTML = html;
+  }
+  function pctCorrectHtml(k) {
+    if (k.pct_correct === null || k.pct_correct === undefined) {
+      return '<span class="mist">Aucune annotation</span>';
+    }
+    return k.pct_correct + '% (' + k.nb_annote + ' annotés)';
+  }
+
+  if (data.kpis) {
+    setHtml('kpi-pct-correct-global', pctCorrectHtml(data.kpis.global));
+    ['fr', 'ar_fusha', 'ar_tounsi'].forEach(function (langue) {
+      if (data.kpis[langue]) setHtml('kpi-pct-correct-' + langue, pctCorrectHtml(data.kpis[langue]));
+    });
+  }
+
+  if (data.stat_tiles) {
+    data.stat_tiles.forEach(function (tile) {
+      var valueText = (tile.valeur === null || tile.valeur === undefined) ? '—' : (tile.valeur + tile.unit);
+      setText('stat-tile-' + tile.key + '-value', valueText);
+      if (tile.note) setText('stat-tile-' + tile.key + '-note', tile.note);
+    });
+  }
+
+  if (data.pct_correct_meters) {
+    data.pct_correct_meters.forEach(function (m) {
+      var fill = document.getElementById('meter-pct_correct-' + m.langue + '-fill');
+      if (fill) {
+        fill.style.width = (m.max ? (m.valeur / m.max) * 100 : 0) + '%';
+        fill.style.background = m.color;
+      }
+      setText('meter-pct_correct-' + m.langue + '-value', m.valeur + m.unit);
+    });
+  }
 }
 </script>
 {% endblock %}
