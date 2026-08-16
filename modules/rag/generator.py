@@ -72,6 +72,18 @@ AMBIGUOUS_PROGRAMME_NOTE = (
 )
 
 
+AMBIGUOUS_ANNEE_NOTE = (
+    "\n\nNote : la question ne précise pas de quelle année universitaire il "
+    "s'agit, et le contexte ci-dessus couvre plusieurs années différentes "
+    "(regarde bien l'année indiquée dans le titre de chaque extrait -- ne la "
+    "confonds pas avec une autre). Ne demande pas de précision (l'appelant ne "
+    "peut pas te répondre) : réponds séparément pour CHAQUE année concernée, "
+    "en la nommant explicitement à chaque fois (ex. \"Pour 2024/2025, ... ; "
+    "pour 2025/2026, ...\"). N'attribue jamais un montant/une information à "
+    "une année si l'extrait correspondant ne le mentionne pas explicitement."
+)
+
+
 LIST_ALL_NOTE = (
     "\n\nNote : le contexte ci-dessus contient TOUTES les fiches de la classe "
     "concernée (pas une sélection partielle) car la question demande une liste "
@@ -84,12 +96,15 @@ def generate_answer(
     question: str,
     chunks: list[RetrievedChunk],
     ambiguous_programme: bool = False,
+    ambiguous_annee: bool = False,
     list_all: bool = False,
 ) -> str:
     context = _build_context(chunks)
     user_prompt = f"Contexte disponible :\n{context}\n\nQuestion de l'appelant : {question}"
     if ambiguous_programme:
         user_prompt += AMBIGUOUS_PROGRAMME_NOTE
+    if ambiguous_annee:
+        user_prompt += AMBIGUOUS_ANNEE_NOTE
     if list_all:
         user_prompt += LIST_ALL_NOTE
 

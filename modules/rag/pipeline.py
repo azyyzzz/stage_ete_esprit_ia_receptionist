@@ -6,7 +6,9 @@ compréhension) appelleront.
 
 from __future__ import annotations
 
-from modules.rag.config import PROGRAMME_AMBIGUITY_MARGIN, SCORE_THRESHOLD
+import re
+
+from modules.rag.config import PROGRAMME_AMBIGUITY_MARGIN, SCORE_THRESHOLD, TOP_K
 from modules.rag.fallback import get_fallback_message
 from modules.rag.generator import generate_answer
 from modules.rag.nlu import detect_classe_mention, detect_option_mention, detect_specialite_tunis_mention, is_list_all_intent
@@ -45,6 +47,64 @@ def _ambiguous_programmes(chunks: list) -> set[str]:
         if label:
             labels.add(label)
     return labels
+
+
+# Une annee universitaire s'ecrit "20XX-20XX" ou "20XX/20XX" avec exactement
+# UNE annee d'ecart (ex. 2024/2025) -- un intervalle plus large (ex.
+# "2018-2025" dans le titre d'un historique multi-annees) n'est PAS une
+# annee precise mais un ensemble deja exhaustif, jamais ambigu par
+# construction (voir _annee_label ci-dessous, qui l'exclut explicitement).
+_ANNEE_RE = re.compile(r"\b(20\d{2})[-/](20\d{2})\b")
+
+
+def _annee_label(titre: str) -> str | None:
+    """Renvoie l'annee universitaire precise mentionnee dans le titre d'une
+    fiche (ex. "2024/2025"), ou None si le titre n'en mentionne aucune, en
+    mentionne plusieurs (titre ambigu en lui-meme -- mieux vaut ne rien
+    affirmer que deviner), ou mentionne un intervalle de plusieurs annees
+    (fiche "historique", deliberement exhaustive plutot que specifique a une
+    seule annee -- ex. "Historique des frais de scolarite ... 2018-2025")."""
+    matches = _ANNEE_RE.findall(titre)
+    precises = [f"{y1}/{y2}" for y1, y2 in matches if int(y2) - int(y1) == 1]
+    return precises[0] if len(precises) == 1 else None
+
+
+def _ambiguous_annees(chunks: list) -> set[str]:
+    """Meme principe que _ambiguous_programmes (fiches concurrentes a la
+    marge de score pres), mais SANS le garde-fou de consensus sur le
+    top-3 : une fiche specifique a une annee (ex. "... pour l'annee
+    2025/2026 ?") est un contenu rare dans la base (une poignee de fiches
+    au total, contre des dizaines par programme) -- exiger qu'une MAJORITE
+    du top-3 soit deja specifique a une annee ne laisserait quasiment
+    jamais passer la detection, meme quand deux fiches d'annees
+    differentes sont clairement concurrentes un peu plus bas dans le
+    classement (constate en usage reel : une fiche "historique"
+    generaliste, jamais specifique a une annee par construction, domine
+    systematiquement le top-3 sans jamais etre elle-meme ambigue). Le
+    filtre par marge de score ci-dessous (memes fiches candidates que
+    _ambiguous_programmes) suffit a ecarter les cas hors-sujet : une fiche
+    specifique a une annee n'apparait jamais avec un bon score sur une
+    question sans rapport avec les frais/l'inscription."""
+    best_score = chunks[0].score
+    annees = set()
+    for chunk in chunks:
+        if chunk.score < best_score - PROGRAMME_AMBIGUITY_MARGIN:
+            continue
+        label = _annee_label(chunk.metadata.get("titre", ""))
+        if label:
+            annees.add(label)
+    return annees
+
+
+def _mentioned_annee(question: str, candidates: set[str]) -> str | None:
+    """Si la question mentionne explicitement l'une des annees candidates
+    (et une seule), la renvoie -- sinon None. Exige la paire complete
+    (ex. "2025-2026" ou "2025/2026"), pas juste l'un des deux nombres seuls :
+    "2025" a lui seul apparait a la fois dans "2024/2025" et "2025/2026",
+    le mentionner seul ne leve donc pas l'ambiguite."""
+    q_norm = re.sub(r"[-/]", "/", question)
+    matches = [annee for annee in candidates if annee in q_norm]
+    return matches[0] if len(matches) == 1 else None
 
 
 def _extract_panier_label(chunk) -> str:
@@ -306,6 +366,19 @@ def answer_question(question: str, allow_clarification: bool = True, structured:
     classe = detect_classe_mention(question)
     list_all = False
     count_intent = is_count_intent(question)
+    # Pool plus large que le TOP_K normal (5), utilise UNIQUEMENT pour
+    # detecter une ambiguite programme/annee (_ambiguous_programmes,
+    # _ambiguous_annees ci-dessous) -- jamais pour construire la reponse
+    # elle-meme (qui continue a n'utiliser que les 5 meilleures, via
+    # `chunks`). Constate en usage reel : une fiche specifique a une annee
+    # (ex. "... pour l'annee 2025/2026 ?") peut se classer 6e ou 7e,
+    # juste sous le TOP_K=5, concurrencee par une fiche "historique"
+    # generaliste qui score mieux mais ne permet jamais de detecter
+    # l'ambiguite (une fiche multi-annees n'est pas specifique a UNE
+    # annee, voir _annee_label) -- sans ce pool elargi, l'ambiguite passe
+    # inapercue et le LLM choisit une annee au hasard sans le signaler.
+    AMBIGUITY_TOP_K = 10
+    ambiguity_pool: list = []
     if classe and is_list_all_intent(question):
         list_all = True
         chunks = retrieve_all(question, where={"classe": classe})
@@ -316,13 +389,18 @@ def answer_question(question: str, allow_clarification: bool = True, structured:
     elif classe:
         chunks = retrieve(question, where={"classe": classe})
     else:
-        chunks = retrieve(question)
+        ambiguity_pool = retrieve(question, top_k=AMBIGUITY_TOP_K)
+        chunks = ambiguity_pool[:TOP_K]
 
     if classe and not chunks:
         # Filet de securite : ne devrait pas arriver (la classe vient de la
         # base connue), mais si le filtre ne renvoie rien, on retombe sur la
         # recherche globale plutot que de renvoyer un fallback a tort.
-        chunks = retrieve(question)
+        ambiguity_pool = retrieve(question, top_k=AMBIGUITY_TOP_K)
+        chunks = ambiguity_pool[:TOP_K]
+
+    if not ambiguity_pool:
+        ambiguity_pool = chunks
 
     best_score = chunks[0].score if chunks else 0.0
 
@@ -342,7 +420,7 @@ def answer_question(question: str, allow_clarification: bool = True, structured:
             "needs_clarification": False,
         }
 
-    programmes = _ambiguous_programmes(chunks)
+    programmes = _ambiguous_programmes(ambiguity_pool)
     # Verifie aussi contre TOUS les programmes connus, pas seulement ceux
     # detectes dans ce top_k precis : la recherche peut rester "confuse"
     # (rester dominee par un autre programme) meme apres que l'appelant a
@@ -365,6 +443,28 @@ def answer_question(question: str, allow_clarification: bool = True, structured:
             "answer": (
                 "Cette information dépend du programme concerné. "
                 f"Pouvez-vous préciser lequel vous intéresse : {options} ?"
+            ),
+            "sources": [],
+            "used_fallback": False,
+            "needs_clarification": True,
+        }
+
+    # Meme logique que ci-dessus, sur l'axe "annee universitaire" plutot que
+    # "programme" -- verifiee SEULEMENT si le programme n'est pas (ou plus)
+    # ambigu : un prix qui differe a la fois par programme ET par annee est
+    # d'abord desambiguise sur le programme (axe le plus large), l'annee
+    # etant reverifiee au tour suivant une fois le programme precise (voir
+    # commentaire ci-dessus sur le filet contre la reclarification infinie,
+    # meme raison ici).
+    annees = _ambiguous_annees(ambiguity_pool)
+    is_annee_ambiguous = len(annees) >= 2 and not _mentioned_annee(question, annees)
+
+    if is_annee_ambiguous and allow_clarification:
+        options = ", ".join(sorted(annees))
+        return {
+            "answer": (
+                "Cette information dépend de l'année universitaire concernée. "
+                f"Pouvez-vous préciser laquelle vous intéresse : {options} ?"
             ),
             "sources": [],
             "used_fallback": False,
@@ -433,7 +533,9 @@ def answer_question(question: str, allow_clarification: bool = True, structured:
             "needs_clarification": False,
         }
 
-    answer = generate_answer(original_question, chunks, ambiguous_programme=is_ambiguous, list_all=list_all)
+    answer = generate_answer(
+        original_question, chunks, ambiguous_programme=is_ambiguous, ambiguous_annee=is_annee_ambiguous, list_all=list_all
+    )
     result = {
         "answer": answer,
         "sources": [
