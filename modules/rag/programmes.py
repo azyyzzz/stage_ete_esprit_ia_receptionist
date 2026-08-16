@@ -76,6 +76,22 @@ def programme_label(source_url: str, titre: str = "") -> str | None:
     for prefixe in sorted(TITRE_REGLEMENT_PREFIXES, key=len, reverse=True):
         if titre.startswith(prefixe + " - Article "):
             return TITRE_REGLEMENT_PREFIXES[prefixe]
+
+    # Quelques fiches (documents a fournir, grilles tarifaires...) portent
+    # le programme comme SUFFIXE de titre plutot que dans l'URL source (ex.
+    # "Documents à fournir pour l'inscription (étudiants tunisiens)" a une
+    # URL generique "admissions/informations-pratiques/", non reconnue) --
+    # constate en usage reel : sans ce repli, la version "tunisiens" restait
+    # invisible a la detection d'ambiguite alors que sa jumelle
+    # "internationaux" (URL specifique reconnue) l'etait, empechant de
+    # detecter que la question ("quels documents fournir ?", sans preciser
+    # la nationalite) est ambigue entre les deux -- le LLM choisissait alors
+    # la mauvaise (constate : documents "internationaux" -- passeport, visa
+    # -- donnes en reponse a un etudiant tunisien).
+    if titre.rstrip().endswith("(étudiants tunisiens)"):
+        return "Cours du jour (étudiants tunisiens)"
+    if titre.rstrip().endswith("(étudiants internationaux)"):
+        return "Cours du jour (étudiants internationaux)"
     return None
 
 
