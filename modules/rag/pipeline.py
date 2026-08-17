@@ -12,13 +12,19 @@ from modules.rag.config import PROGRAMME_AMBIGUITY_MARGIN, SCORE_THRESHOLD, TOP_
 from modules.rag.fallback import get_fallback_message
 from modules.rag.generator import generate_answer
 from modules.rag.nlu import detect_classe_mention, detect_option_mention, detect_specialite_tunis_mention, is_list_all_intent
-from modules.rag.nlu import is_count_intent, is_list_options_intent, is_list_specialites_intent
+from modules.rag.nlu import is_count_intent, is_frais_intent, is_list_options_intent, is_list_specialites_intent
 from modules.rag.programmes import CAMPUS_LABELS, PROGRAMME_KEYWORDS, mentioned_programme, programme_label
 from modules.rag.retriever import retrieve, retrieve_all
 from modules.rag.translate import contains_arabic, translate_to_french
 
 
 TOP_N_FOR_CONSENSUS = 3
+
+# Assez grand pour couvrir toute la base de connaissances actuelle (~1000
+# fiches) et sa croissance raisonnable -- utilise uniquement par le repli
+# de _annee_label ci-dessous (recherche exhaustive, rare), jamais pour la
+# reponse elle-meme.
+EXHAUSTIVE_SCAN_SIZE = 3000
 
 
 def _ambiguous_programmes(chunks: list) -> set[str]:
@@ -57,6 +63,19 @@ def _ambiguous_programmes(chunks: list) -> set[str]:
 _ANNEE_RE = re.compile(r"\b(20\d{2})[-/](20\d{2})\b")
 
 
+def _is_frais_fiche(metadata: dict) -> bool:
+    """True si cette fiche porte sur un cout (frais de scolarite, frais
+    d'inscription, tarif...), via sa categorie ou son titre -- utilise
+    par le repli exhaustif de la detection d'ambiguite programme (voir
+    is_frais_intent, pipeline.answer_question), qui doit reconnaitre TOUTE
+    fiche de cout du programme resolu independamment de son classement par
+    similarite sur une question precise."""
+    if metadata.get("categorie", "") == "Paiements":
+        return True
+    titre = metadata.get("titre", "").lower()
+    return "frais" in titre or "cout" in titre or "coût" in titre
+
+
 def _annee_label(titre: str) -> str | None:
     """Renvoie l'annee universitaire precise mentionnee dans le titre d'une
     fiche (ex. "2024/2025"), ou None si le titre n'en mentionne aucune, en
@@ -69,7 +88,7 @@ def _annee_label(titre: str) -> str | None:
     return precises[0] if len(precises) == 1 else None
 
 
-def _ambiguous_annees(chunks: list) -> set[str]:
+def _ambiguous_annees(chunks: list, programme: str | None = None) -> set[str]:
     """Meme principe que _ambiguous_programmes (fiches concurrentes a la
     marge de score pres), mais SANS le garde-fou de consensus sur le
     top-3 : une fiche specifique a une annee (ex. "... pour l'annee
@@ -84,13 +103,24 @@ def _ambiguous_annees(chunks: list) -> set[str]:
     filtre par marge de score ci-dessous (memes fiches candidates que
     _ambiguous_programmes) suffit a ecarter les cas hors-sujet : une fiche
     specifique a une annee n'apparait jamais avec un bon score sur une
-    question sans rapport avec les frais/l'inscription."""
+    question sans rapport avec les frais/l'inscription.
+
+    `programme` (optionnel) : si le programme est deja resolu, ne compte
+    que les fiches de CE programme -- sinon une fiche d'un AUTRE programme
+    (ex. PREPA) peut faire proposer une annee qui n'existe pas pour le
+    programme demande (constate en usage reel : "2023/2024" propose comme
+    choix d'annee pour "Cours du jour tunisiens" alors que cette annee
+    n'existe que pour la fiche PREPA -- une reponse a cette annee aurait
+    alors utilise a tort le prix PREPA)."""
     best_score = chunks[0].score
     annees = set()
     for chunk in chunks:
         if chunk.score < best_score - PROGRAMME_AMBIGUITY_MARGIN:
             continue
-        label = _annee_label(chunk.metadata.get("titre", ""))
+        titre = chunk.metadata.get("titre", "")
+        if programme and programme_label(chunk.metadata.get("source", ""), titre) != programme:
+            continue
+        label = _annee_label(titre)
         if label:
             annees.add(label)
     return annees
@@ -421,6 +451,26 @@ def answer_question(question: str, allow_clarification: bool = True, structured:
         }
 
     programmes = _ambiguous_programmes(ambiguity_pool)
+
+    # Meme repli exhaustif que pour les annees (voir plus bas) : une
+    # question "frais/scolarite/inscription" doit toujours voir TOUS les
+    # programmes ayant une fiche de cout, quelle que soit sa formulation
+    # exacte -- sinon le comportement varie de facon incoherente selon la
+    # phrase (constate en usage reel : "frais d'inscription à esprit"
+    # declenchait bien la clarification programme, mais "frais de
+    # scolarite" seul, sans "à esprit", ne remontait pas les memes fiches
+    # en tete du pool restreint et repondait directement en melangeant
+    # plusieurs programmes/annees sans le signaler).
+    if is_frais_intent(question):
+        full_pool = retrieve(question, top_k=EXHAUSTIVE_SCAN_SIZE)
+        exhaustive_programmes = {
+            label
+            for c in full_pool
+            if _is_frais_fiche(c.metadata)
+            and (label := programme_label(c.metadata.get("source", ""), c.metadata.get("titre", "")))
+        }
+        programmes = programmes | exhaustive_programmes
+
     # Verifie aussi contre TOUS les programmes connus, pas seulement ceux
     # detectes dans ce top_k precis : la recherche peut rester "confuse"
     # (rester dominee par un autre programme) meme apres que l'appelant a
@@ -433,9 +483,10 @@ def answer_question(question: str, allow_clarification: bool = True, structured:
     # reel). Des que l'appelant nomme explicitement UN programme connu, on
     # fait confiance a son intention plutot qu'au classement de la
     # recherche.
-    is_ambiguous = len(programmes) >= 2 and not (
-        mentioned_programme(question, programmes) or mentioned_programme(question, set(PROGRAMME_KEYWORDS.keys()))
+    resolved_programme = mentioned_programme(question, programmes) or mentioned_programme(
+        question, set(PROGRAMME_KEYWORDS.keys())
     )
+    is_ambiguous = len(programmes) >= 2 and not resolved_programme
 
     if is_ambiguous and allow_clarification:
         options = ", ".join(sorted(programmes))
@@ -456,8 +507,33 @@ def answer_question(question: str, allow_clarification: bool = True, structured:
     # etant reverifiee au tour suivant une fois le programme precise (voir
     # commentaire ci-dessus sur le filet contre la reclarification infinie,
     # meme raison ici).
-    annees = _ambiguous_annees(ambiguity_pool)
-    is_annee_ambiguous = len(annees) >= 2 and not _mentioned_annee(question, annees)
+    annees = _ambiguous_annees(ambiguity_pool, programme=resolved_programme)
+
+    # Repli TOUJOURS applique des qu'un programme est resolu (pas seulement
+    # si le pool restreint semble deja ambigu) : le pool restreint
+    # (AMBIGUITY_TOP_K=10) peut contenir 2 fiches annee-precises et donc
+    # sembler suffisant, tout en en omettant une 3e qui existe bien dans la
+    # base pour ce meme programme mais score trop bas sur CETTE question
+    # precise pour y figurer -- une fiche "Historique" generaliste (jamais
+    # annee-precise par construction, voir _annee_label) peut a elle seule
+    # dominer le pool restreint (constate en usage reel : "cours du jour
+    # tunisiens" sans annee ne remontait que 2 des 3 annees precises
+    # existantes, la 3e restant invisible ; le LLM repondait alors parfois a
+    # partir du seul tableau "Historique", en extrayant la mauvaise ligne).
+    # Recherche exhaustive (tout le corpus, sans le classement/la marge de
+    # score) et UNION avec le pool restreint plutot que de s'y fier seul.
+    if resolved_programme:
+        full_pool = retrieve(question, top_k=EXHAUSTIVE_SCAN_SIZE)
+        exhaustive_annees = {
+            label
+            for c in full_pool
+            if programme_label(c.metadata.get("source", ""), c.metadata.get("titre", "")) == resolved_programme
+            and (label := _annee_label(c.metadata.get("titre", "")))
+        }
+        annees = annees | exhaustive_annees
+
+    mentioned_annee = _mentioned_annee(question, annees)
+    is_annee_ambiguous = len(annees) >= 2 and not mentioned_annee
 
     if is_annee_ambiguous and allow_clarification:
         options = ", ".join(sorted(annees))
@@ -470,6 +546,22 @@ def answer_question(question: str, allow_clarification: bool = True, structured:
             "used_fallback": False,
             "needs_clarification": True,
         }
+
+    # Une fois l'annee precisee par l'appelant (mentioned_annee resolu
+    # ci-dessus), s'assure que la fiche correspondante fait bien partie du
+    # contexte transmis au LLM : `chunks` (TOP_K=5) vient du classement
+    # generique par similarite sur la question ENTIERE (avec toutes les
+    # precisions accumulees) et peut exclure de justesse la fiche de
+    # l'annee demandee -- constate en usage reel : une fiche annee-precise
+    # ("... pour l'annee 2026/2027 ?") restait 6e-7e du pool elargi
+    # (AMBIGUITY_TOP_K=10), hors du TOP_K=5 final, et le LLM repondait a
+    # tort "aucune information disponible pour cette annee" alors qu'elle
+    # existe bien dans la base. La priorise explicitement si elle est
+    # presente ailleurs dans le pool elargi mais pas deja dans le TOP_K.
+    if mentioned_annee and not any(_annee_label(c.metadata.get("titre", "")) == mentioned_annee for c in chunks):
+        match = next((c for c in ambiguity_pool if _annee_label(c.metadata.get("titre", "")) == mentioned_annee), None)
+        if match:
+            chunks = [match] + chunks[: TOP_K - 1]
 
     if count_intent and not list_all:
         import re

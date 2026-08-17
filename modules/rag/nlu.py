@@ -505,3 +505,22 @@ def is_count_intent(question: str) -> bool:
     if re.search(r"\bnombre\b", q_norm) and re.search(r"\b(matieres?|modules?)\b", q_norm):
         return True
     return False
+
+
+_FRAIS_KEYWORDS = ("frais", "cout", "prix", "montant", "tarif")
+_SCOLARITE_KEYWORDS = ("scolarite", "inscription")
+
+
+def is_frais_intent(question: str) -> bool:
+    """True si la question porte sur le cout des etudes (frais de
+    scolarite/inscription), quelle que soit la formulation exacte --
+    utilise par pipeline.py pour forcer une recherche EXHAUSTIVE des
+    programmes/annees concernes plutot que de se fier au seul classement
+    par similarite sur cette question precise, qui varie trop selon la
+    formulation (constate en usage reel : "frais d'inscription à esprit"
+    declenchait bien la clarification programme puis annee, mais "frais de
+    scolarite" seul -- sans "à esprit" -- ne remontait pas les memes
+    fiches en tete et repondait directement, en melangeant des donnees de
+    plusieurs programmes/annees differents sans le signaler)."""
+    q_norm = _normalize(question)
+    return any(k in q_norm for k in _FRAIS_KEYWORDS) and any(k in q_norm for k in _SCOLARITE_KEYWORDS)

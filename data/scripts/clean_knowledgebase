@@ -14,9 +14,9 @@ Lancement :
 import json
 import re
 
-INPUT_PATH = r"C:\Users\zizou\Desktop\stage_ia_recepsionist\data\processed\site_esprit.json"
-OUTPUT_PATH = r"C:\Users\zizou\Desktop\stage_ia_recepsionist\data\processed\site_esprit_clean.json"
-REVIEW_PATH = r"C:\Users\zizou\Desktop\stage_ia_recepsionist\data\processed\a_verifier_manuellement.json"
+INPUT_PATH = r"d:\stage_ia_recepsionist\data\processed\site_esprit.json"
+OUTPUT_PATH = r"d:\stage_ia_recepsionist\data\processed\site_esprit_clean.json"
+REVIEW_PATH = r"d:\stage_ia_recepsionist\data\processed\a_verifier_manuellement.json"
 
 MIN_CHARS = 40       # en dessous, la fiche est probablement du bruit (à vérifier manuellement)
 MAX_CHARS = 2000      # au-dessus, on découpe en sous-fiches pour plus de précision

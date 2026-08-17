@@ -92,6 +92,14 @@ def programme_label(source_url: str, titre: str = "") -> str | None:
         return "Cours du jour (étudiants tunisiens)"
     if titre.rstrip().endswith("(étudiants internationaux)"):
         return "Cours du jour (étudiants internationaux)"
+    # Meme repli que ci-dessus pour une grille tarifaire PREPA uploadee (PDF,
+    # URL generique non reconnue) : sans ce cas, la fiche restait invisible a
+    # _ambiguous_programmes malgre un tres bon score sur "frais de scolarite"
+    # generique, empechant le consensus de detecter l'ambiguite programme et
+    # laissant une vieille fiche PREPA/annee perimee dominer seule la reponse
+    # (constate en usage reel).
+    if titre.rstrip().endswith("(PREPA)"):
+        return "Classe préparatoire (PREPA)"
     return None
 
 
@@ -99,7 +107,14 @@ def programme_label(source_url: str, titre: str = "") -> str | None:
 # l'appelant a déjà précisé de quel programme il parle -- évite de demander
 # une clarification inutile quand ce n'est pas ambigu pour lui.
 PROGRAMME_KEYWORDS: dict[str, list[str]] = {
-    "Cours du jour (étudiants tunisiens)": ["jour"],
+    # PAS "jour" seul : ce mot apparait aussi dans le libelle complet "Cours
+    # du jour (etudiants INTERNATIONAUX)", donc choisir explicitement la
+    # version internationale matchait AUSSI, a tort, la version tunisienne
+    # -- mentioned_programme() voyait alors 2 correspondances au lieu d'une
+    # seule et redemandait la meme clarification indefiniment (constate en
+    # usage reel, boucle infinie). "tunisien" est specifique et sans
+    # ambiguite avec l'autre libelle.
+    "Cours du jour (étudiants tunisiens)": ["tunisien"],
     "Cours du jour (étudiants internationaux)": ["international", "internationaux", "étranger", "etranger"],
     "Cours du soir": ["soir"],
     "EMBA / Executive": ["emba", "executive"],

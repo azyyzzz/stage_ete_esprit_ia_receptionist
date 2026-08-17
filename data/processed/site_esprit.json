@@ -2978,7 +2978,7 @@
     "id": "grilles_historique_cours_du_jour_tunisiens_001",
     "categorie": "Admissions",
     "titre": "Historique des frais de scolarité - Cours du jour (étudiants tunisiens, 2018-2025)",
-    "contenu": "Évolution des frais de scolarité TTC (en 2 tranches égales sauf mention contraire) pour les cours du jour, étudiants tunisiens : 2018/2019 : 7 550 TND (3 900 + 3 650) ; 2019/2020 : 7 650 TND (3 850 + 3 800) ; 2020/2021 : 7 650 TND (3 850 + 3 800) ; 2021/2022 : 8 000 TND (3 950 + 4 050) ; 2022/2023 : 8 200 TND (4 050 + 4 150) ; 2023/2024 : 8 250 TND (4 100 + 4 150) ; 2024/2025 : 8 400 TND (4 200 + 4 200).",
+    "contenu": "Évolution des frais de scolarité TTC (en 2 tranches égales sauf mention contraire) pour les cours du jour, étudiants tunisiens : 2018/2019 : 7 550 TND (3 900 + 3 650) ; 2019/2020 : 7 650 TND (3 850 + 3 800) ; 2020/2021 : 7 650 TND (3 850 + 3 800) ; 2021/2022 : 8 000 TND (3 950 + 4 050) ; 2022/2023 : 8 200 TND (4 050 + 4 150) ; 2023/2024 : 8 250 TND (4 100 + 4 150) ; 2024/2025 : 8 200 TND (4 050 + 4 150) (corrige un montant errone de 8 400 TND anterieurement publie, voir email officiel de reinscription).",
     "source": "https://www.esprit.tn/admissions/cours-du-jour/cours-du-jour-tunisiens/"
   },
   {
@@ -2991,7 +2991,7 @@
   {
     "id": "grilles_prepa_tunisiens_001",
     "categorie": "Admissions",
-    "titre": "Combien coûte l'inscription en classe préparatoire (PREPA) à ESPRIT ?",
+    "titre": "Combien coûte l'inscription en classe préparatoire (PREPA) à ESPRIT pour l'année 2024/2025 ?",
     "contenu": "Pour l'année 2024-2025, les frais de scolarité de la classe préparatoire (PREPA) pour les étudiants tunisiens s'élèvent à 10 700 TND TTC, payables en 2 tranches de 5 350 TND chacune. Pour les étudiants internationaux, ils s'élèvent à 3 500 € TTC, payables en une seule tranche à l'inscription.",
     "source": "https://www.esprit.tn/groupe-esprit/esprit-prepa/"
   },
@@ -3628,7 +3628,7 @@
   {
     "id": "paiements_2025-2026_montant_total",
     "categorie": "Paiements",
-    "titre": "Quels sont les frais d'inscription (frais de scolarité) pour l'année 2025/2026 ?",
+    "titre": "Quels sont les frais d'inscription (frais de scolarité) pour l'année 2025/2026 ? — Cours du jour (étudiants tunisiens)",
     "contenu": "Les frais d'inscription (aussi appelés frais de scolarité) pour les cours du jour (étudiants tunisiens) pour l'année 2025/2026 s'élèvent au total à 8 350 TND TTC, payables en deux tranches : 4050 TND avant le 31/08/2025, 4300 TND avant le 15 janvier 2026.",
     "source": "Email de paiement/réinscription 2025-2026 (Direction ESPRIT)"
   },
@@ -3873,28 +3873,28 @@
   {
     "id": "upload_pdf_erpbi_001",
     "categorie": "Programmes",
-    "titre": "50ea1b2349bf4a049f5471be217fbc58.pdf - page 1",
+    "titre": "Programme d'étude — Option ERP-BI (matières du semestre 1, partie 1/2)",
     "contenu": "4 ERP-BI Charge UE Semestre-1 HE Période ECTS stratégie de l'entreprise Innovation et Entrepreneuriat _ Atelier Créatif 21 21(cid:9) 2 1 1 Management et pilotage de projet Innovation et Entrepreneuriat _ Ideation Camp 21 21 1 1,5 1,5 Architecture des SI I 21 1 2 Architectures n-tiers Architecture Orientée Service (SOA) 105 21 2 2 8 Architecture des SI II 42 1 et 2 4 Communication, Culture et Citoyenneté F4 Communication, Culture et Citoyenneté F4 42 42 1 et 2 2 2 Informatique Décisionnelle Analyse statistique 21 1 1 8 Machine learning appliqué 126 42 1 et 2 3 Informatique Décisionnelle 63 1 et 2 4 Graphes et applications 21 1 2 Recherche opérationnelle Programmation linéaire 63 21 2 2 5 complexité appliquée à la RO 21 1 1 Stage d'immersion en entreprise Stage d'immersion en entreprise 30 3 3 Total 378 Charge par semaine 27H 28,5 Charge UE Semestre-2 HE Période ECTS Communication, Culture et Citoyenneté A4 Communication, Culture et Citoyenneté A4 42 42 1 et 2 3 3 Advanced Big data 42 1 et 2 3 Intelligence des affaires 93 Séries Temportelles et Contrôle qualité 30 1 et 2 2 8 Initiation aux ERP & CRM 21 1 2 stratégie de l'entreprise Data marketing 42 42 1 et 2 2 2 Projet BI Projet Business Intelligence 84 84 1 et 2 8 8 Droit de la propriété Intellectuelle 12 1 0,5 Management et pilotage de projets 33 2,5 Gestion de projet 21 2 2 Service et administration réseaux 21 1 2 Administration systèmes et réseaux 7 Systèmes d'exploitation Avancés 1 84 21 2 2 sécurité informatique 21 2 2 Administration des bases de données 21 2 2 Dévelopement frontEnd Initiation application côté client 21 21 1 1 1 Total 399 Charge par semaine 27H-30H 31,5",
     "source": "ERPBI.pdf"
   },
   {
     "id": "upload_pdf_erpbi_002",
     "categorie": "Programmes",
-    "titre": "50ea1b2349bf4a049f5471be217fbc58.pdf - page 2",
+    "titre": "Programme d'étude — Option ERP-BI (matières du semestre 1, partie 2/2)",
     "contenu": "5 ERP-BI Charge UE Semestre-1 HE Période ECTS Compétences personnelles A 15 1 1,5 Preparation à la vie professionnelle Compétences personnelles F 30 15 2 1,5 3 Responsabilité Sociétale des Entreprises (RSE) 15 1 1 Développement Durable Certification SDG 15 15 2 1 2 Devops 21 1 2 4 CI & CD Mlops 42 21 1 2 Advanced learning For text and graph data 21 2 2 Processus métiers et apprentissage Deep Learning For BI 72 30 1&2 3 8 Big Data Analytics 21 1 3 CRM concept et pratique 21 1 2 Progiciel de gestion Intégré SAP- Initiation à ABAP & Fiori 57 21 1 2 6 SAP-BW 15 2 2 AWS Fundamentals 21 1 1 2 Seminaire Blockchain 36 15 2 1 Stage ingénieur Stage ingénieur 30 30 5 5 Total 297 Charge par semaine 25H 30 Charge UE Semestre-2 HE ECTS Projet de Fin d'Etudes (PFE) Projet de Fin d'Etudes (PFE) 99 99 30 30 Total 99 Charge par semaine 30",
     "source": "ERPBI.pdf"
   },
   {
     "id": "upload_pdf_grille_tarifaire_2023_2024_ecole_dingenieurs_etudiants_inter_001",
     "categorie": "Admissions",
-    "titre": "0aa1c6d2d03a4a22b94e3dd6288f1c2d.pdf - page 1",
+    "titre": "Frais de scolarité 2023/2024 — École d'ingénieur (étudiants internationaux)",
     "contenu": "Grille tarifaire Année universitaire 2023/2024 « Etudiants internationaux » Ecole d’ingénieur Formation en cours du jour : Les frais de scolarité pour l’année universitaire 2023/2024 se présentent comme suit : Modalités de paiement Frais de TVA Montant Année d’inscription scolarité hors Une seule tranche à 7% TTC TVA en € l’inscription Ancien 2 804 196 3 000 3 000 - Nouveaux 2 804 196 3 000 3 000 - Réductions : Des réductions des frais de scolarité sont accordées annuellement aux étudiants les plus méritants : o 30 % de réduction pour les élèves ayant une moyenne supérieure à 15/20 et classés premiers de leur classe. o 15 % de réduction pour les élèves classés premiers de leur classe ayant une moyenne inférieure à 15/20. Des réductions des frais de scolarité sont accordées annuellement aux étudiants issus d’une même famille (frères et/ou sœurs) : 30% pour le deuxième enfant et 40% pour le troisième enfant. Les réductions sont calculées sur les frais de scolarité les plus élevés sur présentation a la direction financière d’une demande jointe des copies des cartes d’identité des deux frères.",
     "source": "grille-tarifaire-2023-2024-Ecole-dingenieurs-Etudiants-internationaux-vf.pdf"
   },
   {
     "id": "upload_pdf_grille_tarifaire_2023_2024_ecole_dingenieurs_etudiants_inter_002",
     "categorie": "Admissions",
-    "titre": "0aa1c6d2d03a4a22b94e3dd6288f1c2d.pdf - page 2",
+    "titre": "Frais de scolarité 2023/2024 — Classe préparatoire, étudiants internationaux (PREPA)",
     "contenu": "Cycles Préparatoires aux Grandes Ecoles d’Ingénieurs. Les frais de scolarité pour l’année universitaire 2023/2024 s’élèvent à : Frais de Modalités de paiement Année TVA scolarité hors Montant TTC d’inscription 7% Une seule tranche à l’inscription TVA en € Ancien 3 271 229 3 500 3 500 - Nouveaux 3 271 229 3 500 3 500 -",
     "source": "grille-tarifaire-2023-2024-Ecole-dingenieurs-Etudiants-internationaux-vf.pdf"
   },
@@ -5469,14 +5469,14 @@
   {
     "id": "upload_pdf_g_nie_informatique_13817d56_001",
     "categorie": "Programmes",
-    "titre": "bc6f76e7d0c64141be2f2c884434b891.pdf - page 1",
+    "titre": "Génie Informatique — Présentation des missions du programme",
     "contenu": "GÉNIE INFORMATIQUE LES MISSIONS Mathématiques et outils Numérique : Former des ingénieurs maîtrisant les Techniques d’estimation pour l’ingénieur, Analyse concepts et les technologies des grands numérique, Calcul scientifique, Probabilité et domaines de l’informatique: Statistiques, Programmation Linéaire, Graphe et modélisation et programmation, applications, Recherche Opérationnelle. systèmes et réseaux, conception et Formation pour l’entreprise : déploiement d’applications, sécurité, Environnement de l’entreprise, Analyse et décisions Financières, Gestion de Projet, bases de données, , data science, IA.. Innovation et Entreupreunariat, Technique de communication, Développement Durable Programmation et développement : Programmation et Algorithmique , LES POINTS FORTS Programmation Orientée objet ( JAVA) , Modélisation UML , Technologies Web, Techniques Maitrise, conception et réalisation des Dev Mobile , Compilation , Informatique systèmes d’informations pour Décisionnelle , Devops l’entreprise et l’industrie Traitement de Données : Bonne ouverture aux techniques Bases de données, Systèmes de Gestion des d’innovations informatiques bases de données, Administration des Bases de Bonne connaissance de l’entreprise Données, BDNoSQL, Big data, Data Mining gestion financière et stratégique Systèmes Informatiques: Architecture des Systèmes Informatiques, Administration des Systèmes d’Exploitation, Systèmes d’exploitation, Systèmes d’Exploitation LES DÉBOUCHÉS Avancé, Service et Administration Réseaux, Sécurité Informatique Chef de projet Informatique dans les domaines des Intelligence Artificielle: télécoms , multimédia , mobilité , ingénierie des Machine Learning , Deep learning , BlockChain, contenus , systèmes communicants, informatique décisionnelle , architecture des systèmes Natural Language Understanding and Processing d’informations ; Approche Professionnelle : Expert en méthodes , outils , qualité et/ou sécurité Stages , Projets pédagogiques , Conférences et Intégrateur d’applications informatiques , consultant en Informatique , e-business , Visites , Projets Professionnel ( PFE ) e-commerce Auditeur informatique . www.esprim.tn Monastir , Tunisie +216 94 840 200",
     "source": "Génie_INFORMATIQUE.13817d56.pdf"
   },
   {
     "id": "upload_pdf_premier_mp_periode1_ce78afc8_001",
     "categorie": "Programmes",
-    "titre": "0c9e81c6d6034acf8d94d5abd2a318ef.pdf - page 1 (OCR)",
+    "titre": "Classe préparatoire — Emploi du temps 1ère année MP, période 1",
     "contenu": "Se former autrement REs ue cu - 1er (trimestre) Cours TD Mathématiques 10h 2h Physique 4h 1h Chimie 1h - Sciencesindustrielles 1h 1h Informatique - 1h Français-Philosophie 2h - Langue vivante 1 2h - EPS. 2h ; TOTAL 22h Sh",
     "source": "premier_mp-periode1.ce78afc8.pdf"
   },
@@ -5584,5 +5584,12 @@
     "titre": "Est-ce que les notes de stage comptent dans la moyenne générale ?",
     "contenu": "Oui. À ESPRIT, les stages obligatoires (comme le stage de formation humaine et sociale, le stage d'immersion ou le stage ingénieur) font l'objet d'une évaluation et sont rattachés à des Unités d'Enseignement (UE) dotées de crédits ECTS. Par conséquent, la note obtenue au stage compte dans la validation du parcours et dans la moyenne générale de l'étudiant, selon les pondérations propres à son niveau d'études.",
     "source": "Information fournie par l'utilisateur (reponse de reference verifiee)"
+  },
+  {
+    "id": "paiements_2026-2027_montant_total",
+    "categorie": "Paiements",
+    "titre": "Quels sont les frais d'inscription (frais de scolarité) pour l'année 2026/2027 ? — Cours du jour (étudiants tunisiens)",
+    "contenu": "Les frais d'inscription (aussi appelés frais de scolarité) pour les cours du jour (étudiants tunisiens) pour l'année 2026/2027 s'élèvent au total à 8 500 TND TTC (TVA 7% incluse), payables en deux tranches : 4050 TND avant le 31/08/2026 (exigée à l'inscription), 4450 TND avant le 15 janvier 2027. Le dernier délai pour se réinscrire pour l'année 2026/2027 est fixé au 31/08/2026.",
+    "source": "Email de paiement/réinscription 2026-2027 (Direction ESPRIT)"
   }
 ]

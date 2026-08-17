@@ -33,6 +33,7 @@ extraction_app/data/historique.json
 extraction_app/data/url_sources.json
 extraction_app/data/a_verifier.json
 extraction_app/data/a_valider.json
+data/processed/a_verifier_manuellement.json
 extraction_app/data/*.lock
 
 # Journaux de lancement des services (backend/extraction_app/frontend/

@@ -55,6 +55,7 @@ services:
       - ./data:/app/data
       - vector_store:/app/vector_store
       - voice_models:/app/voice_models
+      - extraction_data:/app/extraction_app/data
     depends_on:
       ollama-init:
         condition: service_completed_successfully
