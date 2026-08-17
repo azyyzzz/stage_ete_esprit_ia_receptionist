@@ -12,6 +12,7 @@ import ollama
 
 from modules.rag.config import OLLAMA_MAX_TOKENS, OLLAMA_MODEL
 from modules.rag.retriever import RetrievedChunk
+from modules.rag.translate import contains_arabic
 
 SYSTEM_PROMPT = """Tu es l'assistant vocal de la réception de l'école d'ingénieurs ESPRIT, en Tunisie.
 Tu réponds à des étudiants et des parents qui appellent par téléphone, en français ou en arabe.
@@ -58,6 +59,22 @@ def _build_context(chunks: list[RetrievedChunk]) -> str:
     return "\n\n".join(parts)
 
 
+# Ces 3 notes sont ecrites en francais (langue de travail interne du prompt),
+# mais NE DOIVENT JAMAIS servir de modele de langue pour la reponse : elles
+# sont ajoutees juste avant la generation, et un exemple concret en francais
+# a cet endroit precis "entraine" le modele a continuer en francais meme pour
+# une question posee en arabe/tunisien -- constate en usage reel (une reponse
+# a une question tunisienne generee entierement en francais, alors que la
+# regle de langue du SYSTEM_PROMPT demandait de l'arabe standard). Pas
+# d'exemple de phrase concrete ici (c'etait la source du probleme -- "ex. \"A
+# ESPRIT Tunis, ...\""), et chaque note se termine par un rappel explicite de
+# ne pas devier de la langue de reponse deja fixee plus haut.
+_LANGUE_REMINDER = (
+    " Cette note ne change PAS la langue de ta réponse : respecte toujours la "
+    "règle de langue définie plus haut (français si la question est en "
+    "français, arabe standard si elle est en arabe ou en dialecte tunisien)."
+)
+
 AMBIGUOUS_PROGRAMME_NOTE = (
     "\n\nNote : la question ne précise pas de quel programme/campus il "
     "s'agit, et le contexte ci-dessus couvre plusieurs programmes "
@@ -65,11 +82,11 @@ AMBIGUOUS_PROGRAMME_NOTE = (
     "titre de chaque extrait -- ne le confonds pas avec un autre). Ne "
     "demande pas de précision (l'appelant ne peut pas te répondre) : "
     "réponds séparément pour CHAQUE programme/campus concerné, en le "
-    "nommant explicitement à chaque fois (ex. \"À ESPRIT Tunis, ... ; à "
-    "ESPRIT Monastir, ...\"). N'attribue jamais une information à un "
-    "programme/campus si l'extrait correspondant ne le mentionne pas "
-    "explicitement -- si un extrait ne concerne qu'un seul campus, ne "
-    "dis rien sur les autres pour ce point précis plutôt que de deviner."
+    "nommant explicitement à chaque fois, dans la langue de ta réponse. "
+    "N'attribue jamais une information à un programme/campus si l'extrait "
+    "correspondant ne le mentionne pas explicitement -- si un extrait ne "
+    "concerne qu'un seul campus, ne dis rien sur les autres pour ce point "
+    "précis plutôt que de deviner." + _LANGUE_REMINDER
 )
 
 
@@ -79,9 +96,9 @@ AMBIGUOUS_ANNEE_NOTE = (
     "(regarde bien l'année indiquée dans le titre de chaque extrait -- ne la "
     "confonds pas avec une autre). Ne demande pas de précision (l'appelant ne "
     "peut pas te répondre) : réponds séparément pour CHAQUE année concernée, "
-    "en la nommant explicitement à chaque fois (ex. \"Pour 2024/2025, ... ; "
-    "pour 2025/2026, ...\"). N'attribue jamais un montant/une information à "
-    "une année si l'extrait correspondant ne le mentionne pas explicitement."
+    "en la nommant explicitement à chaque fois. N'attribue jamais un "
+    "montant/une information à une année si l'extrait correspondant ne le "
+    "mentionne pas explicitement." + _LANGUE_REMINDER
 )
 
 
@@ -89,7 +106,7 @@ LIST_ALL_NOTE = (
     "\n\nNote : le contexte ci-dessus contient TOUTES les fiches de la classe "
     "concernée (pas une sélection partielle) car la question demande une liste "
     "exhaustive. Énumère bien tous les paniers/matières présents dans le "
-    "contexte, sans en résumer ou en omettre une partie."
+    "contexte, sans en résumer ou en omettre une partie." + _LANGUE_REMINDER
 )
 
 
@@ -101,13 +118,31 @@ def generate_answer(
     list_all: bool = False,
 ) -> str:
     context = _build_context(chunks)
-    user_prompt = f"Contexte disponible :\n{context}\n\nQuestion de l'appelant : {question}"
+    # Les notes (contexte ambigu, liste exhaustive...) sont placees AVANT la
+    # question, jamais apres : le dernier texte lu par le modele avant de
+    # generer pese le plus lourd sur ce qu'il produit (effet de recence). Ces
+    # notes sont ecrites en francais -- les placer apres la question (comme
+    # avant) faisait qu'un appelant arabophone/tunisien recevait parfois une
+    # reponse entierement en francais, le modele imitant la derniere langue
+    # vue plutot que de suivre la regle de langue du system prompt (constate
+    # en usage reel, reproductible sur plusieurs essais). La question et un
+    # rappel de langue explicite et tres court, calcule directement a partir
+    # de la langue REELLE de la question (pas suppose), sont maintenant la
+    # toute derniere chose du prompt.
+    notes = ""
     if ambiguous_programme:
-        user_prompt += AMBIGUOUS_PROGRAMME_NOTE
+        notes += AMBIGUOUS_PROGRAMME_NOTE
     if ambiguous_annee:
-        user_prompt += AMBIGUOUS_ANNEE_NOTE
+        notes += AMBIGUOUS_ANNEE_NOTE
     if list_all:
-        user_prompt += LIST_ALL_NOTE
+        notes += LIST_ALL_NOTE
+
+    langue_directive = "Réponds en arabe standard (فصحى)." if contains_arabic(question) else "Réponds en français."
+    user_prompt = (
+        f"Contexte disponible :\n{context}"
+        f"{notes}"
+        f"\n\nQuestion de l'appelant : {question}\n\n{langue_directive}"
+    )
 
     response = ollama.chat(
         model=OLLAMA_MODEL,

@@ -1,0 +1,113 @@
+# Lance tout le projet en un coup : `docker compose up --build`.
+# Voir docker/README.md pour le detail (prerequis GPU, premier demarrage
+# plus long le temps d'indexer/telecharger les modeles, etc.)
+
+services:
+  # LLM local (Ollama), utilise par backend/ (modules/rag/generator.py,
+  # translate.py) -- conteneurise avec acceleration GPU (voir "deploy"
+  # ci-dessous ; a retirer si pas de GPU NVIDIA/pilotes WSL2 disponibles,
+  # Ollama fonctionne alors en CPU, plus lent mais fonctionnel).
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    healthcheck:
+      test: ["CMD-SHELL", "ollama list || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    restart: unless-stopped
+
+  # Tache ponctuelle (pas un service qui tourne en continu) : telecharge le
+  # modele qwen2.5:7b-instruct dans le volume ollama_data au premier
+  # demarrage. S'arrete de lui-meme une fois le pull termine (ou immediat,
+  # deja present).
+  ollama-init:
+    image: ollama/ollama:latest
+    depends_on:
+      ollama:
+        condition: service_healthy
+    environment:
+      - OLLAMA_HOST=http://ollama:11434
+    entrypoint: ["ollama", "pull", "qwen2.5:7b-instruct"]
+    restart: "no"
+
+  # API principale (RAG texte + vocal), port 8000.
+  backend:
+    build:
+      context: .
+      dockerfile: docker/backend.Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - OLLAMA_HOST=http://ollama:11434
+    volumes:
+      - ./data:/app/data
+      - vector_store:/app/vector_store
+      - voice_models:/app/voice_models
+    depends_on:
+      ollama-init:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 900s # laisse le temps a l'indexation initiale + telechargement du modele d'embeddings et des voix Piper (vector_store/voice_models vides, ~9 min observees, plus si connexion lente)
+    restart: unless-stopped
+
+  # Interface d'administration/extraction de la base de connaissances, port 8001.
+  extraction_app:
+    build:
+      context: .
+      dockerfile: docker/extraction_app.Dockerfile
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./data:/app/data
+      - extraction_data:/app/extraction_app/data
+      - extraction_uploads:/app/extraction_app/uploads
+    healthcheck:
+      test: ["CMD", "curl", "-f", "-o", "/dev/null", "http://localhost:8001/"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    restart: unless-stopped
+
+  # Dashboard React (demo publique + point d'entree admin), port 5173.
+  dashboard:
+    build:
+      context: ./dashboard
+      dockerfile: ../docker/dashboard.Dockerfile
+    ports:
+      - "5173:5173"
+    environment:
+      # Les URLs sont resolues cote NAVIGATEUR (le code s'execute dans le
+      # navigateur de l'utilisateur, pas dans le conteneur) -- donc
+      # localhost:8000/8001 (ports publies), jamais les noms de service
+      # Docker (backend/extraction_app), qui ne veulent rien dire hors du
+      # reseau Docker.
+      - VITE_BACKEND_URL=http://localhost:8000
+      - VITE_EXTRACTION_APP_URL=http://localhost:8001
+    depends_on:
+      - backend
+      - extraction_app
+    restart: unless-stopped
+
+volumes:
+  ollama_data:
+  vector_store:
+  voice_models:
+  extraction_data:
+  extraction_uploads:

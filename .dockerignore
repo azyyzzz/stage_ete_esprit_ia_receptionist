@@ -1,0 +1,41 @@
+# Environnements virtuels / node_modules -- reinstalles dans l'image
+.venv/
+dashboard/node_modules/
+dashboard/dist/
+__pycache__/
+**/__pycache__/
+*.pyc
+
+# Donnees volumineuses/regenerables -- gerees par des volumes Docker, pas
+# copiees dans l'image (voir docker-compose.yml)
+vector_store/
+voice_models/
+tessdata/
+
+# Git, IDE, cache
+.git/
+.gitignore
+.vscode/
+.pytest_cache/
+.claude/
+
+# Logs et fichiers de test locaux -- jamais utiles dans l'image
+*.log
+*.wav
+extraction_app/uploads/*
+!extraction_app/uploads/.gitkeep
+extraction_app/data/config_local.json
+extraction_app/data/historique.json
+extraction_app/data/url_sources.json
+extraction_app/data/a_verifier.json
+extraction_app/data/a_valider.json
+extraction_app/data/*.lock
+
+# Rapport LaTeX (auxiliaires de compilation, jamais utiles dans l'image)
+rapport/*.aux
+rapport/*.log
+rapport/*.out
+rapport/*.toc
+
+README.md
+docker/README.md
